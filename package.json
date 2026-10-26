@@ -1,0 +1,16 @@
+{
+  "name": "last-one",
+  "version": "1.0.0",
+  "description": "Last One: a color-matching card game with shareable game links and voice chat.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
