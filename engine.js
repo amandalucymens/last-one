@@ -196,10 +196,10 @@
       f = [];
     if (d.length > 0) {
       if (!e.rules.stacking)
-        return "Playing several cards at once needs the stacking rule";
+        return "Stacking is off";
       if (c) return "You can only jump in with one card";
       if (e.drawnCardId)
-        return "After drawing you can only play the card you drew";
+        return "Play the card you drew";
       if ($(s)) return "Wild cards are played one at a time";
       let h = new Set([a]);
       for (let S of d) {
@@ -208,25 +208,25 @@
         let q = o.hand.find((b) => b.id === S);
         if (!q) return "That card is not in your hand";
         if ($(q) || q.value !== s.value)
-          return "Cards played together must all show the same number or symbol";
+          return "Cards must show the same number";
         f.push(q);
       }
       let w = [s, ...f],
         P = w.find((S) => V(e, o.id, S));
       if (!P)
         return e.pendingDraw > 0
-          ? `Only a matching ${W(e).value === "wild4" ? "+4" : "+2"} can stack. Otherwise take ${e.pendingDraw}`
-          : "None of those cards match the color or symbol on the pile";
+          ? `Stack a ${W(e).value === "wild4" ? "+4" : "+2"} or take ${e.pendingDraw}`
+          : "None of those match the pile";
       ((s = P), (f = w.filter((S) => S !== P)));
     }
     if (c) {
       if (!Ve(e, s)) return "It's not your turn";
     } else if (!V(e, o.id, s))
       return e.drawnCardId && s.id !== e.drawnCardId
-        ? "You can only play the card you just drew, or pass"
+        ? "Play the card you drew, or pass"
         : e.pendingDraw > 0
-          ? `Only a matching ${W(e).value === "wild4" ? "+4" : "+2"} can stack. Otherwise take ${e.pendingDraw}`
-          : "That card doesn't match the color or symbol on the pile";
+          ? `Stack a ${W(e).value === "wild4" ? "+4" : "+2"} or take ${e.pendingDraw}`
+          : "That card doesn't match";
     if ($(s) && (!r || !D.includes(r)))
       return "Choose a color for the wild card";
     let v = e.rules.sevenZero && s.value === "7",
@@ -236,7 +236,7 @@
     let M = [s, ...f],
       I = M.length;
     if (e.rules.noPowerFinish && o.hand.length === I && !ie(s))
-      return "You can't go out on a power card. Keep a number card for last, or draw";
+      return "Your last card must be a number";
     let R = e.currentColor;
     ((e.challenge = null),
       (e.vulnerableId = null),
@@ -421,11 +421,11 @@
   function pn(e, n) {
     let t = e.players[n];
     return t.hand.length > 2
-      ? "You can only call last card with 2 or fewer cards"
+      ? "Call it at 2 cards or fewer"
       : t.calledLastCard
         ? "You already called it"
         : t.hand.length === 2 && n !== e.turn
-          ? "Call it on your turn, or after playing down to 1 card"
+          ? "Call it on your turn"
           : ((t.calledLastCard = !0),
             e.vulnerableId === t.id && (e.vulnerableId = null),
             e.events.push({ kind: "callLastCard", playerId: t.id }),

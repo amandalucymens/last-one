@@ -1268,6 +1268,82 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
 
 .join { max-width: 560px; }
 .join .icons { max-width: 420px; }
+
+/* ===================== layout: phone first, two columns on wide screens ===================== */
+.setup-hand { padding-left: 34px; padding-top: 8px; box-sizing: border-box; }
+
+.home, .lobby, .join { width: 100%; max-width: 640px; justify-items: stretch; }
+.home-grid { display: grid; gap: 18px; }
+.home-intro, .home-options, .join-intro { display: grid; gap: 16px; align-content: start; justify-items: start; min-width: 0; }
+.home-options > *, .home-intro > * { max-width: 100%; }
+.home-options > .roulette-slot, .home-options > .opt-grid, .home-options > .rules, .home-intro > .friends { width: 100%; }
+
+/* compact setting cards */
+.opt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 12px; width: 100%; }
+.opt-card {
+  margin: 0; border: 0; min-width: 0; box-sizing: border-box;
+  background: var(--panel); border-radius: 16px; box-shadow: 0 4px 0 var(--panel-edge);
+  padding: 12px 14px 14px;
+}
+.opt-card legend { float: left; width: 100%; padding: 0; margin: 0 0 8px; font-weight: 700; }
+.opt-card legend + * { clear: both; }
+.opt-card .seg { background: var(--room); box-shadow: none; display: flex; flex-wrap: wrap; }
+.opt-card .rules-note { margin: 8px 0 0; }
+.opt-card.field { display: grid; gap: 8px; align-content: start; justify-items: start; }
+.opt-card.field select { background: var(--room); }
+
+/* house rules as a grid of cards */
+.rules { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.rules .rules-note { grid-column: 1 / -1; margin: 0; }
+.rule { padding: 10px 12px; }
+.rule-text span { font-size: 13px; line-height: 1.35; }
+
+.lobby-grid { display: grid; gap: 16px; width: 100%; }
+.lobby-a, .lobby-b { display: grid; gap: 16px; align-content: start; justify-items: stretch; min-width: 0; }
+.lobby-b > .btn-primary { justify-self: start; }
+.lobby .bar { width: 100%; }
+
+@media (min-width: 1000px) {
+  #app:not(.playing) { max-width: 1240px; }
+  .home, .lobby, .join { max-width: none; padding-block: 28px 32px; }
+
+  .home-grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); column-gap: 56px; align-items: start; }
+  .home-intro { position: sticky; top: calc(20px + env(safe-area-inset-top, 0px)); }
+  .home .setup h1, .home h1 { font-size: 84px; }
+  .home .icons { grid-template-columns: repeat(6, minmax(0, 56px)); }
+  .opt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rules .rule:last-of-type { grid-column: 1 / -1; }
+  .home-options .btn-primary { min-width: 240px; }
+
+  .lobby-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 28px; align-items: start; }
+  .lobby .lobby-seats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .join { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; align-items: center; max-width: 1100px; margin-inline: auto; min-height: 70vh; }
+}
+
+/* phones and tablets: settings collapse into one compact panel of rows */
+@media (max-width: 999px) {
+  .opt-grid {
+    grid-template-columns: 1fr; gap: 0; padding: 2px 14px;
+    background: var(--panel); border-radius: 16px; box-shadow: 0 4px 0 var(--panel-edge); box-sizing: border-box;
+  }
+  .opt-card { background: none; box-shadow: none; border-radius: 0; padding: 10px 0; display: flow-root; }
+  .opt-card + .opt-card { border-top: 1px solid rgba(255, 246, 230, .09); }
+  .opt-grid .opt-card.solo-only:first-child + .opt-card { border-top: 1px solid rgba(255, 246, 230, .09); }
+  .opt-card legend { float: left; width: auto; margin: 7px 12px 0 0; }
+  .opt-card legend + * { clear: none; }
+  .opt-card .seg { float: right; }
+  .opt-card .seg span { padding: 5px 11px; font-size: 13px; }
+  .opt-card .rules-note { display: none; }
+  .opt-card.field { display: flex; align-items: center; justify-content: space-between; }
+  .rule { padding: 9px 11px; gap: 10px; }
+  .rule-text strong { font-size: 14px; }
+  .rule-text span { font-size: 12.5px; }
+}
+@media (max-width: 360px) {
+  .opt-card .seg { float: none; clear: both; }
+}
 </style>
 
 <main id="app"></main>
@@ -1472,10 +1548,10 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       f = [];
     if (d.length > 0) {
       if (!e.rules.stacking)
-        return "Playing several cards at once needs the stacking rule";
+        return "Stacking is off";
       if (c) return "You can only jump in with one card";
       if (e.drawnCardId)
-        return "After drawing you can only play the card you drew";
+        return "Play the card you drew";
       if ($(s)) return "Wild cards are played one at a time";
       let h = new Set([a]);
       for (let S of d) {
@@ -1484,25 +1560,25 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         let q = o.hand.find((b) => b.id === S);
         if (!q) return "That card is not in your hand";
         if ($(q) || q.value !== s.value)
-          return "Cards played together must all show the same number or symbol";
+          return "Cards must show the same number";
         f.push(q);
       }
       let w = [s, ...f],
         P = w.find((S) => V(e, o.id, S));
       if (!P)
         return e.pendingDraw > 0
-          ? `Only a matching ${W(e).value === "wild4" ? "+4" : "+2"} can stack. Otherwise take ${e.pendingDraw}`
-          : "None of those cards match the color or symbol on the pile";
+          ? `Stack a ${W(e).value === "wild4" ? "+4" : "+2"} or take ${e.pendingDraw}`
+          : "None of those match the pile";
       ((s = P), (f = w.filter((S) => S !== P)));
     }
     if (c) {
       if (!Ve(e, s)) return "It's not your turn";
     } else if (!V(e, o.id, s))
       return e.drawnCardId && s.id !== e.drawnCardId
-        ? "You can only play the card you just drew, or pass"
+        ? "Play the card you drew, or pass"
         : e.pendingDraw > 0
-          ? `Only a matching ${W(e).value === "wild4" ? "+4" : "+2"} can stack. Otherwise take ${e.pendingDraw}`
-          : "That card doesn't match the color or symbol on the pile";
+          ? `Stack a ${W(e).value === "wild4" ? "+4" : "+2"} or take ${e.pendingDraw}`
+          : "That card doesn't match";
     if ($(s) && (!r || !D.includes(r)))
       return "Choose a color for the wild card";
     let v = e.rules.sevenZero && s.value === "7",
@@ -1512,7 +1588,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     let M = [s, ...f],
       I = M.length;
     if (e.rules.noPowerFinish && o.hand.length === I && !ie(s))
-      return "You can't go out on a power card. Keep a number card for last, or draw";
+      return "Your last card must be a number";
     let R = e.currentColor;
     ((e.challenge = null),
       (e.vulnerableId = null),
@@ -1697,11 +1773,11 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function pn(e, n) {
     let t = e.players[n];
     return t.hand.length > 2
-      ? "You can only call last card with 2 or fewer cards"
+      ? "Call it at 2 cards or fewer"
       : t.calledLastCard
         ? "You already called it"
         : t.hand.length === 2 && n !== e.turn
-          ? "Call it on your turn, or after playing down to 1 card"
+          ? "Call it on your turn"
           : ((t.calledLastCard = !0),
             e.vulnerableId === t.id && (e.vulnerableId = null),
             e.events.push({ kind: "callLastCard", playerId: t.id }),
@@ -2033,7 +2109,9 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     let e = document.getElementById("turn-glow");
     (e && (e.hidden = !0),
       (k.innerHTML = `
-    <section class="setup">
+    <section class="setup home">
+      <form id="setup-form" class="setup-form home-grid mode-${MODE_PICK}">
+      <div class="home-intro">
       <div class="setup-hand" aria-hidden="true">
         ${["r-7", "y-skip", "g-reverse", "b-draw2", "w-wild4"]
           .map((n, t) => {
@@ -2053,7 +2131,6 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         <button class="btn btn-quiet" id="how-to" type="button">How to play</button>
         <button class="btn btn-quiet sound-btn" id="sound" type="button" aria-pressed="${SOUND_ON}">${SOUND_ON ? "Sound on" : "Sound off"}</button>
       </div>
-      <form id="setup-form" class="setup-form mode-${MODE_PICK}">
         <fieldset class="icon-pick">
           <legend>Pick your player icon</legend>
           <div class="icons">
@@ -2076,19 +2153,36 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           </div>
           <p class="rules-note" id="net-note">${NET_NOTE}</p>
         </section>
-        <section class="solo-only">${rouletteBox(SOLO_RULE, { solo: !0 })}</section>
-        <label class="field solo-only">
+      </div>
+      <div class="home-options">
+        <section class="solo-only roulette-slot">${rouletteBox(SOLO_RULE, { solo: !0 })}</section>
+        <div class="opt-grid">
+        <label class="field solo-only opt-card">
           <span>Computer players</span>
           <select id="bot-count">
             ${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${n === 3 ? "selected" : ""}>${n}</option>`).join("")}
           </select>
         </label>
-        <fieldset class="speed">
+        <fieldset class="speed opt-card">
           <legend>Game speed</legend>
           <div class="seg">
             ${["relaxed", "normal", "fast"].map((n) => `<label><input type="radio" name="speed" id="speed-${n}" value="${n}" ${oe[n] === ue ? "checked" : ""}><span>${Me(n)}</span></label>`).join("")}
           </div>
         </fieldset>
+        <fieldset class="speed opt-card">
+          <legend>Starting hand</legend>
+          <div class="seg">
+            ${[5, 7, 10].map((n) => `<label><input type="radio" name="hand" id="hand-${n}" value="${n}" ${n === (se.handSize ?? 7) ? "checked" : ""}><span>${n} cards</span></label>`).join("")}
+          </div>
+        </fieldset>
+        <fieldset class="speed opt-card">
+          <legend>Turn timer</legend>
+          <div class="seg">
+            ${[0, 15, 30, 60].map((n) => `<label><input type="radio" name="timer" id="timer-${n}" value="${n}" ${n === F ? "checked" : ""}><span>${n ? `${n}s` : "Off"}</span></label>`).join("")}
+          </div>
+          <p class="rules-note">Out of time? You draw and play moves on.</p>
+        </fieldset>
+        </div>
         <fieldset class="rules">
           <legend>House rules</legend>
           <p class="rules-note">Whoever deals picks these. When you host a room, everyone plays by yours.</p>
@@ -2098,20 +2192,8 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           ${X("challengeWild4", "+4 challenge", "A +4 is only fair when you have nothing in the color in play. The next player can call a bluff: guilty takes the cards, wrong guess takes 2 extra.")}
           ${X("noPowerFinish", "No finishing on a power card", "Your last card must be a number. You can't go out on a skip, reverse, +2 or wild.")}
         </fieldset>
-        <fieldset class="speed">
-          <legend>Starting hand</legend>
-          <div class="seg">
-            ${[5, 7, 10].map((n) => `<label><input type="radio" name="hand" id="hand-${n}" value="${n}" ${n === (se.handSize ?? 7) ? "checked" : ""}><span>${n} cards</span></label>`).join("")}
-          </div>
-        </fieldset>
-        <fieldset class="speed">
-          <legend>Turn timer</legend>
-          <div class="seg">
-            ${[0, 15, 30, 60].map((n) => `<label><input type="radio" name="timer" id="timer-${n}" value="${n}" ${n === F ? "checked" : ""}><span>${n ? `${n}s` : "Off"}</span></label>`).join("")}
-          </div>
-          <p class="rules-note">When time runs out you draw automatically and play moves on.</p>
-        </fieldset>
         <button class="btn btn-primary solo-only" type="submit" id="start">Deal cards</button>
+      </div>
       </form>
     </section>`),
       ne("#setup-form").addEventListener("submit", (n) => {
@@ -2881,7 +2963,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     return `
     <div class="scrim uno-scrim" role="dialog" aria-modal="true" aria-label="Call last one">
       <div class="uno-pop">
-        <p class="uno-hint">${n ? "This leaves you with one card. Shout it as you play!" : t ? "One card left and you haven't called it!" : "Two cards left. Call it before you play!"}</p>
+        <p class="uno-hint">${n ? "One card left. Call it!" : t ? "Call it before you're caught!" : "Two cards left. Call it!"}</p>
         <button class="uno-btn" id="${n ? "play-uno" : "uno-big"}" type="button">Last<br>one!</button>
         <button class="btn btn-quiet" id="${n ? "play-quiet" : "uno-skip"}" type="button">${t && !n ? "Risk it" : "Play without calling"}</button>
       </div>
@@ -2903,7 +2985,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     <div class="scrim" role="dialog" aria-modal="true" aria-label="Play cards together">
       <div class="picker multi">
         <p class="picker-title">Play your ${r} together?</p>
-        <p class="win-sub">Tap a card to leave it out or add it back. One of them must match the pile; it goes down first. The last one sets the color.</p>
+        <p class="win-sub">Tap a card to leave it out.</p>
         <div class="multi-row">
           ${a
             .map((s) => {
@@ -2914,7 +2996,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
             })
             .join("")}
         </div>
-        <button class="btn btn-primary" id="multi-play" type="button" ${o && l && !i ? "" : "disabled"}>${o ? (l ? (i ? "Keep one back: you can't go out on a power card" : o === 1 ? "Play 1 card" : `Play ${o} cards`) : "Add a card that matches the pile") : "Pick at least one card"}</button>
+        <button class="btn btn-primary" id="multi-play" type="button" ${o && l && !i ? "" : "disabled"}>${o ? (l ? (i ? "Keep one card back" : o === 1 ? "Play 1 card" : `Play ${o} cards`) : "Add a matching card") : "Pick at least one card"}</button>
         <button class="btn btn-quiet" id="multi-cancel" type="button">Back to my hand</button>
       </div>
     </div>`;
@@ -2957,38 +3039,26 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       : n === 1 || (n === 2 && e.isYourTurn);
   }
   function Un(e) {
-    if (e.phase === "finished")
-      return `Game over. ${A(e.winnerId)} emptied ${e.winnerId === p ? "your" : "their"} hand. Tap New game to play again.`;
-    let n = A(e.turnPlayerId),
-      t = !e.isYourTurn && e.playableCardIds.length > 0;
+    if (e.phase === "finished") return `${A(e.winnerId)} won.`;
+    let t = !e.isYourTurn && e.playableCardIds.length > 0;
     if (e.isYourTurn) {
-      if (e.challenge) {
-        let a = e.playableCardIds.length ? " stack your +4," : "";
-        return `${A(e.challenge.offenderId)} played a +4. Take ${e.pendingDraw},${a} or challenge if you think they still had a ${e.challenge.color} card.`;
-      }
+      if (e.challenge) return `+4 from ${A(e.challenge.offenderId)}. Take ${e.pendingDraw} or challenge.`;
       return e.pendingDraw > 0
-        ? `Stack your ${e.topCard.value === "wild4" ? "+4" : "+2"} to pass the ${e.pendingDraw} on, or take them.`
+        ? `Stack a ${e.topCard.value === "wild4" ? "+4" : "+2"} or take ${e.pendingDraw}.`
         : e.drawnCardId
-          ? "You drew a playable card. Play it or pass."
-          : Object.keys(e.companions).length
-            ? "Your turn. Cards marked \xD72 or more can go down together."
-            : !e.playableCardIds.length &&
-                e.rules.noPowerFinish &&
-                e.you.hand.length === 1 &&
-                !/^[0-9]$/.test(e.you.hand[0].value)
-              ? "You can't go out on a power card. Tap the deck to draw."
-              : !e.playableCardIds.length && e.rules.drawUntilPlayable
-                ? "No match. Tap the deck: you'll keep drawing until one fits."
-                : e.playableCardIds.length
-                  ? "Your turn. Pick a glowing card."
-                  : "Your turn. No match, so tap the deck to draw.";
+          ? "Play the card you drew, or pass."
+          : !e.playableCardIds.length &&
+              e.rules.noPowerFinish &&
+              e.you.hand.length === 1 &&
+              !/^[0-9]$/.test(e.you.hand[0].value)
+            ? "Last card must be a number. Draw."
+            : e.playableCardIds.length
+              ? ""
+              : "No match. Tap the deck.";
     }
-    return e.vulnerableId === p
-      ? "You have one card and didn't call it. Tap Last one! now."
-      : t
-        ? `${n} is playing. You hold an exact match: jump in!`
-        : `${n} is playing.`;
+    return e.vulnerableId === p ? "Tap Last one! now." : t ? "Jump in with your match!" : "";
   }
+
   var _n =
       '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 18 18 6" stroke="currentColor" stroke-width="3"/></svg>',
     Qn =
@@ -3373,22 +3443,22 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function ruleBanner(e) {
     if (!e.rules.roulette) return "";
     let r = CUR_RULE || { name: "Round rule", effect: e.rules.roulette };
-    return `<div class="rule-banner"><span class="wheel sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span><b>${esc(r.name)}</b><span>${esc(effectText(r.effect))}</span></div>`;
+    return `<div class="rule-banner"><span class="wheel sm" aria-hidden="true"><i></i><i></i><i></i><i></i></span><b title="${esc(effectText(r.effect))}">${esc(r.name)}</b></div>`;
   }
 
   /* ---------- tutorial */
   function tutSteps() {
     let steps = [
-      { t: "Match to play", b: "Glowing cards in your hand match the pile's color or symbol. Tap one to play it." },
-      { t: "No match? Draw", b: "Tap the deck to draw. If the new card fits, you can play it straight away or pass." },
-      { t: "Call your last one", b: "Down to two cards? Hit Last one! before you play. Forget, and anyone can catch you for +2." },
-      { t: "Power cards", b: "Skip jumps a player, Reverse flips direction, +2 and +4 make the next player draw. Wilds pick the color." },
+      { t: "Match to play", b: "Tap a glowing card that matches the color or symbol." },
+      { t: "No match? Draw", b: "Tap the deck. Play the new card if it fits." },
+      { t: "Call your last one", b: "At two cards, tap Last one! or risk +2." },
+      { t: "Power cards", b: "Skip, Reverse, +2 and +4 hit the next player. Wilds pick the color." },
     ];
     let r = u?.rules?.roulette ? CUR_RULE || { name: "Round rule", effect: u.rules.roulette } : SOLO_RULE;
     steps.push(
       r
-        ? { t: `This round: ${r.name}`, b: `${effectText(r.effect)} Watch the banner at the top of the table.` }
-        : { t: "Rule Roulette", b: "Before a round, spin the wheel for a twist rule. In rooms, everyone votes to keep it or reroll." },
+        ? { t: `This round: ${r.name}`, b: effectText(r.effect) }
+        : { t: "Rule Roulette", b: "Spin for a twist rule before each round." },
     );
     return steps;
   }
@@ -3800,6 +3870,8 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         <button class="btn btn-quiet icon-btn" id="how-to" type="button" aria-label="How to play">?</button>
         <button class="btn btn-quiet" id="leave-room" type="button">Leave</button>
       </header>
+      <div class="lobby-grid">
+      <div class="lobby-a">
       <div class="room-code-card">
         <span class="rules-note">${host ? "Send this link to your friends" : "You're in. Share the link to invite more people."}</span>
         <div class="link-row">
@@ -3810,6 +3882,8 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         <span class="rules-note">Anyone with the link can join, up to 6 players. Tap the mic to talk.</span>
       </div>
       ${seatList(room, host)}
+      </div>
+      <div class="lobby-b">
       ${rouletteBox(room.spinning ? null : room.rule, { host, votes: room.votes || {}, spinning: room.spinning })}
       ${houseRules(room, host)}
       ${
@@ -3818,6 +3892,8 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
              ${seats.length < 2 ? '<p class="rules-note">Tip: add a computer player to start right away.</p>' : ""}`
           : '<p class="lede">Waiting for the host to deal…</p>'
       }
+      </div>
+      </div>
     </section>`;
     wireCommon();
     y("#leave-room", () => leaveRoom());
@@ -3848,7 +3924,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function copyLink() {
     let link = gameLink(NET.id),
       field = document.getElementById("game-link"),
-      done = () => Se("Link copied. Paste it to your friends.");
+      done = () => Se("Link copied");
     try {
       navigator.clipboard.writeText(link).then(done, () => {
         field?.select();
@@ -3943,7 +4019,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         pr.audio = a;
       }
       a.play().catch(() => {
-        if (!VOICE.blocked) (VOICE.blocked = !0), Se("Tap anywhere to hear the table's voice chat.");
+        if (!VOICE.blocked) (VOICE.blocked = !0), Se("Tap to hear voice chat");
       });
       attachMeter(pid, a.srcObject);
     };
@@ -4046,7 +4122,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       }
       VOICE.track.enabled = !0;
       VOICE.micOn = !0;
-      Se("Mic on. Everyone at the table can hear you.");
+      Se("Mic on");
     } else {
       VOICE.track && (VOICE.track.enabled = !1);
       VOICE.micOn = !1;
@@ -4103,6 +4179,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     k.classList.remove("playing");
     k.innerHTML = `
     <section class="setup join">
+      <div class="join-intro">
       <div class="setup-hand" aria-hidden="true">
         ${["r-7", "y-skip", "g-reverse", "b-draw2", "w-wild4"]
           .map((n, t) => {
@@ -4114,6 +4191,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       </div>
       <h1>Last One</h1>
       <p class="lede">You've been invited to a table. Pick a name and a player, then join. Match the color or symbol and empty your hand first.</p>
+      </div>
       <form id="join-form" class="setup-form">
         <label class="field"><span>Your name</span><input id="nick" maxlength="14" autocomplete="nickname" value="${esc(NICK)}" placeholder="Your name" required></label>
         <fieldset class="icon-pick">
