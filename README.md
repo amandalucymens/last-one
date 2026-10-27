@@ -2,6 +2,10 @@
 
 **Last One** is an online card game for friends, with a Ghanaian look and built-in voice chat. Start a table, send the link, and everyone who opens it sits down to play and talk. No accounts and no downloads.
 
+**[Play now → last-one-xnx1.onrender.com](https://last-one-xnx1.onrender.com/)**
+
+*The first visit after a quiet spell can take about a minute while the server wakes up.*
+
 ## How to play
 
 - Match the top card by **colour or symbol** and be the first to empty your hand.
