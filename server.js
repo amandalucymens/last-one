@@ -17,8 +17,19 @@ const R = require("./rules");
 
 const PORT = Number(process.env.PORT) || 3000;
 const INDEX_PATH = path.join(__dirname, "public", "index.html");
-const ICONS = ["red", "blue", "green", "orange", "purple", "teal", "pink", "yellow", "white", "black", "lime", "brown"];
-const BOT_NAMES = ["Kofi", "Lena", "Ama", "Jonas", "Esi"];
+// player avatars and whether each shows a woman (f) or a man (m); keys match public/index.html
+const ICON_G = { blue: "f", red: "m", gele: "f", green: "m", orange: "f", teal: "m", purple: "f", jersey: "m", queen: "f", bucket: "m", bantu: "f", white: "m", buns: "f", durag: "m", locs: "f", twists: "m", bun: "f", brown: "m", dj: "f", grad: "m" };
+const ICONS = Object.keys(ICON_G);
+const BOTS = [
+  { name: "Ama", g: "f" },
+  { name: "Kofi", g: "m" },
+  { name: "Esi", g: "f" },
+  { name: "Kwame", g: "m" },
+  { name: "Akosua", g: "f" },
+  { name: "Yaw", g: "m" },
+  { name: "Efua", g: "f" },
+  { name: "Kojo", g: "m" },
+];
 const SPEEDS = { relaxed: 1700, normal: 1150, fast: 700 };
 const MAX_SEATS = 6;
 const AWAY_TURN_MS = 15000; // a disconnected player's turn is played for them after this
@@ -121,10 +132,11 @@ const cleanName = (s) => String(s || "").replace(/\s+/g, " ").trim().slice(0, 14
 const online = (m) => m.bot || m.conns.size > 0;
 const humans = (room) => room.order.map((id) => room.members.get(id)).filter((m) => m && !m.bot);
 
-function freeIcon(room, want, exceptPid) {
+function freeIcon(room, want, exceptPid, gender) {
   const taken = new Set(room.order.filter((id) => id !== exceptPid).map((id) => room.members.get(id)?.icon));
   if (ICONS.includes(want) && !taken.has(want)) return want;
-  return ICONS.find((i) => !taken.has(i)) || ICONS[0];
+  const open = ICONS.filter((i) => !taken.has(i) && (!gender || ICON_G[i] === gender));
+  return open[crypto.randomInt(Math.max(open.length, 1))] || ICONS.find((i) => !taken.has(i)) || ICONS[0];
 }
 
 function cleanSettings(s) {
@@ -390,7 +402,9 @@ function handle(ws, msg) {
       while (room.members.has("bot" + i)) i++;
       const used = new Set(room.order.map((id) => room.members.get(id).name));
       const pid = "bot" + i;
-      room.members.set(pid, { pid, name: BOT_NAMES.find((n) => !used.has(n)) || "Bot " + (i + 1), icon: freeIcon(room, null), bot: true, conns: new Set(), mic: false, sess: 0 });
+      const free = BOTS.filter((b) => !used.has(b.name));
+      const bot = free[crypto.randomInt(Math.max(free.length, 1))] || { name: "Bot " + (i + 1), g: i % 2 ? "m" : "f" };
+      room.members.set(pid, { pid, name: bot.name, icon: freeIcon(room, null, null, bot.g), bot: true, conns: new Set(), mic: false, sess: 0 });
       room.order.push(pid);
       return broadcastRoom(room);
     }

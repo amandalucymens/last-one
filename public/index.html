@@ -1344,6 +1344,14 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
 @media (max-width: 360px) {
   .opt-card .seg { float: none; clear: both; }
 }
+
+/* audio switches and the 20-player picker */
+.sound-btn { display: inline-flex; align-items: center; gap: 7px; }
+.sound-btn svg { width: 18px; height: 18px; flex: none; }
+.sound-btn[aria-pressed="false"] { opacity: .7; }
+.icon-btn[aria-pressed="false"] { opacity: .65; }
+.icons { grid-template-columns: repeat(5, minmax(0, 1fr)); max-width: 380px; }
+@media (min-width: 1000px) { .home .icons { grid-template-columns: repeat(5, 62px); max-width: none; gap: 10px; } }
 </style>
 
 <main id="app"></main>
@@ -1957,20 +1965,29 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     for (let t of e) t.color && n.set(t.color, n.get(t.color) + 1);
     return [...n.entries()].sort((t, a) => a[1] - t[1])[0][0];
   }
-  /* Avatars: people in Ghanaian dress, flat and minimal. Keys stay stable (they are stored in rooms). */
+  /* Avatars: 20 players in Ghanaian dress, ten women and ten men, alternating. Flat and minimal.
+     Keys are stored by the server, so keep them stable. */
   var K = {
-      red: { name: "Kente kufi", skin: "#6b4028", bg: "#f3e3c3", cloth: "#1a110a", hat: "kufi" },
-      blue: { name: "Indigo duku", skin: "#8d5a3b", bg: "#dfe6f2", cloth: "#1f4f9e", hat: "duku", hatColor: "#1f4f9e", ear: !0 },
-      green: { name: "Chief's crown", skin: "#5a3825", bg: "#e4efe2", cloth: "kente", hat: "crown" },
-      orange: { name: "Afro puff", skin: "#a06a43", bg: "#f6e0cc", cloth: "#d4622a", hat: "puff", ear: !0 },
-      purple: { name: "Gold beads", skin: "#7b4a2d", bg: "#efe2ef", cloth: "#5b3a7a", hat: "braids", beads: !0 },
-      teal: { name: "Fugu smock", skin: "#4a2c1b", bg: "#dcefea", cloth: "smock", hat: "none", beard: "#1a110a" },
-      pink: { name: "Red duku", skin: "#6b4028", bg: "#f7dfe1", cloth: "#c8102e", hat: "duku", hatColor: "#c8102e", ear: !0 },
-      yellow: { name: "Scholar specs", skin: "#8d5a3b", bg: "#f8ecc7", cloth: "#0f8a45", hat: "short", specs: !0 },
-      white: { name: "Elder", skin: "#5a3825", bg: "#ecebe6", cloth: "#f4f1ea", hat: "bald", beard: "#e9e6df" },
-      black: { name: "Kente sash", skin: "#3f2618", bg: "#e8e1d4", cloth: "sash", hat: "short" },
-      lime: { name: "Long braids", skin: "#a06a43", bg: "#e9f1d8", cloth: "#f2b705", hat: "braids", ear: !0 },
-      brown: { name: "Fila cap", skin: "#7b4a2d", bg: "#f0e2d2", cloth: "#9a7440", hat: "fila" },
+      blue: { name: "Indigo duku", g: "f", skin: "#8d5a3b", bg: "#dfe6f2", cloth: "#1f4f9e", hat: "duku", hatColor: "#1f4f9e", ear: "stud" },
+      red: { name: "Kente kufi", g: "m", skin: "#6b4028", bg: "#f3e3c3", cloth: "#1a110a", hat: "kufi" },
+      gele: { name: "Gele queen", g: "f", skin: "#5a3825", bg: "#fbe3d0", cloth: "kaba", clothColor: "#c8102e", hat: "gele", hatColor: "#0f8a45", ear: "hoop" },
+      green: { name: "Chief's crown", g: "m", skin: "#5a3825", bg: "#e4efe2", cloth: "kente", hat: "crown" },
+      orange: { name: "Afro puff", g: "f", skin: "#a06a43", bg: "#f6e0cc", cloth: "#d4622a", hat: "puff", ear: "stud" },
+      teal: { name: "Fugu smock", g: "m", skin: "#4a2c1b", bg: "#dcefea", cloth: "smock", hat: "none", beard: "#1a110a" },
+      purple: { name: "Gold beads", g: "f", skin: "#7b4a2d", bg: "#efe2ef", cloth: "#5b3a7a", hat: "braids", beads: !0 },
+      jersey: { name: "Black Stars fan", g: "m", skin: "#4a2c1b", bg: "#fdf0c4", cloth: "jersey", hat: "hightop" },
+      queen: { name: "Queen mother", g: "f", skin: "#6b4028", bg: "#f7dfe1", cloth: "kente", hat: "queencrown", ear: "stud", beads: !0 },
+      bucket: { name: "Bucket hat", g: "m", skin: "#8d5a3b", bg: "#f8ecc7", cloth: "hoodie", clothColor: "#0f8a45", hat: "bucket", ear: "pod" },
+      bantu: { name: "Bantu knots", g: "f", skin: "#3f2618", bg: "#e6dcf5", cloth: "#0f8a45", hat: "bantu", ear: "hoop", nose: !0 },
+      white: { name: "Elder", g: "m", skin: "#5a3825", bg: "#ecebe6", cloth: "#f4f1ea", hat: "bald", beard: "#e9e6df" },
+      buns: { name: "Space buns", g: "f", skin: "#a06a43", bg: "#e9f1d8", cloth: "crop", clothColor: "#b07cff", hat: "spacebuns", specs: "tint", ear: "stud", nose: !0 },
+      durag: { name: "Durag and shades", g: "m", skin: "#6b4028", bg: "#d7e9f7", cloth: "#f4f1ea", hat: "durag", hatColor: "#1f4f9e", specs: "shades", goatee: !0 },
+      locs: { name: "Locs and cowries", g: "f", skin: "#7b4a2d", bg: "#f6e7c1", cloth: "#9a3b1e", hat: "locs", ear: "stud" },
+      twists: { name: "Blond twists", g: "m", skin: "#3f2618", bg: "#e8e1d4", cloth: "hoodie", clothColor: "#1a110a", hat: "twists", chain: !0, ear: "stud" },
+      bun: { name: "Top bun", g: "f", skin: "#a06a43", bg: "#f9dde4", cloth: "#e4572e", hat: "bun", ear: "hoop", blush: !0 },
+      brown: { name: "Fila cap", g: "m", skin: "#7b4a2d", bg: "#f0e2d2", cloth: "#9a7440", hat: "fila" },
+      dj: { name: "DJ headphones", g: "f", skin: "#5a3825", bg: "#d8f3ec", cloth: "#1a110a", hat: "phones", ear: "none" },
+      grad: { name: "Graduate", g: "m", skin: "#8d5a3b", bg: "#e9e4f7", cloth: "gown", hat: "gradcap" },
     },
     qe = Object.keys(K);
   var KENTE = ["#f2b705", "#0f8a45", "#f2b705", "#c8102e", "#1a110a"];
@@ -1984,40 +2001,119 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     let n = K[e] ?? K.red,
       sk = n.skin,
       ink = "#1a110a",
+      gold = "#f2b705",
       id = "av" + e,
+      SH = "M5 50 Q6 37 24 36 Q42 37 43 50 Z",
+      clip = (inner, path = SH, k = "c") => `<clipPath id="${id}${k}"><path d="${path}"/></clipPath><g clip-path="url(#${id}${k})">${inner}</g>`,
       body = "";
-    // shoulders / clothing
-    if (n.cloth === "kente")
-      body = `<clipPath id="${id}c"><path d="M5 50 Q6 37 24 36 Q42 37 43 50 Z"/></clipPath><g clip-path="url(#${id}c)">${kenteRect(4, 34, 40, 16, 4)}</g>`;
-    else if (n.cloth === "smock")
-      body = `<clipPath id="${id}c"><path d="M5 50 Q6 37 24 36 Q42 37 43 50 Z"/></clipPath><g clip-path="url(#${id}c)"><rect x="4" y="34" width="40" height="16" fill="#f4f1ea"/>${[8, 14, 20, 26, 32, 38].map((x, i) => `<rect x="${x}" y="34" width="2.4" height="16" fill="${i % 2 ? "#1f4f9e" : ink}"/>`).join("")}</g>`;
-    else if (n.cloth === "sash")
-      body = `<path d="M5 50 Q6 37 24 36 Q42 37 43 50 Z" fill="${ink}"/><clipPath id="${id}c"><path d="M14 37 L22 36 L36 50 L27 50 Z"/></clipPath><g clip-path="url(#${id}c)">${kenteRect(12, 34, 26, 16, 3)}</g>`;
-    else body = `<path d="M5 50 Q6 37 24 36 Q42 37 43 50 Z" fill="${n.cloth}"/>`;
+    // clothing
+    switch (n.cloth) {
+      case "kente":
+        body = clip(kenteRect(4, 34, 40, 16, 4));
+        break;
+      case "smock":
+        body = clip(`<rect x="4" y="34" width="40" height="16" fill="#f4f1ea"/>${[8, 14, 20, 26, 32, 38].map((x, i) => `<rect x="${x}" y="34" width="2.4" height="16" fill="${i % 2 ? "#1f4f9e" : ink}"/>`).join("")}`);
+        break;
+      case "sash":
+        body = `<path d="${SH}" fill="${ink}"/>` + clip(kenteRect(12, 34, 26, 16, 3), "M14 37 L22 36 L36 50 L27 50 Z", "s");
+        break;
+      case "kaba":
+        body = clip(
+          `<rect x="4" y="34" width="40" height="16" fill="${n.clothColor}"/>` +
+            [8, 16, 24, 32, 40].map((x, i) => `<circle cx="${x}" cy="${i % 2 ? 41 : 45}" r="2.2" fill="${gold}"/><circle cx="${x}" cy="${i % 2 ? 41 : 45}" r=".9" fill="${ink}"/>`).join(""),
+        );
+        break;
+      case "jersey":
+        body = clip(`<rect x="4" y="34" width="40" height="16" fill="#c8102e"/><rect x="4" y="44" width="40" height="2.4" fill="${gold}"/><rect x="4" y="46.4" width="40" height="2.4" fill="#0f8a45"/>`) +
+          `<path d="M24 38.6 l1 2.1 2.3.2-1.7 1.5.5 2.2-2.1-1.2-2.1 1.2.5-2.2-1.7-1.5 2.3-.2z" fill="${ink}"/>`;
+        break;
+      case "hoodie":
+        body = `<path d="${SH}" fill="${n.clothColor}"/><path d="M15 36.8 Q24 44 33 36.8" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2.2"/><path d="M21 40 V46 M27 40 V46" stroke="#f4f1ea" stroke-width="1.2" stroke-linecap="round"/>`;
+        break;
+      case "crop":
+        body = clip(`<rect x="4" y="34" width="40" height="16" fill="${n.clothColor}"/><rect x="4" y="44.5" width="40" height="1.8" fill="#f4f1ea" opacity=".7"/><path d="M14 47 l2 -2 2 2 2 -2 2 2" fill="none" stroke="#f4f1ea" stroke-width="1"/>`);
+        break;
+      case "gown":
+        body = `<path d="${SH}" fill="${ink}"/>` + clip(`<rect x="17" y="34" width="4" height="16" fill="${gold}"/><rect x="27" y="34" width="4" height="16" fill="${gold}"/>`, SH, "g");
+        break;
+      default:
+        body = `<path d="${SH}" fill="${n.cloth}"/>`;
+    }
     let neck = `<rect x="20.5" y="29" width="7" height="8" rx="3" fill="${sk}"/>`,
-      collar = n.cloth === "smock" || n.cloth === "kente" ? "" : `<path d="M19 36.5 Q24 40 29 36.5" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1.4"/>`,
+      collar = ["smock", "kente", "kaba", "gown"].includes(n.cloth) ? "" : `<path d="M19 36.5 Q24 40 29 36.5" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1.4"/>`,
       back = "",
       front = "";
+    // hair and headwear
     switch (n.hat) {
       case "kufi":
-        front = `<clipPath id="${id}h"><path d="M13.5 17 Q14 8 24 8 Q34 8 34.5 17 Z"/></clipPath><g clip-path="url(#${id}h)">${kenteRect(13, 7, 22, 11, 3)}</g><rect x="13.3" y="15.6" width="21.4" height="2.2" rx="1" fill="${ink}"/>`;
+        front = clip(kenteRect(13, 7, 22, 11, 3), "M13.5 17 Q14 8 24 8 Q34 8 34.5 17 Z", "h") + `<rect x="13.3" y="15.6" width="21.4" height="2.2" rx="1" fill="${ink}"/>`;
         break;
       case "duku":
-        front = `<path d="M12.5 19 Q11 9 18 6 Q24 2 31 6 Q38 9 35.5 19 Q33 13 24 13 Q15 13 12.5 19 Z" fill="${n.hatColor}"/><path d="M27 5 Q34 1 36 7 Q33 6 30 8 Z" fill="${n.hatColor}"/><path d="M15 15 Q24 10 33 15" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/><path d="M17 9.5 Q24 6 31 9.5" fill="none" stroke="#f2b705" stroke-width="1.2"/>`;
+        front = `<path d="M12.5 19 Q11 9 18 6 Q24 2 31 6 Q38 9 35.5 19 Q33 13 24 13 Q15 13 12.5 19 Z" fill="${n.hatColor}"/><path d="M27 5 Q34 1 36 7 Q33 6 30 8 Z" fill="${n.hatColor}"/><path d="M15 15 Q24 10 33 15" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/><path d="M17 9.5 Q24 6 31 9.5" fill="none" stroke="${gold}" stroke-width="1.2"/>`;
+        break;
+      case "gele":
+        front = `<path d="M11.5 18.5 Q7 7 15 4.5 Q18 -1 24 3.5 Q30 -1 33 4.5 Q41 7 36.5 18.5 Q31 12.5 24 12.8 Q17 12.5 11.5 18.5 Z" fill="${n.hatColor}"/>
+          <path d="M15 5 Q19 9 18 14 M24 3.5 V12.5 M33 5 Q29 9 30 14" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M12.5 15.5 Q24 9.5 35.5 15.5" fill="none" stroke="${gold}" stroke-width="1.6"/>`;
         break;
       case "crown":
-        front = `<path d="M14 15 Q14 10 24 10 Q34 10 34 15 Z" fill="${ink}"/><path d="M14.5 14 L15.5 7 L19.5 11 L24 5.5 L28.5 11 L32.5 7 L33.5 14 Z" fill="#f2b705"/><circle cx="24" cy="10.5" r="1.3" fill="#c8102e"/>`;
+        front = `<path d="M14 15 Q14 10 24 10 Q34 10 34 15 Z" fill="${ink}"/><path d="M14.5 14 L15.5 7 L19.5 11 L24 5.5 L28.5 11 L32.5 7 L33.5 14 Z" fill="${gold}"/><circle cx="24" cy="10.5" r="1.3" fill="#c8102e"/>`;
+        break;
+      case "queencrown":
+        back = `<path d="M13 16 Q12 30 15 35 L18 35 Q16 28 17 18 Z M35 16 Q36 30 33 35 L30 35 Q32 28 31 18 Z" fill="${ink}"/>`;
+        front = `<path d="M13.6 18.5 Q13 11 24 11 Q35 11 34.4 18.5 Q31 14 24 14 Q17 14 13.6 18.5 Z" fill="${ink}"/>
+          <path d="M14.5 12.5 L14 5 L18.5 9 L21 3.5 L24 8 L27 3.5 L29.5 9 L34 5 L33.5 12.5 Z" fill="${gold}"/>
+          <rect x="14.3" y="11" width="19.4" height="2.4" rx="1" fill="#c8102e"/>
+          <circle cx="21" cy="3.6" r="1.2" fill="#0f8a45"/><circle cx="27" cy="3.6" r="1.2" fill="#0f8a45"/><circle cx="24" cy="9.2" r="1.3" fill="#c8102e"/>`;
+        break;
+      case "spacebuns":
+        back = `<circle cx="14.5" cy="9" r="5" fill="${ink}"/><circle cx="33.5" cy="9" r="5" fill="${ink}"/><path d="M11.5 7.5 Q14.5 4.5 17.5 7.5 M30.5 7.5 Q33.5 4.5 36.5 7.5" fill="none" stroke="#ff7eb3" stroke-width="2.2" stroke-linecap="round"/>`;
+        front = `<path d="M14 18 Q14 10.5 24 10.5 Q34 10.5 34 18 Q30 13.6 24 13.8 Q18 13.6 14 18 Z" fill="${ink}"/><path d="M24 10.6 V13.8" stroke="rgba(255,255,255,.25)" stroke-width="1"/><path d="M18.4 11.8 l1.4 -1.2 1 1.6 -1.8 .5 z M28.6 11 l1.6 .6 -.8 1.5 -1.4 -.9 z" fill="#5ee6c8"/>`;
+        break;
+      case "bucket":
+        front = `<path d="M15.5 14.5 Q15.5 6.5 24 6.5 Q32.5 6.5 32.5 14.5 Z" fill="#f2b705"/><path d="M11 16.5 Q24 11.5 37 16.5 L36 18.4 Q24 14 12 18.4 Z" fill="#d49a00"/>
+          ${[18.5, 22.5, 26.5, 30].map((x, i) => `<circle cx="${x}" cy="${i % 2 ? 9.6 : 11.8}" r="1.1" fill="${ink}"/>`).join("")}`;
+        break;
+      case "twists":
+        front = `<path d="M14 18.5 Q13.6 11 24 11 Q34.4 11 34 18.5 Q30 14.4 24 14.4 Q18 14.4 14 18.5 Z" fill="${ink}"/>` +
+          [[15.5, 13], [18.5, 9.6], [22, 8], [26, 8], [29.5, 9.6], [32.5, 13]].map(([x, y]) => `<rect x="${x - 1.5}" y="${y - 5}" width="3" height="7" rx="1.5" fill="${ink}"/><rect x="${x - 1.5}" y="${y - 5}" width="3" height="2.8" rx="1.4" fill="#f5d36b"/>`).join("");
         break;
       case "puff":
         back = `<circle cx="24" cy="9" r="8.5" fill="${ink}"/>`;
         front = `<path d="M14 18 Q14 11 24 11 Q34 11 34 18 Q30 14.5 24 14.5 Q18 14.5 14 18 Z" fill="${ink}"/><rect x="18" y="12" width="12" height="2.6" rx="1.3" fill="${n.cloth}"/>`;
         break;
       case "braids":
-        back = `<path d="M13 16 Q12 30 15 36 L18 36 Q16 28 17 18 Z M35 16 Q36 30 33 36 L30 36 Q32 28 31 18 Z" fill="${ink}"/><rect x="14" y="31" width="3.4" height="2" rx="1" fill="#f2b705"/><rect x="30.6" y="31" width="3.4" height="2" rx="1" fill="#f2b705"/>`;
+        back = `<path d="M13 16 Q12 30 15 36 L18 36 Q16 28 17 18 Z M35 16 Q36 30 33 36 L30 36 Q32 28 31 18 Z" fill="${ink}"/><rect x="14" y="31" width="3.4" height="2" rx="1" fill="${gold}"/><rect x="30.6" y="31" width="3.4" height="2" rx="1" fill="${gold}"/>`;
         front = `<path d="M13.6 18.5 Q13 10 24 10 Q35 10 34.4 18.5 Q31 13.5 24 13.6 Q17 13.5 13.6 18.5 Z" fill="${ink}"/>`;
+        break;
+      case "bantu":
+        front = `<path d="M13.8 18 Q13.5 11 24 11 Q34.5 11 34.2 18 Q30 14 24 14 Q18 14 13.8 18 Z" fill="${ink}"/>` +
+          [[15.5, 12.5], [19.5, 9], [24, 7.6], [28.5, 9], [32.5, 12.5]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.1" fill="${ink}"/><path d="M${x - 1.3} ${y - 0.6} q1.3 -1.4 2.6 0" fill="none" stroke="rgba(255,255,255,.22)" stroke-width=".9"/>`).join("");
+        break;
+      case "locs":
+        back = [13.2, 15.6, 32.4, 34.8].map((x) => `<rect x="${x - 1.4}" y="15" width="2.8" height="${x < 20 ? 22 : 20}" rx="1.4" fill="${ink}"/>`).join("") +
+          `<ellipse cx="14.4" cy="31" rx="1.6" ry="1.1" fill="#f4f1ea"/><ellipse cx="33.6" cy="28" rx="1.6" ry="1.1" fill="#f4f1ea"/>`;
+        front = `<path d="M13 19 Q12.5 9.5 24 9.5 Q35.5 9.5 35 19 Q32 13 24 13.2 Q16 13 13 19 Z" fill="${ink}"/><path d="M17 11.5 Q16 15 16.5 17 M21 10.2 Q20.5 13 20.8 14 M27 10.2 Q27.5 13 27.2 14 M31 11.5 Q32 15 31.5 17" stroke="rgba(255,255,255,.16)" stroke-width="1" fill="none"/>`;
+        break;
+      case "bun":
+        back = `<circle cx="24" cy="6" r="5.2" fill="${ink}"/>`;
+        front = `<path d="M14 18 Q14 10.5 24 10.5 Q34 10.5 34 18 Q30 14 24 14 Q18 14 14 18 Z" fill="${ink}"/><rect x="20.5" y="9.4" width="7" height="2" rx="1" fill="${gold}"/>`;
+        break;
+      case "phones":
+        back = `<circle cx="24" cy="16" r="13.5" fill="${ink}"/>`;
+        front = `<path d="M12 20 Q12 6 24 6 Q36 6 36 20" fill="none" stroke="#c8102e" stroke-width="2.6"/><rect x="9.5" y="18" width="5.5" height="9" rx="2.6" fill="#c8102e"/><rect x="33" y="18" width="5.5" height="9" rx="2.6" fill="#c8102e"/><rect x="10.8" y="20" width="2.8" height="5" rx="1.4" fill="${gold}"/><rect x="34.4" y="20" width="2.8" height="5" rx="1.4" fill="${gold}"/>`;
         break;
       case "short":
         front = `<path d="M14 17.5 Q14 10.5 24 10.5 Q34 10.5 34 17.5 Q30 14 24 14 Q18 14 14 17.5 Z" fill="${ink}"/>`;
+        break;
+      case "hightop":
+        front = `<path d="M14 18 V6 Q14 3.5 16.5 3.5 H31.5 Q34 3.5 34 6 V18 Q30 14 24 14 Q18 14 14 18 Z" fill="${ink}"/><path d="M14 16.5 H16.5 M31.5 16.5 H34" stroke="${sk}" stroke-width="1.2"/>`;
+        break;
+      case "durag":
+        front = `<path d="M33 15 Q41 21 38.5 31 L35.5 30 Q36.5 23 31.5 17.5 Z" fill="${n.hatColor}"/><path d="M13.6 18.5 Q13 8.5 24 8.5 Q35 8.5 34.4 18.5 Q30 13.5 24 13.5 Q18 13.5 13.6 18.5 Z" fill="${n.hatColor}"/><path d="M24 9 V13.4" stroke="rgba(255,255,255,.3)" stroke-width="1.2"/><path d="M17 11.5 Q24 8 31 11.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>`;
+        break;
+      case "gradcap":
+        front = `<path d="M15.5 12.5 V16 Q24 13.5 32.5 16 V12.5 Z" fill="${ink}"/><path d="M9.5 9.5 L24 4.5 L38.5 9.5 L24 14.5 Z" fill="${ink}"/><path d="M24 9.5 L35.5 10.6 V18" fill="none" stroke="${gold}" stroke-width="1.2"/><rect x="34.4" y="17.5" width="2.2" height="3.4" rx="1" fill="${gold}"/>`;
         break;
       case "fila":
         front = `<path d="M15 14.5 Q15.5 6.5 24 6.5 Q32.5 6.5 33 14.5 Z" fill="#f4f1ea"/>${[17.5, 21.5, 25.5, 29.5].map((x) => `<rect x="${x}" y="7" width="1.6" height="7.5" fill="#1f4f9e"/>`).join("")}<rect x="14.6" y="13.4" width="18.8" height="2" rx="1" fill="${ink}"/>`;
@@ -2028,22 +2124,42 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     }
     let face = `<ellipse cx="24" cy="21.5" rx="10" ry="11" fill="${sk}"/>
       <circle cx="14" cy="22" r="2" fill="${sk}"/><circle cx="34" cy="22" r="2" fill="${sk}"/>`,
-      eyes = n.specs
-        ? `<circle cx="20" cy="21.5" r="3" fill="none" stroke="${ink}" stroke-width="1.3"/><circle cx="28" cy="21.5" r="3" fill="none" stroke="${ink}" stroke-width="1.3"/><path d="M23 21.5 H25" stroke="${ink}" stroke-width="1.3"/><circle cx="20" cy="21.7" r="1.1" fill="${ink}"/><circle cx="28" cy="21.7" r="1.1" fill="${ink}"/>`
-        : `<circle cx="20.3" cy="21.5" r="1.25" fill="${ink}"/><circle cx="27.7" cy="21.5" r="1.25" fill="${ink}"/>`,
+      eyes =
+        n.specs === "round"
+          ? `<circle cx="20" cy="21.5" r="3" fill="none" stroke="${ink}" stroke-width="1.3"/><circle cx="28" cy="21.5" r="3" fill="none" stroke="${ink}" stroke-width="1.3"/><path d="M23 21.5 H25" stroke="${ink}" stroke-width="1.3"/><circle cx="20" cy="21.7" r="1.1" fill="${ink}"/><circle cx="28" cy="21.7" r="1.1" fill="${ink}"/>`
+          : n.specs === "tint"
+            ? `<circle cx="20" cy="21.6" r="3.1" fill="#ff7eb3" opacity=".55" stroke="${ink}" stroke-width="1.1"/><circle cx="28" cy="21.6" r="3.1" fill="#ff7eb3" opacity=".55" stroke="${ink}" stroke-width="1.1"/><path d="M23.1 21.4 H24.9" stroke="${ink}" stroke-width="1.1"/><circle cx="20" cy="21.8" r="1" fill="${ink}"/><circle cx="28" cy="21.8" r="1" fill="${ink}"/>`
+          : n.specs === "shades"
+            ? `<path d="M15.8 19.5 H22.6 Q22.6 24.2 19.2 24.2 Q15.8 24.2 15.8 19.5 Z M25.4 19.5 H32.2 Q32.2 24.2 28.8 24.2 Q25.4 24.2 25.4 19.5 Z" fill="${ink}"/><path d="M22.6 20 H25.4" stroke="${ink}" stroke-width="1.3"/><path d="M17.3 20.6 L19 20.6 M26.9 20.6 L28.6 20.6" stroke="rgba(255,255,255,.55)" stroke-width="1" stroke-linecap="round"/>`
+            : `<circle cx="20.3" cy="21.5" r="1.25" fill="${ink}"/><circle cx="27.7" cy="21.5" r="1.25" fill="${ink}"/>`,
       mouth = n.beard
         ? `<path d="M15.5 24 Q16 33 24 33.5 Q32 33 32.5 24 Q30 28 24 28.2 Q18 28 15.5 24 Z" fill="${n.beard}"/><path d="M21.5 27.2 Q24 28.6 26.5 27.2" fill="none" stroke="${n.beard === ink ? "#6b4028" : ink}" stroke-width="1.2" stroke-linecap="round"/>`
-        : `<path d="M21 26.5 Q24 29 27 26.5" fill="none" stroke="${ink}" stroke-width="1.3" stroke-linecap="round"/>`,
+        : `<path d="M21 26.5 Q24 29 27 26.5" fill="none" stroke="${ink}" stroke-width="1.3" stroke-linecap="round"/>` +
+          (n.goatee ? `<path d="M21.5 29.6 Q24 33.4 26.5 29.6 Q24 31 21.5 29.6 Z" fill="${ink}"/>` : ""),
       extras =
-        (n.ear ? `<circle cx="13.6" cy="25" r="1.4" fill="#f2b705"/><circle cx="34.4" cy="25" r="1.4" fill="#f2b705"/>` : "") +
-        (n.beads ? [16, 19.5, 23, 26.5, 30].map((x, i) => `<circle cx="${x + 1}" cy="${38 + (i === 2 ? 1.4 : i === 1 || i === 3 ? .9 : 0)}" r="1.5" fill="${["#f2b705", "#c8102e", "#f2b705", "#0f8a45", "#f2b705"][i]}"/>`).join("") : "");
+        (n.ear === "stud" ? `<circle cx="13.6" cy="25" r="1.4" fill="${gold}"/><circle cx="34.4" cy="25" r="1.4" fill="${gold}"/>` : "") +
+        (n.ear === "hoop" ? `<circle cx="13.8" cy="26.6" r="2.4" fill="none" stroke="${gold}" stroke-width="1.2"/><circle cx="34.2" cy="26.6" r="2.4" fill="none" stroke="${gold}" stroke-width="1.2"/>` : "") +
+        (n.nose ? `<circle cx="26" cy="24.4" r=".75" fill="${gold}"/>` : "") +
+        (n.ear === "pod" ? `<rect x="12.6" y="22.6" width="2.4" height="3.4" rx="1.2" fill="#ffffff"/><rect x="33" y="22.6" width="2.4" height="3.4" rx="1.2" fill="#ffffff"/>` : "") +
+        (n.chain ? `<path d="M18.5 37 Q24 43 29.5 37" fill="none" stroke="${gold}" stroke-width="1.4" stroke-dasharray="1.6 .9"/><circle cx="24" cy="40.6" r="1.4" fill="${gold}"/>` : "") +
+        (n.blush ? `<circle cx="17.6" cy="25" r="2" fill="#ff7a7a" opacity=".28"/><circle cx="30.4" cy="25" r="2" fill="#ff7a7a" opacity=".28"/>` : "") +
+        (n.beads ? [16, 19.5, 23, 26.5, 30].map((x, i) => `<circle cx="${x + 1}" cy="${38 + (i === 2 ? 1.4 : i === 1 || i === 3 ? 0.9 : 0)}" r="1.5" fill="${[gold, "#c8102e", gold, "#0f8a45", gold][i]}"/>`).join("") : "");
     return `<svg class="av" viewBox="0 0 48 48" role="img" aria-label="${n.name}">
     <clipPath id="${id}r"><circle cx="24" cy="24" r="24"/></clipPath>
     <g clip-path="url(#${id}r)"><rect width="48" height="48" fill="${n.bg}"/>${back}${body}${collar}${neck}${face}${eyes}${mouth}${front}${extras}</g>
   </svg>`;
   }
   var p = "you",
-    bn = ["Kofi", "Lena", "Ama", "Jonas", "Esi"],
+    bn = [
+      { name: "Ama", g: "f" },
+      { name: "Kofi", g: "m" },
+      { name: "Esi", g: "f" },
+      { name: "Kwame", g: "m" },
+      { name: "Akosua", g: "f" },
+      { name: "Yaw", g: "m" },
+      { name: "Efua", g: "f" },
+      { name: "Kojo", g: "m" },
+    ],
     ce = qe,
     oe = { relaxed: 1700, normal: 1150, fast: 700 },
     ue = oe.relaxed,
@@ -2096,6 +2212,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     ye = -1,
     le = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function de() {
+    musicStop();
     (clearTimeout(be),
       (u = null),
       (G = null),
@@ -2129,7 +2246,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           <label><input type="radio" name="mode" value="online" ${MODE_PICK === "online" ? "checked" : ""}><span>Play with friends</span></label>
         </div>
         <button class="btn btn-quiet" id="how-to" type="button">How to play</button>
-        <button class="btn btn-quiet sound-btn" id="sound" type="button" aria-pressed="${SOUND_ON}">${SOUND_ON ? "Sound on" : "Sound off"}</button>
+        ${audioButtons(!1)}
       </div>
         <fieldset class="icon-pick">
           <legend>Pick your player icon</legend>
@@ -2236,13 +2353,21 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function Cn(e, n) {
     let t = [
         { id: p, name: "You" },
-        ...bn.slice(0, e).map((r, l) => ({ id: `bot${l}`, name: r })),
+        ...bn
+          .slice()
+          .sort(() => Math.random() - 0.5)
+          .slice(0, e)
+          .map((r, l) => ({ id: `bot${l}`, name: r.name, g: r.g })),
       ],
       a = ce.filter((r) => r !== pe).sort(() => Math.random() - 0.5);
     MODE = "solo";
     p = "you";
     let icons = { [p]: pe };
-    t.slice(1).forEach((r, l) => (icons[r.id] = a[l]));
+    t.slice(1).forEach((r) => {
+      let i = a.findIndex((ic) => K[ic].g === r.g);
+      icons[r.id] = a.splice(i < 0 ? 0 : i, 1)[0];
+    });
+    t = t.map(({ g, ...rest }) => rest);
     beginLocal(
       He({
         players: t,
@@ -2275,6 +2400,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       clearInterval(Ie),
       F && (Ie = window.setInterval(Pn, 250)),
       sfx("deal"),
+      musicUpdate(),
       m(),
       tn(),
       maybeTutorial(),
@@ -2567,7 +2693,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       <span class="brand">Last One</span>
       ${MODE === "online" ? '<button class="btn btn-quiet room-chip" id="copy-link" type="button">Copy game link</button>' : ""}
       <span class="bar-gap"></span>
-      <button class="btn btn-quiet icon-btn" id="sound" type="button" aria-pressed="${SOUND_ON}" aria-label="${SOUND_ON ? "Mute sounds" : "Turn sounds on"}">${SOUND_ON ? SPK_ON : SPK_OFF}</button>
+      ${audioButtons(!0)}
       <button class="btn btn-quiet icon-btn" id="how-to" type="button" aria-label="How to play">?</button>
       <button class="btn btn-quiet" id="new-game" type="button">${MODE === "online" ? "Leave" : "New game"}</button>
     </header>
@@ -3552,7 +3678,13 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       SOUND_ON = !SOUND_ON;
       store("lo-sound", SOUND_ON ? "1" : "0");
       SOUND_ON && sfx("call");
-      u ? m() : MODE === "online" && NET && !u ? renderLobby() : de();
+      rerenderControls();
+    });
+    y("#music", () => {
+      MUSIC_ON = !MUSIC_ON;
+      store("lo-music", MUSIC_ON ? "1" : "0");
+      musicUpdate();
+      rerenderControls();
     });
     y("#how-to", () => showTutorial(0));
   }
@@ -3609,6 +3741,140 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     NET_NOTE = t;
     let n = document.getElementById("net-note");
     n && (n.textContent = t);
+  }
+
+  /* ---------- background music: a light highlife groove, synthesized live (no audio files).
+     Plays at the table and in the lobby, ducks while anyone is talking, and has its own switch
+     separate from sound effects. Voice chat is never affected by either switch. */
+  var MUSIC_ON = store("lo-music") !== "0",
+    MUS = null,
+    NOTE_ON =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17.5V6.2l10-2.2v11.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.6" cy="17.6" r="2.6" fill="currentColor"/><circle cx="16.6" cy="15.4" r="2.6" fill="currentColor"/></svg>',
+    NOTE_OFF =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17.5V6.2l10-2.2v11.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.6" cy="17.6" r="2.6" fill="currentColor"/><circle cx="16.6" cy="15.4" r="2.6" fill="currentColor"/><path d="M3.5 3.5l17 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+  function audioCtxShared() {
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      AC.state === "suspended" && AC.resume();
+    } catch (e) {}
+    return AC;
+  }
+  var mtof = (m) => 440 * 2 ** ((m - 69) / 12),
+    PROG = [
+      { bass: [36, 43], tones: [60, 64, 67, 72] }, // C
+      { bass: [41, 48], tones: [60, 65, 69, 72] }, // F
+      { bass: [36, 43], tones: [60, 64, 67, 72] }, // C
+      { bass: [43, 50], tones: [59, 62, 67, 71] }, // G
+    ],
+    BELL = [0, 3, 6, 10, 12], // a highlife-style bell line on a 16-step bar
+    GUITAR = [0, 2, 3, 5, 6, 8, 10, 11, 13, 14],
+    GPAT = [3, 2, 1, 2, 3, 1, 2, 3, 2, 1],
+    BASS = [
+      [0, 0],
+      [6, 1],
+      [8, 0],
+      [11, 1],
+    ];
+  function musicWanted() {
+    return MUSIC_ON && !!(u || (NET && NET.room));
+  }
+  function musicUpdate() {
+    musicWanted() ? musicStart() : musicStop();
+  }
+  function musicStart() {
+    if (MUS) return;
+    let ctx = audioCtxShared();
+    if (!ctx) return;
+    let master = ctx.createGain(),
+      tone = ctx.createBiquadFilter();
+    tone.type = "lowpass";
+    tone.frequency.value = 5200;
+    master.gain.value = 0.0001;
+    master.connect(tone).connect(ctx.destination);
+    master.gain.setTargetAtTime(0.55, ctx.currentTime, 0.6);
+    let noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.08), ctx.sampleRate),
+      ch = noiseBuf.getChannelData(0);
+    for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length);
+    MUS = { ctx, master, noiseBuf, step: 0, bar: 0, next: ctx.currentTime + 0.1, timer: null, ducked: !1 };
+    let spb = 60 / 108 / 4; // 108 bpm, sixteenth notes
+    let note = (f, t, d, type, vol, out = master) => {
+      let o = ctx.createOscillator(),
+        g = ctx.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f, t);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+      o.connect(g).connect(out);
+      o.start(t);
+      o.stop(t + d + 0.03);
+    };
+    let shaker = (t, vol) => {
+      let s = ctx.createBufferSource(),
+        f = ctx.createBiquadFilter(),
+        g = ctx.createGain();
+      s.buffer = noiseBuf;
+      f.type = "highpass";
+      f.frequency.value = 6000;
+      g.gain.value = vol;
+      s.connect(f).connect(g).connect(master);
+      s.start(t);
+    };
+    let tick = () => {
+      if (!MUS) return;
+      while (MUS.next < ctx.currentTime + 0.25) {
+        let t = MUS.next,
+          st = MUS.step,
+          chord = PROG[MUS.bar % PROG.length];
+        if (BELL.includes(st)) note(1760, t, 0.07, "triangle", 0.035), note(2637, t, 0.04, "sine", 0.012);
+        if (st % 2 === 0) shaker(t, st % 4 === 2 ? 0.05 : 0.025);
+        let gi = GUITAR.indexOf(st);
+        if (gi >= 0) {
+          let f = mtof(chord.tones[GPAT[gi]] + 12);
+          note(f, t, 0.22, "triangle", 0.045);
+          note(f * 2, t, 0.08, "sine", 0.01);
+        }
+        for (let [bs, which] of BASS) if (bs === st) note(mtof(chord.bass[which]), t, 0.32, "triangle", 0.11);
+        MUS.next += spb;
+        MUS.step = (st + 1) % 16;
+        if (MUS.step === 0) MUS.bar++;
+      }
+    };
+    MUS.timer = setInterval(tick, 60);
+    tick();
+  }
+  function musicStop() {
+    if (!MUS) return;
+    let m = MUS;
+    MUS = null;
+    clearInterval(m.timer);
+    try {
+      m.master.gain.setTargetAtTime(0.0001, m.ctx.currentTime, 0.15);
+      setTimeout(() => m.master.disconnect(), 600);
+    } catch (e) {}
+  }
+  function musicDuck(on) {
+    if (!MUS || MUS.ducked === on) return;
+    MUS.ducked = on;
+    MUS.master.gain.setTargetAtTime(on ? 0.18 : 0.55, MUS.ctx.currentTime, 0.25);
+  }
+  function audioButtons(compact) {
+    return compact
+      ? `<button class="btn btn-quiet icon-btn" id="sound" type="button" aria-pressed="${SOUND_ON}" aria-label="${SOUND_ON ? "Turn sound effects off" : "Turn sound effects on"}" title="Sound effects ${SOUND_ON ? "on" : "off"}">${SOUND_ON ? SPK_ON : SPK_OFF}</button>
+         <button class="btn btn-quiet icon-btn" id="music" type="button" aria-pressed="${MUSIC_ON}" aria-label="${MUSIC_ON ? "Turn music off" : "Turn music on"}" title="Music ${MUSIC_ON ? "on" : "off"}">${MUSIC_ON ? NOTE_ON : NOTE_OFF}</button>`
+      : `<button class="btn btn-quiet sound-btn" id="sound" type="button" aria-pressed="${SOUND_ON}">${SOUND_ON ? SPK_ON : SPK_OFF}<span>Effects ${SOUND_ON ? "on" : "off"}</span></button>
+         <button class="btn btn-quiet sound-btn" id="music" type="button" aria-pressed="${MUSIC_ON}">${MUSIC_ON ? NOTE_ON : NOTE_OFF}<span>Music ${MUSIC_ON ? "on" : "off"}</span></button>`;
+  }
+  function rerenderControls() {
+    if (u) return m();
+    if (NET && NET.room) return NET.room.status === "lobby" ? renderLobby() : renderSpectator();
+    let a = document.getElementById("sound"),
+      b = document.getElementById("music"),
+      tmp = document.createElement("div");
+    tmp.innerHTML = audioButtons(!1);
+    a && a.replaceWith(tmp.children[0]);
+    b && b.replaceWith(tmp.children[0]);
+    wireCommon();
   }
 
   /* ---------- online games: one link per game, the server runs the table */
@@ -3866,7 +4132,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         <span class="brand">Last One</span>
         <span class="bar-gap"></span>
         ${micButton("lobby-mic")}
-        <button class="btn btn-quiet icon-btn" id="sound" type="button" aria-pressed="${SOUND_ON}" aria-label="${SOUND_ON ? "Mute sounds" : "Turn sounds on"}">${SOUND_ON ? SPK_ON : SPK_OFF}</button>
+        ${audioButtons(!0)}
         <button class="btn btn-quiet icon-btn" id="how-to" type="button" aria-label="How to play">?</button>
         <button class="btn btn-quiet" id="leave-room" type="button">Leave</button>
       </header>
@@ -3919,6 +4185,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     k.querySelectorAll('input[name="lob-speed"]').forEach((i) => i.addEventListener("change", () => pushSettings({ speed: i.value })));
     focusId && document.getElementById(focusId)?.focus();
     paintSpeaking();
+    musicUpdate();
   }
 
   function copyLink() {
@@ -3982,6 +4249,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   }
   function unlockAudio() {
     audioCtx();
+    audioCtxShared();
     for (let pr of VOICE.peers.values()) pr.audio && pr.audio.paused && pr.audio.srcObject && pr.audio.play().catch(() => {});
     VOICE.blocked = !1;
   }
@@ -4159,7 +4427,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       }
       let changed = now.size !== VOICE.speaking.size || [...now].some((x) => !VOICE.speaking.has(x));
       VOICE.speaking = now;
-      changed && paintSpeaking();
+      changed && (paintSpeaking(), musicDuck(now.size > 0));
     }, 160);
   }
   function paintSpeaking() {
