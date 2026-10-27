@@ -1618,6 +1618,63 @@ body {
 }
 @media (prefers-reduced-motion: reduce) { .seat-hit-star { animation: none; } }
 
+
+/* ===================== darker panels: deep jade cards with a gold hairline instead of cream ===================== */
+:root {
+  --panel: #0a2a20;
+  --panel-2: #113a2d;
+  --panel-edge: #031510;
+  --line: rgba(242, 183, 5, .38);
+  --cream: #f5efe0;
+}
+.rule, .friends, .roulette, .room-code-card, .lobby-seat, .picker, .penalties, .opt-card, .opt-grid, .lobby-rules, .tut, .fan-more, .lobby-music {
+  --text: #f5efe0;
+  --muted: #a9c4b8;
+  --rail: #3f6e5c;
+  background-color: var(--panel);
+  color: var(--text);
+}
+.picker, .roulette, .room-code-card, .picker.win, .picker.tut, .lobby-music, .lobby-rules, .friends, .opt-grid {
+  box-shadow: 0 6px 0 var(--panel-edge), inset 0 0 0 1px var(--line);
+}
+.rule, .lobby-seat, .opt-card { box-shadow: 0 4px 0 var(--panel-edge), inset 0 0 0 1px rgba(242, 183, 5, .18); }
+.opt-grid .opt-card { box-shadow: none; }
+.roulette.has-rule { background: linear-gradient(135deg, #0a2a20, #173f22); box-shadow: 0 6px 0 var(--panel-edge), inset 0 0 0 2px var(--yellow); }
+.roulette-name, .room-code { color: var(--yellow); }
+.roulette-effect { background: var(--cream); color: var(--ink-dark); }
+.rule:has(input:checked) { box-shadow: 0 4px 0 var(--panel-edge), inset 0 0 0 2px var(--yellow); }
+.rule input { accent-color: var(--yellow); }
+.seg, .opt-card .seg { background: var(--panel-2); }
+.seg span { color: var(--text); }
+.setup .mode-seg { background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); }
+.opt-card.field select, select { background: var(--panel-2); color: var(--cream); }
+:is(.rule, .friends, .roulette, .room-code-card, .lobby-seat, .picker, .penalties, .opt-card, .lobby-rules, .tut, .lobby-music) .btn:not(.btn-primary):not(.btn-spin):not(.btn-quiet):not(.chip):not(.color-choice) {
+  background: var(--panel-2); color: var(--cream); box-shadow: 0 4px 0 var(--panel-edge), inset 0 0 0 1px rgba(242, 183, 5, .25);
+}
+:is(.rule, .friends, .roulette, .room-code-card, .lobby-seat, .picker, .penalties, .opt-card, .lobby-rules, .tut, .lobby-music) .btn-quiet { color: var(--muted); }
+.vote.on { background: var(--yellow) !important; color: var(--ink-dark) !important; }
+.chip { border-color: #3f6e5c; color: var(--muted); }
+#nick, #join-code, #game-link, #dare-text, #lobby-music, #music-url { background: #061c15; color: var(--cream); border: 2px solid #2a5546; }
+#nick::placeholder, #game-link::placeholder, #dare-text::placeholder, #lobby-music::placeholder, #music-url::placeholder { color: #6f9283; }
+#nick:focus, #game-link:focus, #dare-text:focus, #lobby-music:focus, #music-url:focus { border-color: var(--yellow); }
+.mic-dot.on { color: #4fd18b; }
+.picker .win-title { color: var(--cream); text-shadow: 3px 3px 0 var(--red); }
+.recap div { background: var(--panel-2); }
+.tut-dots i { background: #2a5546; }
+.tut-dots i.on { background: var(--yellow); }
+.target-btn { background: var(--panel-2); color: var(--cream); box-shadow: 0 4px 0 var(--panel-edge), inset 0 0 0 1px rgba(242, 183, 5, .2); }
+.target-count { color: var(--muted); }
+.dare-banner { background: var(--panel); color: var(--cream); box-shadow: 0 8px 0 var(--panel-edge), 0 0 0 2px var(--yellow); }
+.dare-tag, .wait-tag { color: var(--yellow); }
+.rule-banner, .toast, .wait-chip, .dock-pill { background: var(--panel); color: var(--cream); box-shadow: 0 4px 0 var(--panel-edge), inset 0 0 0 1px var(--line); }
+.penalties h2 { color: var(--yellow); }
+.icon-opt span[aria-hidden] { background: var(--panel); box-shadow: 0 4px 0 var(--panel-edge), inset 0 0 0 1px rgba(242, 183, 5, .18); }
+.icon-opt input:checked + span { background: var(--yellow); box-shadow: 0 4px 0 var(--yellow-edge); }
+.lobby-add { border-color: #3f6e5c; }
+.seat .mic-badge { background: var(--panel); }
+@media (min-width: 1000px) { .opt-grid { background: none; box-shadow: none; } }
+.lobby .bar { flex-wrap: nowrap; gap: 4px; }
+@media (max-width: 560px) { .lobby .bar .btn-quiet:not(.icon-btn) { padding: 6px 8px; } .lobby .bar .icon-btn { width: 30px; } .lobby .lobby-mic-btn { width: 30px; height: 30px; padding: 6px; } }
 </style>
 
 <main id="app"></main>
