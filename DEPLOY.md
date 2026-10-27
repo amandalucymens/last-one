@@ -1,4 +1,4 @@
-# Hosting Last One
+# Hosting Uno-fficial
 
 Notes for running and hosting the game. For what the game is, see README.md.
 

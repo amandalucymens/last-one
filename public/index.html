@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Last One</title><meta name="description" content="A colour-matching card game with Ghanaian style. Share a link, play with friends and talk over voice chat."><meta property="og:title" content="Last One"><meta property="og:description" content="Join my table: a card game with voice chat."><meta name="theme-color" content="#1c120b"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23f2b705'/%3E%3Cpath d='M32 13l5.6 12.4 13.4 1.3-10.1 9 3 13.3L32 42.1 20.1 49l3-13.3-10.1-9 13.4-1.3z' fill='%231a110a'/%3E%3C/svg%3E"></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Uno-fficial</title><meta name="description" content="A colour-matching card game with Ghanaian style. Share a link, play with friends and talk over voice chat."><meta property="og:title" content="Uno-fficial"><meta property="og:description" content="Join my table: a card game with voice chat."><meta name="theme-color" content="#0d3b2e"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E %3Cg transform='translate(32 40)'%3E %3Cg transform='rotate(-26)'%3E%3Crect x='-12' y='-30' width='24' height='34' rx='5' fill='%23d62839' stroke='%2313261f' stroke-width='2.5'/%3E%3C/g%3E %3Cg transform='rotate(26)'%3E%3Crect x='-12' y='-30' width='24' height='34' rx='5' fill='%2312924c' stroke='%2313261f' stroke-width='2.5'/%3E%3C/g%3E %3Cg transform='rotate(0)'%3E%3Crect x='-13' y='-33' width='26' height='37' rx='5.5' fill='%23f2b705' stroke='%2313261f' stroke-width='2.5'/%3E %3Cellipse cx='0' cy='-14.5' rx='8.5' ry='12.5' transform='rotate(28 0 -14.5)' fill='%23fffaf0'/%3E %3Cpath d='M-3.6 -22 v9 a3.6 3.6 0 0 0 7.2 0 v-9' fill='none' stroke='%23d62839' stroke-width='3.2' stroke-linecap='round'/%3E %3Crect x='-10' y='-1' width='20' height='2.6' rx='1.3' fill='%2313261f'/%3E%3Crect x='-10' y='-1' width='5' height='2.6' fill='%2312924c'/%3E%3Crect x='-2.5' y='-1' width='5' height='2.6' fill='%23d62839'/%3E%3Crect x='5' y='-1' width='5' height='2.6' fill='%2312924c'/%3E %3C/g%3E%3C/g%3E%3C/svg%3E"></head><body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Rubik:wght@600;700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
@@ -1352,6 +1352,272 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
 .icon-btn[aria-pressed="false"] { opacity: .65; }
 .icons { grid-template-columns: repeat(5, minmax(0, 1fr)); max-width: 380px; }
 @media (min-width: 1000px) { .home .icons { grid-template-columns: repeat(5, 62px); max-width: none; gap: 10px; } }
+.votes { flex-wrap: wrap; align-items: center; }
+.vote-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+@media (max-width: 999px) { .votes { width: 100%; gap: 6px; } .vote-label { flex-basis: 100%; } }
+html { background: var(--room-deep); }
+
+/* ===================== Emerald & cream: forest-green room, cream panels, kente in green/red/gold/black =====================
+   Layout: a felt-green room woven with fine stripes, a rectangular green table edged in kente,
+   cream cards for every panel, Black Star card backs. Deliberately single-theme. */
+:root {
+  --room: #0d3b2e;
+  --room-deep: #092a21;
+  --panel: #f5efe0;
+  --panel-edge: #cbbf9f;
+  --table: #0f4a39;
+  --table-lit: #16634c;
+  --rail: #6f9c87;
+  --text: #f5efe0;
+  --muted: #b9d1c4;
+  --paper: #f5efe0;
+  --ink-dark: #13261f;
+  --red: #d62839;
+  --red-edge: #8f1824;
+  --yellow: #f2b705;
+  --yellow-edge: #a37a00;
+  --green: #12924c;
+  --blue: #1f4f9e;
+  --cyan: #f2b705;
+  --plate: #0f4a39;
+  --plate-edge: #062219;
+  --kente-band: repeating-linear-gradient(90deg,
+      var(--yellow) 0 16px, var(--ink-dark) 16px 19px, var(--green) 19px 31px, var(--ink-dark) 31px 34px,
+      var(--red) 34px 46px, var(--ink-dark) 46px 49px, var(--yellow) 49px 55px, var(--green) 55px 61px,
+      var(--yellow) 61px 67px, var(--ink-dark) 67px 72px);
+  --adinkra: none;
+}
+body {
+  background:
+    var(--kente-band) top left / 72px 6px repeat-x,
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .028) 0 2px, transparent 2px 10px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, .12) 0 2px, transparent 2px 10px),
+    radial-gradient(80% 60% at 50% 40%, #11503e, var(--room) 70%, var(--room-deep));
+  background-attachment: fixed;
+}
+.scrim, .uno-scrim { background: rgba(5, 24, 18, .78); }
+.setup h1 { color: var(--paper); text-shadow: 0 6px 0 var(--red-edge); }
+.brand { text-shadow: 0 3px 0 var(--room-deep); }
+
+/* ---- cream panels: dark text inside */
+.rule, .friends, .roulette, .room-code-card, .lobby-seat, .picker, .penalties, .opt-card, .opt-grid, .lobby-rules, .tut, .fan-more {
+  --text: #13261f;
+  --muted: #55675e;
+  --rail: #b9ac8b;
+  background-color: var(--panel);
+  color: var(--text);
+}
+.picker, .roulette, .room-code-card, .picker.win, .picker.tut { box-shadow: 0 6px 0 var(--panel-edge); border: 0; }
+.roulette.has-rule { background: var(--panel); box-shadow: 0 6px 0 var(--panel-edge), inset 0 0 0 2px var(--yellow); }
+.roulette-name { color: #a3192a; }
+.roulette-effect { background: var(--room); color: var(--paper); }
+.ai-tag { background: var(--green); color: #fff; }
+.room-code { color: #a3192a; }
+.rule-text span, .rules-note { color: var(--muted); }
+.rule:has(input:checked) { box-shadow: 0 4px 0 var(--panel-edge), inset 0 0 0 3px var(--green); }
+.rule input { accent-color: var(--green); }
+.seg { background: #e7dec6; box-shadow: none; }
+.setup-top .seg, .setup .mode-seg { background: var(--room-deep); }
+.setup .mode-seg span { color: var(--paper); }
+.setup .mode-seg input:checked + span { color: var(--ink-dark); }
+.opt-card .seg { background: #e7dec6; }
+.seg span { color: var(--text); }
+.seg input:checked + span { background: var(--yellow); color: var(--ink-dark); }
+.opt-card.field select, select { background: #e7dec6; color: var(--ink-dark); box-shadow: none; }
+:is(.rule, .friends, .roulette, .room-code-card, .lobby-seat, .picker, .penalties, .opt-card, .lobby-rules, .tut) .btn:not(.btn-primary):not(.btn-spin):not(.btn-quiet):not(.chip):not(.color-choice) {
+  background: #e7dec6; color: var(--ink-dark); box-shadow: 0 4px 0 var(--panel-edge);
+}
+:is(.rule, .friends, .roulette, .room-code-card, .lobby-seat, .picker, .penalties, .opt-card, .lobby-rules, .tut) .btn-quiet { color: var(--muted); }
+.vote.on { background: var(--room) !important; color: var(--paper) !important; }
+.chip { border-color: var(--rail); color: var(--muted); }
+.chip.on { background: var(--yellow); border-color: var(--yellow); color: var(--ink-dark); }
+#nick, #join-code, #game-link, #dare-text { background: #fffaf0; color: var(--ink-dark); border: 2px solid #d9cdb0; }
+#nick:focus, #game-link:focus, #dare-text:focus { border-color: var(--green); }
+.mic-dot.on { color: var(--green); }
+.picker .win-title { color: var(--ink-dark); text-shadow: 3px 3px 0 var(--yellow); }
+.picker .win-sub { color: var(--muted); }
+.recap div { background: #ebe2cc; }
+.tut-dots i { background: #d9cdb0; }
+.tut-dots i.on { background: var(--green); }
+.lobby-add { background: transparent; color: var(--paper); border: 2px dashed var(--rail); box-shadow: none; }
+.btn { background: var(--room-deep); color: var(--paper); box-shadow: 0 4px 0 #041a13; }
+.btn-quiet { background: transparent; box-shadow: none; color: var(--muted); }
+.btn-primary, .btn-spin { background: var(--yellow); color: var(--ink-dark); box-shadow: 0 5px 0 var(--yellow-edge); }
+.icon-opt span[aria-hidden] { background: var(--room-deep); box-shadow: 0 4px 0 #041a13; }
+.icon-opt input:checked + span { background: var(--yellow); box-shadow: 0 4px 0 var(--yellow-edge); }
+.wheel i:nth-child(3) { background: var(--ink-dark); }
+.rule-banner { background: var(--panel); color: var(--ink-dark); box-shadow: 0 4px 0 rgba(0, 0, 0, .35); }
+.toast { background: var(--panel); color: var(--ink-dark); }
+.seat-name { text-shadow: 0 2px 0 var(--room-deep); }
+.seat .avatar { box-shadow: 0 0 0 3px var(--room-deep), 0 4px 0 3px #041a13; }
+.seat .mic-badge { background: var(--room-deep); box-shadow: 0 0 0 2px var(--room); }
+
+/* ---- cards: the earlier design (ebony backs with a gold Adinkrahene, classic wild cards) */
+.blank-mark { display: grid; place-items: center; width: calc(var(--cw) * .5); aspect-ratio: 1; border-radius: 50%; border: calc(var(--cw) * .04) dashed var(--cream); color: var(--cream); font-size: calc(var(--cw) * .3); position: relative; z-index: 1; }
+.card.special .glyph { z-index: 1; }
+.card.v-wild10 .glyph { font-size: calc(var(--cw) * .4); }
+.card.special .glyph svg { width: calc(var(--cw) * .48); height: calc(var(--cw) * .48); }
+
+/* ---- target picker and dares */
+.target-pick { width: min(460px, calc(100vw - 32px)); grid-template-columns: minmax(0, 1fr); }
+.picker { max-width: calc(100vw - 32px); }
+.target-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; width: 100%; }
+.target-btn {
+  display: grid; justify-items: center; gap: 4px; padding: 12px 8px; border: 0; border-radius: 14px; cursor: pointer;
+  background: #ebe2cc; color: var(--ink-dark); box-shadow: 0 4px 0 var(--panel-edge); font: inherit;
+}
+.target-btn:hover { transform: translateY(-2px); }
+.target-btn .avatar { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; display: block; }
+.target-name { font-weight: 700; }
+.target-count { font-size: 12px; color: var(--muted); }
+.blank-fx { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.fx-btn { min-width: 118px; }
+.dare-row { display: flex; gap: 8px; width: 100%; }
+.dare-row[hidden] { display: none; }
+#dare-text { flex: 1; min-width: 0; font: inherit; border-radius: 12px; padding: 9px 12px; }
+.dare-banner {
+  position: fixed; left: 50%; top: calc(64px + env(safe-area-inset-top, 0px)); transform: translateX(-50%);
+  display: grid; justify-items: center; gap: 4px; text-align: center; z-index: 40;
+  width: min(460px, calc(100% - 32px)); box-sizing: border-box; padding: 14px 18px;
+  background: var(--panel); color: var(--ink-dark); border-radius: 18px; box-shadow: 0 8px 0 var(--panel-edge), 0 0 0 3px var(--yellow);
+  animation: dare-in .38s cubic-bezier(.2, 1.4, .4, 1);
+}
+@keyframes dare-in { from { transform: translateX(-50%) scale(1.6); opacity: 0; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
+.dare-tag { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #a3192a; }
+.dare-who { font-weight: 700; font-size: 14px; }
+.dare-text { font-family: var(--font-display); font-weight: 800; font-size: 20px; line-height: 1.2; text-wrap: balance; }
+
+/* ---- rectangular table, deck set apart from the discard pile */
+#app.playing .felt {
+  --bw: min(64cqw, 640px);
+  --bh: min(46cqh, 320px);
+  width: var(--bw); height: var(--bh); aspect-ratio: auto;
+  border-radius: 26px;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .025) 0 2px, transparent 2px 8px),
+    radial-gradient(70% 80% at 50% 45%, var(--table-lit), var(--table));
+  box-shadow: 0 0 0 6px var(--ink-dark), 0 12px 0 6px #041a13, 0 26px 40px rgba(0, 0, 0, .35);
+}
+#app.playing .felt::before {
+  inset: -6px; border-radius: 32px; padding: 6px;
+  background: repeating-linear-gradient(45deg, var(--yellow) 0 10px, var(--green) 10px 15px, var(--yellow) 15px 22px, var(--red) 22px 27px, var(--ink-dark) 27px 30px);
+}
+#app.playing .felt .piles { --cw: min(calc(var(--bh) * .38), calc(var(--bw) * .17)); gap: calc(var(--bw) * .16); margin-bottom: 14px; }
+#app.playing .felt { gap: 12px; }
+.pile-label { position: absolute; left: 0; right: 0; bottom: -22px; text-align: center; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+#app.playing .felt .color-now { background: rgba(0, 0, 0, .3); }
+@media (max-width: 560px) {
+  #app.playing .felt { --bw: 54cqw; --bh: min(44cqh, 250px); border-radius: 20px; gap: 10px; }
+  #app.playing .felt::before { border-radius: 26px; }
+  #app.playing .felt .piles { --cw: min(calc(var(--bh) * .36), calc(var(--bw) * .22)); gap: calc(var(--bw) * .14); }
+  .pile-label { bottom: -18px; font-size: 9px; }
+}
+
+/* ---- whose turn: everyone else dims */
+.ring .seat { transition: opacity .25s, filter .25s, transform .25s; }
+.ring .seat:not(.turn) { opacity: .38; filter: saturate(.3); }
+.ring .seat.turn { opacity: 1; filter: none; }
+
+.ring .fan { transition: opacity .25s; }
+.ring .fan:not(.turn) { opacity: .35; }
+.me:not(.my-turn) .hand { filter: saturate(.75); }
+.ring .seat.speaking { opacity: 1; filter: none; }
+@media (prefers-reduced-motion: reduce) { .ring .seat, .ring .fan { transition: none; } }
+
+/* ---- pick-your-player prompt */
+.pick-step { display: grid; gap: 4px; }
+.pick-step legend, .pick-head { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--paper); }
+.step-num { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--yellow); color: var(--ink-dark); font-size: 15px; flex: none; }
+.pick-hint { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+.icon-pick.needs-pick .icons { animation: needpick 1.6s ease-in-out infinite; border-radius: 18px; }
+@keyframes needpick { 0%, 100% { box-shadow: 0 0 0 0 rgba(242, 183, 5, 0); } 50% { box-shadow: 0 0 0 6px rgba(242, 183, 5, .55); } }
+.icon-pick.shake .icons { animation: pickshake .45s; }
+@keyframes pickshake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.picked-name { color: var(--yellow); font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .icon-pick.needs-pick .icons, .icon-pick.shake .icons { animation: none; box-shadow: 0 0 0 3px var(--yellow); } }
+
+/* ---- music dock: the smallest player YouTube allows (200 x 200) plus a slim strip to drag, pause, skip or hide */
+.music-dock {
+  position: fixed; z-index: 25; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  width: 200px; border-radius: 12px; overflow: hidden;
+  background: #121212; box-shadow: 0 10px 28px rgba(0, 0, 0, .4);
+}
+.music-dock[hidden] { display: none; }
+.music-dock.dragging { opacity: .9; }
+.dock-player { width: 200px; height: 200px; background: #000; }
+.dock-player iframe, #yt-player { width: 200px; height: 200px; display: block; border: 0; }
+.dock-ctl { display: flex; align-items: center; justify-content: space-between; height: 26px; padding: 0 4px 0 8px; background: #1f1f1f; cursor: grab; touch-action: none; user-select: none; }
+.dock-grip { color: #8a8a8a; font-size: 13px; letter-spacing: -2px; }
+.dock-btns { display: inline-flex; gap: 2px; }
+.dock-btn { border: 0; background: transparent; color: #e8e8e8; border-radius: 6px; min-width: 26px; height: 22px; font: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
+.dock-btn:hover { background: #333; }
+.music-dock.folded { width: auto; background: none; box-shadow: none; overflow: visible; }
+.music-dock.folded .dock-player, .music-dock.folded .dock-ctl { display: none; }
+.dock-pill { display: inline-flex; align-items: center; gap: 6px; border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 12px; padding: 6px 12px; border-radius: 999px; background: var(--panel); color: var(--ink-dark); box-shadow: 0 3px 0 var(--panel-edge); }
+.dock-pill svg { width: 14px; height: 14px; }
+.dock-pill[hidden] { display: none; }
+@media (max-width: 860px) {
+  .music-dock.in-game { top: calc(50px + env(safe-area-inset-top, 0px)); bottom: auto; left: max(8px, env(safe-area-inset-left, 0px)); right: auto; }
+}
+
+.lobby-music { display: grid; gap: 10px; padding: 14px 16px; border-radius: 16px; background: var(--panel); color: var(--ink-dark); box-shadow: 0 5px 0 var(--panel-edge); --text: #13261f; --muted: #55675e; }
+#lobby-music, #music-url { flex: 1 1 200px; min-width: 0; font: inherit; font-size: 14px; color: var(--ink-dark); background: #fffaf0; border: 2px solid #d9cdb0; border-radius: 12px; padding: 9px 12px; }
+.music-card { grid-column: 1 / -1; }
+.music-card .field { display: grid; gap: 8px; }
+@media (max-width: 999px) { .music-card .field { display: grid; } .music-card #music-url { width: 100%; box-sizing: border-box; } }
+
+/* ---- waiting room */
+.wait-card { gap: 6px; }
+.wait-tag { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #a3192a; }
+.wait-title { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 26px; }
+.wait-cols { display: grid; gap: 16px; width: 100%; }
+@media (min-width: 1000px) { .wait-cols { grid-template-columns: 1fr 1fr; } }
+.pick-head.small { font-size: 16px; margin: 0 0 8px; }
+.lobby-seat.dim { opacity: .6; }
+.wait-chip { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--panel); color: var(--ink-dark); }
+.lobby-seat .seat-name, .waiting .seat-name { text-shadow: none; }
+.brand { white-space: nowrap; }
+@media (max-width: 560px) {
+  #app.playing .room-chip { display: none; }
+  .wait-chip { font-size: 11px; padding: 2px 8px; white-space: nowrap; }
+  #app.playing > .bar { gap: 4px; }
+  #app.playing > .bar .btn-quiet:not(.icon-btn) { padding: 6px 8px; }
+}
+
+.target-pick > .blank-fx, .target-pick > .dare-row, .target-pick > .target-list { justify-self: stretch; width: 100%; box-sizing: border-box; }
+.fx-btn { min-width: 0; flex: 1 1 120px; }
+
+/* ---- brand mark: three fanned cards in kente colors, the front one with a "U" */
+.brand::before {
+  content: ""; width: 34px; height: 34px; border: 0; border-radius: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E %3Cg transform='translate(32 40)'%3E %3Cg transform='rotate(-26)'%3E%3Crect x='-12' y='-30' width='24' height='34' rx='5' fill='%23d62839' stroke='%2313261f' stroke-width='2.5'/%3E%3C/g%3E %3Cg transform='rotate(26)'%3E%3Crect x='-12' y='-30' width='24' height='34' rx='5' fill='%2312924c' stroke='%2313261f' stroke-width='2.5'/%3E%3C/g%3E %3Cg transform='rotate(0)'%3E%3Crect x='-13' y='-33' width='26' height='37' rx='5.5' fill='%23f2b705' stroke='%2313261f' stroke-width='2.5'/%3E %3Cellipse cx='0' cy='-14.5' rx='8.5' ry='12.5' transform='rotate(28 0 -14.5)' fill='%23fffaf0'/%3E %3Cpath d='M-3.6 -22 v9 a3.6 3.6 0 0 0 7.2 0 v-9' fill='none' stroke='%23d62839' stroke-width='3.2' stroke-linecap='round'/%3E %3Crect x='-10' y='-1' width='20' height='2.6' rx='1.3' fill='%2313261f'/%3E%3Crect x='-10' y='-1' width='5' height='2.6' fill='%2312924c'/%3E%3Crect x='-2.5' y='-1' width='5' height='2.6' fill='%23d62839'/%3E%3Crect x='5' y='-1' width='5' height='2.6' fill='%2312924c'/%3E %3C/g%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, .35));
+}
+@media (max-width: 560px) { .brand::before { width: 28px; height: 28px; } }
+
+/* ---- penalty effects on other players: a starburst at their seat, and they stay lit while it lands */
+.seat-hit { z-index: 2; }
+.seat-hit-star {
+  position: absolute; left: 50%; top: 50%; width: 120px; aspect-ratio: 1; z-index: -1;
+  transform: translate(-50%, -50%); background: var(--yellow);
+  clip-path: polygon(50% 0%, 59% 26%, 85% 8%, 72% 35%, 100% 38%, 76% 54%, 96% 76%, 66% 70%, 62% 100%, 48% 76%, 30% 96%, 30% 68%, 2% 74%, 22% 52%, 0% 32%, 28% 32%, 18% 6%, 42% 24%);
+  animation: seat-star 1.9s linear forwards;
+}
+@keyframes seat-star { from { transform: translate(-50%, -50%) rotate(0); } to { transform: translate(-50%, -50%) rotate(50deg) scale(1.1); } }
+.seat-hit-num { font-size: 60px; }
+.seat-hit.big .seat-hit-star { width: 170px; }
+.seat-hit.big .seat-hit-num { font-size: 84px; }
+.seat-hit { animation-duration: 1.9s; }
+.hit-flash.soft { animation-duration: .9s; opacity: .6; background: radial-gradient(ellipse at center, transparent 50%, rgba(214, 40, 57, .45) 100%); }
+.ring .seat.hit-lit, .ring .fan.hit-lit { opacity: 1 !important; filter: none !important; }
+.ring .seat.hit-lit .avatar { box-shadow: 0 0 0 4px var(--red), 0 0 24px 6px rgba(214, 40, 57, .6) !important; }
+@media (max-width: 560px) {
+  .seat-hit-star { width: 92px; }
+  .seat-hit-num { font-size: 46px; }
+  .seat-hit.big .seat-hit-star { width: 130px; }
+  .seat-hit.big .seat-hit-num { font-size: 64px; }
+}
+@media (prefers-reduced-motion: reduce) { .seat-hit-star { animation: none; } }
+
 </style>
 
 <main id="app"></main>
@@ -1413,14 +1679,16 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         (e.push({ id: `${t}-${r}-a`, color: n, value: r }),
           e.push({ id: `${t}-${r}-b`, color: n, value: r }));
     }
-    for (let n = 0; n < 4; n++)
-      (e.push({ id: `w-wild-${n}`, color: null, value: "wild" }),
-        e.push({ id: `w-wild4-${n}`, color: null, value: "wild4" }));
+    // wilds: 4 Wild, 8 Wild +4, 2 Wild +10, 1 Shuffle Hands, 2 Swap Hands, 3 Blank Wild (120 cards in all)
+    for (let [v, k] of [["wild", 4], ["wild4", 8], ["wild10", 2], ["wildShuffle", 1], ["wildSwap", 2], ["wildBlank", 3]])
+      for (let n = 0; n < k; n++) e.push({ id: `w-${v}-${n}`, color: null, value: v });
     return e;
   }
   function $(e) {
-    return e.value === "wild" || e.value === "wild4";
+    return e.value.startsWith("wild");
   }
+  var DRAWS = { draw2: 2, wild4: 4, wild10: 10 },
+    BLANK_FX = ["draw2", "draw4", "skip", "swap", "dare"];
   function ie(e) {
     return /^[0-9]$/.test(e.value);
   }
@@ -1482,11 +1750,9 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           ? !1
           : e.pendingDraw > 0
             ? e.rules.stacking
-              ? r.value === "draw2"
-                ? t.value === "draw2"
-                : r.value === "wild4"
-                  ? t.value === "wild4"
-                  : !1
+              ? e.rules.roulette?.type === "stackAny"
+                ? t.value in DRAWS
+                : r.value in DRAWS && t.value === r.value
               : !1
             : $(t)
               ? !0
@@ -1540,6 +1806,12 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     }
     if (r) return we(r);
     for (let l of a.players) l.hand.length > 2 && (l.calledLastCard = !1);
+    for (let k = 0; k < a.players.length && a.phase === "playing" && a.players[a.turn].skipNext; k++) {
+      let sk = a.players[a.turn];
+      sk.skipNext = !1;
+      a.events.push({ kind: "skip", playerId: sk.id });
+      a.turn = C(a, a.turn, 1);
+    }
     return ((a.version = e.version + 1), { ok: !0, state: a });
   }
   function we(e) {
@@ -1589,10 +1861,20 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           : "That card doesn't match";
     if ($(s) && (!r || !D.includes(r)))
       return "Choose a color for the wild card";
-    let v = e.rules.sevenZero && s.value === "7",
+    let v = (e.rules.sevenZero && s.value === "7") || s.value === "wildSwap",
       L = -1;
     if (v && ((L = e.players.findIndex((h) => h.id === l)), L < 0 || L === n))
       return "Choose another player to swap hands with";
+    let bl = null;
+    if (s.value === "wildBlank") {
+      let b = t.blank || {},
+        ti = e.players.findIndex((h) => h.id === b.target);
+      if (ti < 0 || ti === n) return "Pick who your blank card hits";
+      if (!BLANK_FX.includes(b.effect)) return "Pick what your blank card does";
+      let dare = String(b.dare || "").replace(/\s+/g, " ").trim().slice(0, 60);
+      if (b.effect === "dare" && !dare) return "Write a dare first";
+      bl = { ti, effect: b.effect, dare };
+    }
     let M = [s, ...f],
       I = M.length;
     if (e.rules.noPowerFinish && o.hand.length === I && !ie(s))
@@ -1633,6 +1915,12 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     let Ee = e.players.length;
     switch (s.value) {
       case "skip": {
+        if (e.rules.roulette?.type === "skipAll") {
+          for (let h = 1; h < Ee; h++) e.events.push({ kind: "skip", playerId: e.players[C(e, n, h)].id });
+          e.events.push({ kind: "roulette", playerId: o.id, effect: "skipAll" });
+          e.turn = n;
+          break;
+        }
         for (let h = 1; h <= I; h++)
           e.events.push({ kind: "skip", playerId: e.players[C(e, n, h)].id });
         e.turn = C(e, n, I + 1);
@@ -1645,11 +1933,17 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         e.turn = Ee === 2 ? n : C(e, n, 1);
         break;
       case "draw2":
-      case "wild4": {
-        let h = ((s.value === "draw2" ? 2 : 4) + (e.rules.roulette?.type === "heavy" ? e.rules.roulette.extra : 0)) * I;
+      case "wild4":
+      case "wild10": {
+        let h = (DRAWS[s.value] + (e.rules.roulette?.type === "heavy" ? e.rules.roulette.extra : 0)) * I;
         e.rules.roulette?.type === "heavy" &&
           e.events.push({ kind: "roulette", playerId: o.id, effect: "heavy" });
-        if (s.value === "wild4" && e.rules.challengeWild4) {
+        if (s.value === "wild4" && e.rules.roulette?.type === "drawColor" && e.pendingDraw === 0) {
+          let w = C(e, n, 1),
+            k = drawUntil(e, w, (c) => c.color === e.currentColor || $(c), 25);
+          e.events.push({ kind: "roulette", playerId: o.id, targetId: e.players[w].id, effect: "drawColor", count: k });
+          e.turn = C(e, n, 2);
+        } else if (s.value === "wild4" && e.rules.challengeWild4) {
           ((e.pendingDraw += h),
             e.pendingDraw > h &&
               e.events.push({ kind: "stack", total: e.pendingDraw }));
@@ -1686,7 +1980,10 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
             e.events.push({ kind: "rotate", direction: e.direction }));
         }
         e.turn = C(e, n, 1);
+        s.value === "wildShuffle" && shuffleAllHands(e, n);
+        bl && applyBlank(e, n, bl);
         rouletteAfterNumber(e, n, s, I);
+        rouletteAfterWild(e, n, s);
     }
     return null;
   }
@@ -1706,6 +2003,19 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       e.events.push({ kind: "roulette", playerId: me.id, targetId: e.players[t].id, effect: "charged" });
       e.events.push({ kind: "skip", playerId: e.players[t].id });
       e.turn = C(e, n, 2);
+    } else if (r.type === "discardAll" && s.value === r.value) {
+      let drop = me.hand.filter((c) => c.color === s.color);
+      if (drop.length) {
+        me.hand = me.hand.filter((c) => c.color !== s.color);
+        e.discardPile.splice(e.discardPile.length - 1, 0, ...drop);
+        e.events.push({ kind: "roulette", playerId: me.id, effect: "discardAll", count: drop.length });
+        if (me.hand.length === 0) {
+          e.phase = "finished";
+          e.winnerId = me.id;
+          e.pendingDraw = 0;
+          e.events.push({ kind: "win", playerId: me.id });
+        } else if (me.hand.length === 1 && !me.calledLastCard) e.vulnerableId = me.id;
+      }
     } else if (r.type === "gift" && s.value === r.value && me.hand.length > 1) {
       let t = C(e, n, 1),
         give = me.hand.slice().sort((a, b) => giftScore(b) - giftScore(a))[0];
@@ -1715,6 +2025,48 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       e.events.push({ kind: "roulette", playerId: me.id, targetId: e.players[t].id, effect: "gift" });
       me.hand.length === 1 && !me.calledLastCard && (e.vulnerableId = me.id);
     }
+  }
+  function rouletteAfterWild(e, n, s) {
+    let r = e.rules.roulette;
+    if (!r || r.type !== "shuffleHands" || s.value !== "wild" || e.phase !== "playing") return;
+    shuffleAllHands(e, n, !0);
+  }
+  function shuffleAllHands(e, n, twist) {
+    let all = e.players.flatMap((x) => x.hand),
+      sh;
+    [sh, e.rngState] = ge(all, e.rngState);
+    e.players.forEach((x) => ((x.hand = []), (x.calledLastCard = !1)));
+    sh.forEach((c, i) => e.players[C(e, n, i + 1)].hand.push(c));
+    e.vulnerableId = null;
+    e.events.push(twist ? { kind: "roulette", playerId: e.players[n].id, effect: "shuffle" } : { kind: "shuffleHands", playerId: e.players[n].id });
+  }
+  function applyBlank(e, n, b) {
+    let me = e.players[n],
+      t = e.players[b.ti];
+    e.events.push({ kind: "blank", playerId: me.id, targetId: t.id, effect: b.effect, ...(b.dare ? { dare: b.dare } : {}) });
+    if (b.effect === "draw2" || b.effect === "draw4") Y(e, b.ti, b.effect === "draw2" ? 2 : 4, !0);
+    else if (b.effect === "skip") t.skipNext = !0;
+    else if (b.effect === "swap") {
+      [me.hand, t.hand] = [t.hand, me.hand];
+      me.calledLastCard = t.calledLastCard = !1;
+      e.vulnerableId = null;
+      e.events.push({ kind: "swap", playerId: me.id, targetId: t.id });
+    }
+  }
+  // draw one card at a time until test(card) passes; logs one combined draw
+  function drawUntil(e, who, test, cap) {
+    let mark = e.events.length,
+      k = 0;
+    for (; k < cap; ) {
+      let [c] = Y(e, who, 1, !0);
+      if (!c) break;
+      k++;
+      if (test(c)) break;
+    }
+    let kept = e.events.slice(mark).filter((x) => x.kind !== "draw");
+    e.events.length = mark;
+    e.events.push(...kept, { kind: "draw", playerId: e.players[who].id, count: k, penalty: !0 });
+    return k;
   }
   function giftScore(c) {
     return c.value === "wild4" ? -3 : c.value === "wild" ? -2 : ie(c) ? Number(c.value) : -1;
@@ -1730,6 +2082,15 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         (e.turn = C(e, n, 1)),
         null
       );
+    if (e.rules.roulette?.type === "launcher") {
+      let x;
+      [x, e.rngState] = ln(e.rngState);
+      let k = [0, 1, 1, 2, 2, 3, 4][Math.floor(x * 7)];
+      k && Y(e, n, k, !1);
+      e.events.push({ kind: "roulette", playerId: e.players[n].id, effect: "launch", count: k });
+      e.turn = C(e, n, 1);
+      return null;
+    }
     let t;
     for (
       let a = 0;
@@ -1922,9 +2283,11 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         ? { type: "pass", playerId: a }
         : { type: "draw", playerId: a };
     let o = (d) =>
-        d.value === "wild4"
+        d.value === "wild10"
+          ? -3
+          : d.value === "wild4"
           ? -2
-          : d.value === "wild"
+          : $(d)
             ? -1
             : /^[0-9]$/.test(d.value)
               ? Number(d.value) / 10
@@ -1953,10 +2316,10 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       l.length && (r.extraCardIds = l),
       e.you.hand.length - 1 - l.length === 1 && t && (r.uno = !0),
       $(n) && (r.color = wn(e.you.hand.filter((o) => o.id !== n.id))),
-      e.rules.sevenZero && n.value === "7")
+      (e.rules.sevenZero && n.value === "7") || n.value === "wildSwap" || n.value === "wildBlank")
     ) {
-      let o = e.players.filter((i) => i.id !== a);
-      r.swapWith = o.sort((i, s) => i.cardCount - s.cardCount)[0].id;
+      let o = e.players.filter((i) => i.id !== a).sort((i, s) => i.cardCount - s.cardCount)[0].id;
+      n.value === "wildBlank" ? (r.blank = { target: o, effect: "draw4" }) : (r.swapWith = o);
     }
     return r;
   }
@@ -2172,9 +2535,9 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     pe = (() => {
       try {
         let v = localStorage.getItem("lo-icon");
-        return v && qe.includes(v) ? v : qe[0];
+        return v && qe.includes(v) ? v : "";
       } catch (e) {
-        return qe[0];
+        return "";
       }
     })(),
     be,
@@ -2238,18 +2601,11 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           })
           .join("")}
       </div>
-      <h1>Last One</h1>
+      <h1>Uno-fficial</h1>
       <p class="lede">Match the color or symbol, empty your hand first. Every round, Rule Roulette throws in a brand-new twist the whole table votes on.</p>
-      <div class="setup-top">
-        <div class="seg mode-seg" role="radiogroup" aria-label="How do you want to play?">
-          <label><input type="radio" name="mode" value="solo" ${MODE_PICK === "solo" ? "checked" : ""}><span>Practice vs computer</span></label>
-          <label><input type="radio" name="mode" value="online" ${MODE_PICK === "online" ? "checked" : ""}><span>Play with friends</span></label>
-        </div>
-        <button class="btn btn-quiet" id="how-to" type="button">How to play</button>
-        ${audioButtons(!1)}
-      </div>
-        <fieldset class="icon-pick">
-          <legend>Pick your player icon</legend>
+        <fieldset class="icon-pick pick-step ${pe ? "" : "needs-pick"}" id="pick-step">
+          <legend><span class="step-num">1</span>Pick your player</legend>
+          <p class="pick-hint" id="pick-hint">${pe ? `You're playing as <span class="picked-name">${K[pe].name}</span>. Tap to change.` : "Tap a face to choose who you play as."}</p>
           <div class="icons">
             ${ce
               .map(
@@ -2263,6 +2619,15 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
               .join("")}
           </div>
         </fieldset>
+      <div class="pick-head mode-head"><span class="step-num">2</span>How do you want to play?</div>
+      <div class="setup-top">
+        <div class="seg mode-seg" role="radiogroup" aria-label="How do you want to play?">
+          <label><input type="radio" name="mode" value="solo" ${MODE_PICK === "solo" ? "checked" : ""}><span>Practice vs computer</span></label>
+          <label><input type="radio" name="mode" value="online" ${MODE_PICK === "online" ? "checked" : ""}><span>Play with friends</span></label>
+        </div>
+        <button class="btn btn-quiet" id="how-to" type="button">How to play</button>
+        ${audioButtons(!1)}
+      </div>
         <section class="online-only friends" aria-label="Play with friends">
           <label class="field"><span>Your name</span><input id="nick" maxlength="14" autocomplete="nickname" value="${esc(NICK)}" placeholder="Your name"></label>
           <div class="friends-row">
@@ -2299,6 +2664,10 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           </div>
           <p class="rules-note">Out of time? You draw and play moves on.</p>
         </fieldset>
+        <div class="opt-card music-card">
+          ${musicField("music-url", store("lo-playlist"), "Music")}
+          <p class="rules-note" id="music-note">Plays while you play. In online games, everyone at your table hears it.</p>
+        </div>
         </div>
         <fieldset class="rules">
           <legend>House rules</legend>
@@ -2315,6 +2684,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     </section>`),
       ne("#setup-form").addEventListener("submit", (n) => {
         if (MODE_PICK === "online") return n.preventDefault();
+        if (!pickedIcon()) return n.preventDefault();
         (n.preventDefault(),
           (pe =
             document.querySelector('input[name="icon"]:checked')?.value ??
@@ -2473,7 +2843,91 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       ((G = e.id), m());
       return;
     }
+    if (n.rules.sevenZero && e.value === "7") {
+      ((TG = { cardId: e.id, color: null, kind: "swap" }), m());
+      return;
+    }
     g({ type: "play", playerId: p, cardId: e.id });
+  }
+  var TG = null; // a card waiting for its target: {cardId, color, kind: "swap" | "blank", target?}
+  var BLANK_OPTS = [
+    ["draw2", "Draw 2"],
+    ["draw4", "Draw 4"],
+    ["skip", "Skip their turn"],
+    ["swap", "Swap hands"],
+    ["dare", "Give a dare"],
+  ];
+  function targetDialog(e) {
+    let others = e.players.filter((x) => x.id !== p),
+      blank = TG.kind === "blank",
+      tgt = TG.target && e.players.find((x) => x.id === TG.target);
+    if (blank && tgt)
+      return `
+    <div class="scrim" role="dialog" aria-modal="true" aria-label="Choose the punishment">
+      <div class="picker target-pick">
+        <p class="picker-title">What happens to ${tgt.id === p ? "you" : A(tgt.id)}?</p>
+        <div class="blank-fx">
+          ${BLANK_OPTS.map(([k, label]) => `<button type="button" class="btn fx-btn" data-fx="${k}">${label}</button>`).join("")}
+        </div>
+        <form class="dare-row" id="dare-form" ${TG.fx === "dare" ? "" : "hidden"}>
+          <input id="dare-text" maxlength="60" placeholder="e.g. Sing the next round" aria-label="Your dare" autocomplete="off">
+          <button class="btn btn-primary" type="submit">Send dare</button>
+        </form>
+        <button class="btn btn-quiet" id="target-back" type="button">Pick someone else</button>
+      </div>
+    </div>`;
+    return `
+    <div class="scrim" role="dialog" aria-modal="true" aria-label="Choose a player">
+      <div class="picker target-pick">
+        <p class="picker-title">${blank ? "Who do you want to hit?" : "Swap hands with who?"}</p>
+        <div class="target-list">
+          ${others
+            .map(
+              (x) => `<button type="button" class="target-btn" data-target="${x.id}">
+                <span class="avatar" aria-hidden="true">${U(Q[x.id])}</span>
+                <span class="target-name">${esc(x.name)}</span>
+                <span class="target-count">${x.cardCount} ${x.cardCount === 1 ? "card" : "cards"}</span>
+              </button>`,
+            )
+            .join("")}
+        </div>
+        <button class="btn btn-quiet" id="target-cancel" type="button">Keep the card</button>
+      </div>
+    </div>`;
+  }
+  function wireTarget(e) {
+    let send = (extra) => {
+      let t = TG;
+      TG = null;
+      kn({ type: "play", playerId: p, cardId: t.cardId, ...(t.color ? { color: t.color } : {}), ...extra }, e);
+    };
+    k.querySelectorAll("[data-target]").forEach((b) =>
+      b.addEventListener("click", () => {
+        if (TG.kind === "blank") ((TG.target = b.dataset.target), m());
+        else send({ swapWith: b.dataset.target });
+      }),
+    );
+    k.querySelectorAll("[data-fx]").forEach((b) =>
+      b.addEventListener("click", () => {
+        if (b.dataset.fx === "dare") {
+          TG.fx = "dare";
+          let f = document.getElementById("dare-form");
+          f && ((f.hidden = !1), document.getElementById("dare-text").focus());
+          return;
+        }
+        send({ blank: { target: TG.target, effect: b.dataset.fx } });
+      }),
+    );
+    let f = document.getElementById("dare-form");
+    f &&
+      f.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        let d = document.getElementById("dare-text").value.trim();
+        if (!d) return Se("Write a dare first");
+        send({ blank: { target: TG.target, effect: "dare", dare: d } });
+      });
+    y("#target-back", () => ((TG.target = null), (TG.fx = null), m()));
+    y("#target-cancel", () => ((TG = null), m()));
   }
   function kn(e, n) {
     if (
@@ -2519,6 +2973,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       (G = null),
       (T = null),
       (O = null),
+      (TG = null),
       Se("Time's up"),
       z(u, p).drawnCardId)
     ) {
@@ -2592,14 +3047,24 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     let r = a.getBoundingClientRect(),
       l = document.createElement("div");
     ((l.className = "seat-hit"),
-      (l.style.left = `${Math.min(Math.max(r.left + r.width / 2, 60), window.innerWidth - 60)}px`),
-      (l.style.top = `${Math.max(r.top + r.height / 2, 50)}px`),
-      (l.innerHTML = `<span class="seat-hit-num">+${n}</span>${t ? `<span class="seat-hit-sub">${t}</span>` : ""}`),
+      (l.style.left = `${Math.min(Math.max(r.left + r.width / 2, n >= 6 ? 100 : 80), window.innerWidth - (n >= 6 ? 100 : 80))}px`),
+      (l.style.top = `${Math.max(r.top + r.height / 2, 80)}px`),
+      (l.innerHTML = `<span class="seat-hit-star" aria-hidden="true"></span><span class="seat-hit-num">+${n}</span>${t ? `<span class="seat-hit-sub">${t}</span>` : ""}`),
+      n >= 6 && l.classList.add("big"),
       B.appendChild(l),
-      window.setTimeout(() => l.remove(), 1500),
+      window.setTimeout(() => l.remove(), 1900),
+      // light the hit player up even when it isn't their turn
+      a.classList.add("hit-lit"),
+      document.querySelector(`[data-fan="${e}"]`)?.classList.add("hit-lit"),
+      window.setTimeout(() => {
+        document.querySelector(`[data-pid="${e}"]`)?.classList.remove("hit-lit");
+        document.querySelector(`[data-fan="${e}"]`)?.classList.remove("hit-lit");
+      }, 1900),
       le() ||
         (a.classList.add("seat-shake"),
-        window.setTimeout(() => a.classList.remove("seat-shake"), 600)),
+        window.setTimeout(() => a.classList.remove("seat-shake"), 600),
+        n >= 6 && (k.classList.remove("shake"), k.offsetWidth, k.classList.add("shake"), window.setTimeout(() => k.classList.remove("shake"), 600))),
+      n >= 4 && ((l2) => (B.appendChild(l2), window.setTimeout(() => l2.remove(), 1100)))(Object.assign(document.createElement("div"), { className: "hit-flash soft" })),
       an(n, a, 150));
   }
   function Mn(e) {
@@ -2669,7 +3134,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       l.setAttribute("role", "status"),
       (l.innerHTML = `
     <span class="uno-bubble-icon" aria-hidden="true">${U(Q[e])}</span>
-    <span class="uno-bubble-text">Last one!</span>
+    <span class="uno-bubble-text">UNO!</span>
     <span class="uno-bubble-name">${e === p ? "You called it" : `${A(e)} called it`}</span>`),
       B.appendChild(l),
       window.setTimeout(() => l.remove(), 2600));
@@ -2690,8 +3155,9 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     (k.classList.add("playing"),
       (k.innerHTML = `
     <header class="bar">
-      <span class="brand">Last One</span>
+      <span class="brand">Uno-fficial</span>
       ${MODE === "online" ? '<button class="btn btn-quiet room-chip" id="copy-link" type="button">Copy game link</button>' : ""}
+      ${MODE === "online" && NET?.room ? ((w) => (w ? `<span class="wait-chip" title="They join next round">${w} waiting</span>` : ""))(NET.room.seats.filter((s) => !s.inGame && !s.bot && s.online).length) : ""}
       <span class="bar-gap"></span>
       ${audioButtons(!0)}
       <button class="btn btn-quiet icon-btn" id="how-to" type="button" aria-label="How to play">?</button>
@@ -2708,6 +3174,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         <div class="piles">
           <button class="pile draw-pile" id="draw" type="button" ${qn(e) ? "" : "disabled"} aria-label="${a ? `Take ${e.pendingDraw} cards` : "Draw a card"}">
             ${Le}
+            <span class="pile-label">Draw</span>
           </button>
           ${On(e)}
         </div>
@@ -2743,7 +3210,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       </div>
       ${e.phase === "playing" ? `<span class="turn-who"><span aria-hidden="true">${U(Q[e.turnPlayerId])}</span>${e.isYourTurn ? "Your turn" : `${l}'s turn`}${e.isYourTurn && F ? '<b class="clock" aria-label="Time left"></b>' : ""}</span>` : "<span></span>"}
       <div class="ctl ctl-right">
-        <button class="btn btn-call" id="call" type="button" ${Wn(e) ? "" : "disabled"}>Last one!</button>
+        <button class="btn btn-call" id="call" type="button" ${Wn(e) ? "" : "disabled"}>UNO!</button>
       </div>
     </div>
     <p class="status" aria-live="polite">${Un(e)}</p>
@@ -2751,7 +3218,8 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     ${Yn(e)}`),
       (xe = new Set(e.you.hand.map((i) => i.id))),
       An(e),
-      xn(e));
+      xn(e),
+      autoDraw(e));
     let o = document.querySelector(".clock");
     (o && (o.textContent = nn()),
       Rn(),
@@ -2788,7 +3256,13 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         ),
       k.querySelectorAll("[data-color]").forEach((i) =>
         i.addEventListener("click", () => {
-          let s = G;
+          let s = G,
+            card = e.you.hand.find((c) => c.id === s);
+          if (card && (card.value === "wildSwap" || card.value === "wildBlank")) {
+            G = null;
+            TG = { cardId: s, color: i.dataset.color, kind: card.value === "wildSwap" ? "swap" : "blank" };
+            return m();
+          }
           ((G = null),
             g({
               type: "play",
@@ -2801,6 +3275,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       y("#cancel-pick", () => {
         ((G = null), m());
       }),
+      TG && wireTarget(e),
       k.querySelectorAll("[data-extra]").forEach((i) =>
         i.addEventListener("click", () => {
           let s = i.dataset.extra,
@@ -3043,7 +3518,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       <span class="seat-name">${s ? "You" : esc(e.name)}</span>
       <span class="seat-count">${e.cardCount} ${e.cardCount === 1 ? "card" : "cards"}</span>
       ${MODE !== "online" ? "" : s ? `<button class="mic ${VOICE.micOn ? "on" : "off"}" id="mic" type="button" aria-pressed="${VOICE.micOn}" aria-label="${VOICE.micOn ? "Mute your mic" : "Turn on your mic"}">${VOICE.micOn ? Zn : Ze}</button>` : isBot(e.id) ? "" : seatMic(e.id, e.name)}
-      ${e.calledLastCard && e.cardCount <= 2 ? '<span class="badge called">Last one!</span>' : ""}
+      ${e.calledLastCard && e.cardCount <= 2 ? '<span class="badge called">UNO!</span>' : ""}
       ${c ? `<button class="btn btn-catch" data-catch="${e.id}" type="button">Catch!</button>` : ""}
       ${i && !s ? '<span class="turn-tag">Playing</span>' : ""}
     </div>`;
@@ -3065,7 +3540,9 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           </div>
         </div>
       </div>`
-        : G
+        : TG
+          ? targetDialog(e)
+          : G
           ? Nn()
           : T
             ? Gn(e)
@@ -3090,7 +3567,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     <div class="scrim uno-scrim" role="dialog" aria-modal="true" aria-label="Call last one">
       <div class="uno-pop">
         <p class="uno-hint">${n ? "One card left. Call it!" : t ? "Call it before you're caught!" : "Two cards left. Call it!"}</p>
-        <button class="uno-btn" id="${n ? "play-uno" : "uno-big"}" type="button">Last<br>one!</button>
+        <button class="uno-btn" id="${n ? "play-uno" : "uno-big"}" type="button">UNO!</button>
         <button class="btn btn-quiet" id="${n ? "play-quiet" : "uno-skip"}" type="button">${t && !n ? "Risk it" : "Play without calling"}</button>
       </div>
     </div>`;
@@ -3155,6 +3632,32 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       </div>
     </div>`;
   }
+  // no card you can play: the deck deals you one automatically (penalties and +4 challenges still wait for you)
+  var AUTO_V = -1;
+  function needsAutoDraw(e) {
+    return (
+      e.phase === "playing" &&
+      e.isYourTurn &&
+      !e.drawnCardId &&
+      e.pendingDraw === 0 &&
+      !e.challenge &&
+      e.playableCardIds.length === 0 &&
+      Object.keys(e.companions).length === 0
+    );
+  }
+  function autoDraw(e) {
+    if (!needsAutoDraw(e) || AUTO_V === u.version) return;
+    AUTO_V = u.version;
+    let v = u.version;
+    let go = () => {
+      if (!u || u.version !== v) return;
+      if (TUT_OPEN || G || T || O || te || (typeof TG !== "undefined" && TG)) return setTimeout(go, 600);
+      let now = z(u, p);
+      if (!needsAutoDraw(now)) return;
+      g({ type: "draw", playerId: p });
+    };
+    setTimeout(go, 750);
+  }
   function qn(e) {
     return e.phase === "playing" && e.isYourTurn && !e.drawnCardId;
   }
@@ -3180,9 +3683,9 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
             ? "Last card must be a number. Draw."
             : e.playableCardIds.length
               ? ""
-              : "No match. Tap the deck.";
+              : "No match. Dealing you a card…";
     }
-    return e.vulnerableId === p ? "Tap Last one! now." : t ? "Jump in with your match!" : "";
+    return e.vulnerableId === p ? "Tap UNO! now." : t ? "Jump in with your match!" : "";
   }
 
   var _n =
@@ -3201,13 +3704,21 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         return "";
       case "wild4":
         return "+4";
+      case "wild10":
+        return "+10";
+      case "wildShuffle":
+        return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c3 0 4 2 5.5 5S16 17 19 17h2M3 17h4c1.6 0 2.6-.7 3.4-1.8M14 8.6C14.8 7.6 16 7 19 7h2M18 4l3 3-3 3M18 14l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      case "wildSwap":
+        return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v13M7 17l-3-3M7 17l3-3M17 20V7M17 7l-3 3M17 7l3 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      case "wildBlank":
+        return '<span class="blank-mark">?</span>';
       default:
         return e.value;
     }
   }
   function Fe(e) {
     return (
-      { skip: "S", reverse: "R", draw2: "+2", wild: "W", wild4: "+4" }[
+      { skip: "S", reverse: "R", draw2: "+2", wild: "W", wild4: "+4", wild10: "+10", wildShuffle: "SH", wildSwap: "SW", wildBlank: "?" }[
         e.value
       ] ?? e.value
     );
@@ -3217,7 +3728,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       a = e.color ?? (n && t ? n : null),
       r = ["6", "9"].includes(e.value) ? " underline" : "";
     return `
-    <span class="card ${t ? "wild" : ""}" data-c="${a ?? "wild"}" style="${a ? `--ink: var(--${a})` : ""}">
+    <span class="card ${t ? "wild" : ""} ${t && e.value !== "wild" && e.value !== "wild4" ? "special v-" + e.value : ""}" data-c="${a ?? "wild"}" style="${a ? `--ink: var(--${a})` : ""}">
       <span class="idx tl${r}">${Fe(e)}</span>
       ${t ? '<span class="riso" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ""}
       <span class="glyph${r}">${Fn(e)}</span>
@@ -3235,7 +3746,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     <defs><path id="emblem-path" d="M100 100 m-88.5 0 a88.5 88.5 0 1 1 177.0 0 a88.5 88.5 0 1 1 -177.0 0"/></defs>
     <circle cx="100" cy="100" r="97.5" class="em-ring"/>
     <circle cx="100" cy="100" r="80" class="em-ring thin"/>
-    <text class="em-text" dy="3.6"><textPath href="#emblem-path" startOffset="0" textLength="550.1" lengthAdjust="spacing">LAST ONE \u2605 LAST ONE \u2605 LAST ONE \u2605 LAST ONE \u2605 LAST ONE \u2605</textPath></text>
+    <text class="em-text" dy="3.6"><textPath href="#emblem-path" startOffset="0" textLength="550.1" lengthAdjust="spacing">UNO-FFICIAL \u2605 UNO-FFICIAL \u2605 UNO-FFICIAL \u2605</textPath></text>
   </svg>`;
   function me(e) {
     let t =
@@ -3245,6 +3756,10 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         draw2: "+2",
         wild: "Wild",
         wild4: "Wild +4",
+        wild10: "Wild +10",
+        wildShuffle: "Shuffle Hands",
+        wildSwap: "Swap Hands",
+        wildBlank: "Blank Wild",
       }[e.value] ?? e.value;
     return e.color ? `${e.color} ${t}` : t;
   }
@@ -3265,6 +3780,10 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       "draw2",
       "wild",
       "wild4",
+      "wild10",
+      "wildShuffle",
+      "wildSwap",
+      "wildBlank",
     ];
   function Kn(e) {
     return e
@@ -3427,7 +3946,25 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
                       : "";
       k && !did.has(k) && (did.add(k), sfx(k));
       ev.kind === "roulette" && rouletteToast(ev);
+      ev.kind === "blank" && blankNotice(ev);
+      ev.kind === "shuffleHands" && (Se(`${A(ev.playerId)} shuffled everyone's hands`), sfx("magic"));
+      ev.kind === "swap" && Se(`${A(ev.playerId)} swapped hands with ${ev.targetId === p ? "you" : A(ev.targetId)}`);
     }
+  }
+  function blankNotice(ev) {
+    let who = A(ev.playerId),
+      tgt = ev.targetId === p ? "you" : A(ev.targetId),
+      what = { draw2: "draw 2", draw4: "draw 4", skip: "lose a turn", swap: "swap hands" }[ev.effect];
+    sfx("magic");
+    if (ev.effect !== "dare") return Se(`Blank Wild: ${who} made ${tgt} ${what}`);
+    let el = document.createElement("div");
+    el.className = "dare-banner";
+    el.setAttribute("role", "status");
+    el.innerHTML = `<span class="dare-tag">Dare</span><span class="dare-who"></span><span class="dare-text"></span>`;
+    el.querySelector(".dare-who").textContent = `${who} ${who === "You" ? "dare" : "dares"} ${tgt}:`;
+    el.querySelector(".dare-text").textContent = ev.dare;
+    B.appendChild(el);
+    setTimeout(() => el.remove(), 6000);
   }
   function rouletteToast(ev) {
     let r = u.rules.roulette,
@@ -3444,8 +3981,18 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
             : ev.effect === "heavy"
               ? `${name}! That hit lands ${r.extra} harder`
               : ev.effect === "gift"
-              ? `${name}! ${who} passed a card to ${tgt === "You" ? "you" : tgt}`
-              : name;
+                ? `${name}! ${who} passed a card to ${tgt === "You" ? "you" : tgt}`
+                : ev.effect === "skipAll"
+                  ? `${name}! ${who} ${who === "You" ? "go" : "goes"} again`
+                  : ev.effect === "drawColor"
+                    ? `${name}! ${tgt} drew ${ev.count}`
+                    : ev.effect === "discardAll"
+                      ? `${name}! ${who} dropped ${ev.count} ${ev.count === 1 ? "card" : "cards"}`
+                      : ev.effect === "shuffle"
+                        ? `${name}! Hands shuffled`
+                        : ev.effect === "launch"
+                          ? ev.count ? `${who} ${who === "You" ? "get" : "gets"} ${ev.count}` : `${who} ${who === "You" ? "get" : "gets"} none. Lucky!`
+                          : name;
     Se(txt);
   }
 
@@ -3460,18 +4007,21 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       challengeWild4: "a +4 can be challenged as a bluff",
     },
     FALLBACK = [
-      { name: "Seven Penalty", effect: { type: "curse", value: "7", draw: 1 } },
+      { name: "Skip Everyone", effect: { type: "skipAll" } },
+      { name: "Draw to Your Color", effect: { type: "drawColor" } },
+      { name: "Zeros Discard All", effect: { type: "discardAll", value: "0" } },
+      { name: "Wilds Shuffle Hands", effect: { type: "shuffleHands" } },
+      { name: "Stack Any Draw", effect: { type: "stackAny" } },
+      { name: "Random Draws", effect: { type: "launcher" } },
+      { name: "Seven-Zero Swap", effect: { type: "toggle", rule: "sevenZero" } },
+      { name: "Jump-In On", effect: { type: "toggle", rule: "jumpIn" } },
+      { name: "Draw Till You Match", effect: { type: "toggle", rule: "drawUntilPlayable" } },
+      { name: "+4 Challenge", effect: { type: "toggle", rule: "challengeWild4" } },
       { name: "Threes Go Again", effect: { type: "bless", value: "3" } },
       { name: "Blue Skips", effect: { type: "charged", color: "blue" } },
-      { name: "Fives Pass a Card", effect: { type: "gift", value: "5" } },
       { name: "Heavier Penalties", effect: { type: "heavy", extra: 1 } },
-      { name: "Seven-Zero Swap", effect: { type: "toggle", rule: "sevenZero" } },
-      { name: "Zeros Go Again", effect: { type: "bless", value: "0" } },
-      { name: "Red Skips", effect: { type: "charged", color: "red" } },
-      { name: "Double Nine Penalty", effect: { type: "curse", value: "9", draw: 2 } },
-      { name: "Jump-In On", effect: { type: "toggle", rule: "jumpIn" } },
-      { name: "Twos Pass a Card", effect: { type: "gift", value: "2" } },
-      { name: "Green Skips", effect: { type: "charged", color: "green" } },
+      { name: "Seven Penalty", effect: { type: "curse", value: "7", draw: 1 } },
+      { name: "Fives Pass a Card", effect: { type: "gift", value: "5" } },
     ];
   function effectText(ef) {
     if (!ef) return "";
@@ -3488,6 +4038,18 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         return `Every +2 and +4 adds ${ef.extra} extra ${ef.extra === 1 ? "card" : "cards"}.`;
       case "toggle":
         return `House rule switched on: ${TOGGLES[ef.rule]}.`;
+      case "skipAll":
+        return "A skip skips everyone, so you go again.";
+      case "drawColor":
+        return "A +4 makes the next player draw until they get your color.";
+      case "discardAll":
+        return `Playing a ${ef.value} also drops all your cards of that color.`;
+      case "shuffleHands":
+        return "A wild card shuffles every hand and deals them out again.";
+      case "stackAny":
+        return "Stack +2s and +4s on each other.";
+      case "launcher":
+        return "No match? You get 0 to 4 random cards instead of 1.";
     }
     return "";
   }
@@ -3503,6 +4065,8 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     else if (ef.type === "charged" && COLORS.includes(ef.color)) out = { type: "charged", color: ef.color };
     else if (ef.type === "heavy") out = { type: "heavy", extra: Number(ef.extra) === 2 ? 2 : 1 };
     else if (ef.type === "toggle" && TOGGLES[ef.rule]) out = { type: "toggle", rule: ef.rule };
+    else if (["skipAll", "drawColor", "shuffleHands", "stackAny", "launcher"].includes(ef.type)) out = { type: ef.type };
+    else if (ef.type === "discardAll" && digit(ef.value)) out = { type: "discardAll", value: digit(ef.value) };
     if (!out) return null;
     let name = String(r.name || "").replace(/\s+/g, " ").trim().slice(0, 28) || "Mystery Rule",
       pitch = "";
@@ -3526,6 +4090,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function applyRule(rules, rule) {
     let out = { ...rules, roulette: rule?.effect ?? null };
     rule?.effect?.type === "toggle" && (out[rule.effect.rule] = !0);
+    rule?.effect?.type === "stackAny" && (out.stacking = !0);
     return out;
   }
   function rouletteBox(rule, o = {}) {
@@ -3540,7 +4105,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
         <span class="wheel" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
         <div>
           <strong>Rule Roulette</strong>
-          <span class="roulette-sub">${o.solo ? "Spin a twist for this round, or play classic." : o.host ? "Spin a twist. Everyone votes, then you deal." : "The host spins. Vote on the twist."}</span>
+          <span class="roulette-sub">${o.solo ? "Add a twist to this round, or skip it." : o.host ? "Spin a twist. Players vote, you decide." : "The host spins a twist. Vote on it."}</span>
         </div>
       </div>
       ${
@@ -3550,16 +4115,17 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
             ? `<p class="roulette-name">${esc(rule.name)}${rule.ai ? '<span class="ai-tag">AI-made</span>' : ""}</p>
                ${rule.pitch ? `<p class="roulette-pitch">${esc(rule.pitch)}</p>` : ""}
                <p class="roulette-effect">${esc(effectText(rule.effect))}</p>`
-            : '<p class="roulette-pitch">No twist yet. Classic rules apply.</p>'
+            : '<p class="roulette-pitch">No twist. Standard rules.</p>'
       }
       <div class="roulette-actions">
         ${canSpin ? `<button class="btn btn-spin" id="spin" type="button" ${spinning ? "disabled" : ""}>${rule ? "Spin again" : "Spin the wheel"}</button>` : ""}
-        ${canSpin && rule ? '<button class="btn btn-quiet" id="clear-rule" type="button">Play classic</button>' : ""}
+        ${canSpin && rule ? '<button class="btn btn-quiet" id="clear-rule" type="button">No twist</button>' : ""}
         ${
           !o.solo && rule
-            ? `<span class="votes">
-                 <button class="btn vote ${votes[p] === !0 ? "on" : ""}" id="vote-keep" type="button" aria-pressed="${votes[p] === !0}">Keep it <b>${keep}</b></button>
-                 <button class="btn vote ${votes[p] === !1 ? "on" : ""}" id="vote-nope" type="button" aria-pressed="${votes[p] === !1}">Reroll <b>${nope}</b></button>
+            ? `<span class="votes" role="group" aria-label="Table vote">
+                 <span class="vote-label">Table vote</span>
+                 <button class="btn vote ${votes[p] === !0 ? "on" : ""}" id="vote-keep" type="button" aria-pressed="${votes[p] === !0}">Keep this twist <b>${keep}</b></button>
+                 <button class="btn vote ${votes[p] === !1 ? "on" : ""}" id="vote-nope" type="button" aria-pressed="${votes[p] === !1}">Try another <b>${nope}</b></button>
                </span>`
             : ""
         }
@@ -3577,7 +4143,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     let steps = [
       { t: "Match to play", b: "Tap a glowing card that matches the color or symbol." },
       { t: "No match? Draw", b: "Tap the deck. Play the new card if it fits." },
-      { t: "Call your last one", b: "At two cards, tap Last one! or risk +2." },
+      { t: "Call UNO!", b: "At two cards, tap UNO! or risk +2." },
       { t: "Power cards", b: "Skip, Reverse, +2 and +4 hit the next player. Wilds pick the color." },
     ];
     let r = u?.rules?.roulette ? CUR_RULE || { name: "Round rule", effect: u.rules.roulette } : SOLO_RULE;
@@ -3707,6 +4273,19 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   }
   function wireSetup() {
     wireCommon();
+    wirePicker();
+    let mu = document.getElementById("music-url");
+    mu &&
+      mu.addEventListener("change", () => {
+        let v = mu.value.trim(),
+          note = document.getElementById("music-note");
+        if (!v) return (store("lo-playlist", ""), (SOLO_MUSIC = null), note && (note.textContent = "Plays while you play. In online games, everyone at your table hears it."));
+        let pm = parseYT(v);
+        if (!pm) return note && (note.textContent = "That isn't a YouTube link. Copy the playlist's Share link.");
+        store("lo-playlist", v);
+        SOLO_MUSIC = pm;
+        note && (note.textContent = pm.kind === "list" ? "Playlist saved." : "Song saved. It loops.");
+      });
     document.querySelectorAll('input[name="mode"]').forEach((el) =>
       el.addEventListener("change", () => {
         MODE_PICK = el.value;
@@ -3743,11 +4322,19 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     n && (n.textContent = t);
   }
 
-  /* ---------- background music: a light highlife groove, synthesized live (no audio files).
-     Plays at the table and in the lobby, ducks while anyone is talking, and has its own switch
-     separate from sound effects. Voice chat is never affected by either switch. */
+  /* ---------- music: a YouTube (or YouTube Music) playlist the host shares with the table, or your own in
+     practice games. YouTube's rules need its player visible at 200 x 200 or larger, so it sits in the
+     smallest dock allowed, with a slim strip to drag, pause or skip it. Hiding the dock pauses the
+     music on your device. The music switch turns it off just for you; voice chat and effects are separate. */
   var MUSIC_ON = store("lo-music") !== "0",
-    MUS = null,
+    SOLO_MUSIC = (() => {
+      let v = store("lo-playlist");
+      return v ? parseYT(v) : null;
+    })(),
+    YT_READY = null,
+    YTP = null, // {player, key, ready}
+    DOCK_OPEN = !0,
+    CLOCK_SKEW = 0,
     NOTE_ON =
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17.5V6.2l10-2.2v11.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.6" cy="17.6" r="2.6" fill="currentColor"/><circle cx="16.6" cy="15.4" r="2.6" fill="currentColor"/></svg>',
     NOTE_OFF =
@@ -3759,104 +4346,203 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     } catch (e) {}
     return AC;
   }
-  var mtof = (m) => 440 * 2 ** ((m - 69) / 12),
-    PROG = [
-      { bass: [36, 43], tones: [60, 64, 67, 72] }, // C
-      { bass: [41, 48], tones: [60, 65, 69, 72] }, // F
-      { bass: [36, 43], tones: [60, 64, 67, 72] }, // C
-      { bass: [43, 50], tones: [59, 62, 67, 71] }, // G
-    ],
-    BELL = [0, 3, 6, 10, 12], // a highlife-style bell line on a 16-step bar
-    GUITAR = [0, 2, 3, 5, 6, 8, 10, 11, 13, 14],
-    GPAT = [3, 2, 1, 2, 3, 1, 2, 3, 2, 1],
-    BASS = [
-      [0, 0],
-      [6, 1],
-      [8, 0],
-      [11, 1],
-    ];
+  function parseYT(raw) {
+    try {
+      let url = new URL(String(raw).trim()),
+        host = url.hostname.replace(/^(www|m|music)\./, "");
+      if (!/^(youtube\.com|youtu\.be|youtube-nocookie\.com)$/.test(host)) return null;
+      let ok = (x) => /^[\w-]{6,64}$/.test(x || ""),
+        list = url.searchParams.get("list"),
+        v = host === "youtu.be" ? url.pathname.slice(1).split("/")[0] : url.searchParams.get("v") || (url.pathname.match(/^\/(shorts|embed|live)\/([\w-]{11})/) || [])[2];
+      if (ok(list)) return { kind: "list", id: list, index: 0, startedAt: Date.now(), playing: !0, pausedPos: 0 };
+      if (/^[\w-]{11}$/.test(v || "")) return { kind: "video", id: v, index: 0, startedAt: Date.now(), playing: !0, pausedPos: 0 };
+    } catch (e) {}
+    return null;
+  }
+  function musicSource() {
+    if (MODE === "online") return NET?.room?.music || null;
+    return u ? SOLO_MUSIC : null;
+  }
   function musicWanted() {
-    return MUSIC_ON && !!(u || (NET && NET.room));
+    return MUSIC_ON && !!musicSource() && !!(u || (NET && NET.room));
   }
-  function musicUpdate() {
-    musicWanted() ? musicStart() : musicStop();
+  function loadYT() {
+    if (YT_READY) return YT_READY;
+    YT_READY = new Promise((res) => {
+      if (window.YT && window.YT.Player) return res(window.YT);
+      let prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => (prev && prev(), res(window.YT));
+      let sc = document.createElement("script");
+      sc.src = "https://www.youtube.com/iframe_api";
+      sc.onerror = () => res(null);
+      document.head.appendChild(sc);
+      setTimeout(() => res(null), 12000);
+    });
+    return YT_READY;
   }
-  function musicStart() {
-    if (MUS) return;
-    let ctx = audioCtxShared();
-    if (!ctx) return;
-    let master = ctx.createGain(),
-      tone = ctx.createBiquadFilter();
-    tone.type = "lowpass";
-    tone.frequency.value = 5200;
-    master.gain.value = 0.0001;
-    master.connect(tone).connect(ctx.destination);
-    master.gain.setTargetAtTime(0.55, ctx.currentTime, 0.6);
-    let noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.08), ctx.sampleRate),
-      ch = noiseBuf.getChannelData(0);
-    for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length);
-    MUS = { ctx, master, noiseBuf, step: 0, bar: 0, next: ctx.currentTime + 0.1, timer: null, ducked: !1 };
-    let spb = 60 / 108 / 4; // 108 bpm, sixteenth notes
-    let note = (f, t, d, type, vol, out = master) => {
-      let o = ctx.createOscillator(),
-        g = ctx.createGain();
-      o.type = type;
-      o.frequency.setValueAtTime(f, t);
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + d);
-      o.connect(g).connect(out);
-      o.start(t);
-      o.stop(t + d + 0.03);
-    };
-    let shaker = (t, vol) => {
-      let s = ctx.createBufferSource(),
-        f = ctx.createBiquadFilter(),
-        g = ctx.createGain();
-      s.buffer = noiseBuf;
-      f.type = "highpass";
-      f.frequency.value = 6000;
-      g.gain.value = vol;
-      s.connect(f).connect(g).connect(master);
-      s.start(t);
-    };
-    let tick = () => {
-      if (!MUS) return;
-      while (MUS.next < ctx.currentTime + 0.25) {
-        let t = MUS.next,
-          st = MUS.step,
-          chord = PROG[MUS.bar % PROG.length];
-        if (BELL.includes(st)) note(1760, t, 0.07, "triangle", 0.035), note(2637, t, 0.04, "sine", 0.012);
-        if (st % 2 === 0) shaker(t, st % 4 === 2 ? 0.05 : 0.025);
-        let gi = GUITAR.indexOf(st);
-        if (gi >= 0) {
-          let f = mtof(chord.tones[GPAT[gi]] + 12);
-          note(f, t, 0.22, "triangle", 0.045);
-          note(f * 2, t, 0.08, "sine", 0.01);
-        }
-        for (let [bs, which] of BASS) if (bs === st) note(mtof(chord.bass[which]), t, 0.32, "triangle", 0.11);
-        MUS.next += spb;
-        MUS.step = (st + 1) % 16;
-        if (MUS.step === 0) MUS.bar++;
+  function isMusicHost() {
+    return MODE !== "online" || NET?.isHost;
+  }
+  function musicCtl(action, extra = {}) {
+    if (MODE === "online") return send({ t: "musicCtl", action, ...extra });
+    let m = SOLO_MUSIC;
+    if (!m) return;
+    let now = Date.now();
+    if (action === "pause" && m.playing) (m.pausedPos = (now - m.startedAt) / 1000), (m.playing = !1);
+    else if (action === "play" && !m.playing) (m.startedAt = now - m.pausedPos * 1000), (m.playing = !0);
+    else if (action === "next") Object.assign(m, { index: m.index + 1, startedAt: now, playing: !0, pausedPos: 0 });
+    else if (action === "track") Object.assign(m, { index: extra.index, startedAt: now });
+    musicUpdate();
+  }
+  function renderDock(m) {
+    let dock = document.getElementById("music-dock");
+    if (!dock) {
+      dock = document.createElement("div");
+      dock.id = "music-dock";
+      dock.className = "music-dock";
+      dock.innerHTML = `<div class="dock-player"><div id="yt-player"></div></div><div class="dock-ctl"></div><button class="dock-pill" type="button" hidden>${NOTE_ON}<span>Play music</span></button>`;
+      document.body.appendChild(dock);
+      dock.querySelector(".dock-pill").addEventListener("click", () => ((DOCK_OPEN = !0), unlockAudio(), musicUpdate()));
+      dragDock(dock);
+    }
+    let host = isMusicHost(),
+      ctl = dock.querySelector(".dock-ctl");
+    ctl.innerHTML = `<span class="dock-grip" title="Drag to move" aria-hidden="true">⠿</span><span class="dock-btns">${host ? `<button type="button" class="dock-btn" data-mc="${m.playing ? "pause" : "play"}" aria-label="${m.playing ? "Pause for everyone" : "Play for everyone"}" title="${m.playing ? "Pause" : "Play"}">${m.playing ? "❚❚" : "▶"}</button><button type="button" class="dock-btn" data-mc="next" aria-label="Next song" title="Next song">▶▶</button>` : ""}<button type="button" class="dock-btn" data-mc="fold" aria-label="Hide the player (pauses music on this device)" title="Hide (pauses music here)">✕</button></span>`;
+    ctl.querySelectorAll("[data-mc]").forEach((b) =>
+      b.addEventListener("click", () => (b.dataset.mc === "fold" ? ((DOCK_OPEN = !1), musicUpdate()) : musicCtl(b.dataset.mc))),
+    );
+    dock.classList.toggle("folded", !DOCK_OPEN);
+    dock.querySelector(".dock-pill").hidden = DOCK_OPEN;
+    dock.classList.toggle("in-game", !!u);
+    dock.hidden = !1;
+  }
+  // the bar can be dragged out of the way; its spot is remembered on this device
+  function placeDock(dock, x, y) {
+    let w = dock.offsetWidth || 200,
+      h = dock.offsetHeight || 226,
+      nx = Math.min(Math.max(8, x), innerWidth - w - 8),
+      ny = Math.min(Math.max(8, y), innerHeight - h - 8);
+    dock.style.left = nx + "px";
+    dock.style.top = ny + "px";
+    dock.style.right = dock.style.bottom = "auto";
+    dock.style.transform = "none";
+    return [nx, ny];
+  }
+  function dragDock(dock) {
+    let saved = (store("lo-dock") || "").split(",").map(Number);
+    saved.length === 2 && saved.every(isFinite) && requestAnimationFrame(() => placeDock(dock, saved[0], saved[1]));
+    let grip = dock.querySelector(".dock-ctl");
+    grip.addEventListener("pointerdown", (ev) => {
+      if (ev.target.closest("button")) return;
+      ev.preventDefault();
+      let r = dock.getBoundingClientRect(),
+        dx = ev.clientX - r.left,
+        dy = ev.clientY - r.top,
+        last = [r.left, r.top];
+      dock.classList.add("dragging");
+      grip.setPointerCapture(ev.pointerId);
+      let move = (e) => (last = placeDock(dock, e.clientX - dx, e.clientY - dy)),
+        up = () => {
+          dock.classList.remove("dragging");
+          grip.removeEventListener("pointermove", move);
+          grip.removeEventListener("pointerup", up);
+          store("lo-dock", last.join(","));
+        };
+      grip.addEventListener("pointermove", move);
+      grip.addEventListener("pointerup", up);
+    });
+    addEventListener("resize", () => dock.style.left && placeDock(dock, parseFloat(dock.style.left), parseFloat(dock.style.top)));
+  }
+  function elapsed(m) {
+    return m.playing ? Math.max(0, (Date.now() + CLOCK_SKEW - m.startedAt) / 1000) : m.pausedPos || 0;
+  }
+  async function musicUpdate() {
+    let m = musicSource();
+    if (!musicWanted()) return musicStop();
+    renderDock(m);
+    if (!DOCK_OPEN) {
+      try {
+        YTP?.player?.pauseVideo();
+      } catch (e) {}
+      return;
+    }
+    let YT = await loadYT();
+    if (!YT) return Se("Couldn't load YouTube. Check your connection.");
+    if (!musicWanted()) return;
+    m = musicSource();
+    let key = m.kind + ":" + m.id;
+    if (!YTP || YTP.key !== key) {
+      if (YTP) {
+        try {
+          YTP.player.destroy();
+        } catch (e) {}
+        let holder = document.createElement("div");
+        holder.id = "yt-player";
+        document.querySelector("#music-dock .dock-player").replaceChildren(holder);
       }
-    };
-    MUS.timer = setInterval(tick, 60);
-    tick();
+      YTP = { key, ready: !1 };
+      YTP.player = new YT.Player("yt-player", {
+        width: 200,
+        height: 200,
+        playerVars: { playsinline: 1, rel: 0, ...(m.kind === "list" ? { listType: "playlist", list: m.id } : {}) },
+        ...(m.kind === "video" ? { videoId: m.id } : {}),
+        events: {
+          onReady: () => ((YTP.ready = !0), syncPlayer()),
+          onStateChange: (ev) => {
+            let src = musicSource();
+            if (!src) return;
+            if (ev.data === 0 && src.kind === "video") {
+              ev.target.seekTo(0);
+              ev.target.playVideo();
+            }
+            if (ev.data === 1 && src.kind === "list") {
+              let i = ev.target.getPlaylistIndex();
+              if (i >= 0 && i !== src.index && isMusicHost()) musicCtl("track", { index: i });
+            }
+          },
+          onError: () => isMusicHost() && musicCtl("next"),
+        },
+      });
+      return;
+    }
+    syncPlayer();
+  }
+  function syncPlayer() {
+    let m = musicSource();
+    if (!YTP?.ready || !m) return;
+    let pl = YTP.player;
+    try {
+      pl.setVolume(VOICE.speaking.size ? 30 : 85);
+      if (m.kind === "list" && pl.getPlaylistIndex() !== m.index) {
+        pl.playVideoAt(m.index);
+        setTimeout(() => {
+          try {
+            pl.seekTo(elapsed(m), !0);
+            m.playing ? pl.playVideo() : pl.pauseVideo();
+          } catch (e) {}
+        }, 600);
+        return;
+      }
+      let t = elapsed(m),
+        now = pl.getCurrentTime ? pl.getCurrentTime() : 0;
+      Math.abs(now - t) > 4 && m.kind === "video" && pl.seekTo(t, !0);
+      m.playing ? pl.getPlayerState() !== 1 && pl.playVideo() : pl.pauseVideo();
+    } catch (e) {}
   }
   function musicStop() {
-    if (!MUS) return;
-    let m = MUS;
-    MUS = null;
-    clearInterval(m.timer);
+    let dock = document.getElementById("music-dock");
+    dock && (dock.hidden = !0);
     try {
-      m.master.gain.setTargetAtTime(0.0001, m.ctx.currentTime, 0.15);
-      setTimeout(() => m.master.disconnect(), 600);
+      YTP?.player?.pauseVideo();
     } catch (e) {}
   }
   function musicDuck(on) {
-    if (!MUS || MUS.ducked === on) return;
-    MUS.ducked = on;
-    MUS.master.gain.setTargetAtTime(on ? 0.18 : 0.55, MUS.ctx.currentTime, 0.25);
+    try {
+      YTP?.ready && YTP.player.setVolume(on ? 30 : 85);
+    } catch (e) {}
+  }
+  function musicField(id, value, label) {
+    return `<label class="field music-field" for="${id}"><span>${label}</span><input id="${id}" type="url" inputmode="url" placeholder="Paste a YouTube playlist link" value="${esc(value || "")}" autocomplete="off"></label>`;
   }
   function audioButtons(compact) {
     return compact
@@ -3907,11 +4593,37 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function myName() {
     return (NICK || "Player").slice(0, 14);
   }
+  function pickedIcon() {
+    let v = document.querySelector('input[name="icon"]:checked')?.value;
+    if (v) return ((pe = v), store("lo-icon", v), v);
+    let f = document.getElementById("pick-step");
+    if (f) {
+      f.classList.remove("shake");
+      void f.offsetWidth;
+      f.classList.add("shake", "needs-pick");
+      f.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    Se("Pick your player first");
+    return null;
+  }
+  function wirePicker() {
+    document.querySelectorAll('input[name="icon"]').forEach((el) =>
+      el.addEventListener("change", () => {
+        pe = el.value;
+        store("lo-icon", pe);
+        let f = document.getElementById("pick-step"),
+          h = document.getElementById("pick-hint");
+        f && f.classList.remove("needs-pick", "shake");
+        h && (h.innerHTML = `You're playing as <span class="picked-name">${K[pe].name}</span>. Tap to change.`);
+      }),
+    );
+  }
   function currentSettings() {
-    return { rules: se, timer: F, speed: Object.keys(oe).find((k) => oe[k] === ue) || "normal" };
+    return { rules: se, timer: F, speed: Object.keys(oe).find((k) => oe[k] === ue) || "normal", music: store("lo-playlist") || "" };
   }
 
   function createGame() {
+    if (!pickedIcon()) return;
     readSetupRules();
     if (!NICK) {
       let n = document.getElementById("nick");
@@ -4010,6 +4722,8 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     NET.room = room;
     NET.isHost = room.hostId === NET.pid;
     Q = Object.fromEntries(room.seats.map((s) => [s.pid, s.icon]));
+    room.now && (CLOCK_SKEW = room.now - Date.now());
+    setTimeout(musicUpdate, 0);
     F = room.timer || 0;
     ue = oe[room.speed] ?? ue;
     voiceSync();
@@ -4042,21 +4756,47 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function renderConnecting(text, fatal) {
     k.classList.remove("playing");
     k.innerHTML = `<section class="setup lobby">
-      <header class="bar"><span class="brand">Last One</span></header>
+      <header class="bar"><span class="brand">Uno-fficial</span></header>
       <p class="lede">${esc(text)}</p>
       ${fatal ? '<button class="btn btn-primary" id="go-home" type="button">Start your own game</button>' : ""}
     </section>`;
     y("#go-home", () => leaveRoom());
   }
 
+  function musicLobby(room, host) {
+    let mm = room.music;
+    return `<section class="lobby-music" aria-label="Music">
+      <div class="lobby-rules-head"><strong>Music</strong><span class="rules-note">${mm ? (host ? "Playing for everyone. Use the music dock to pause or skip." : "The host is playing music for the table.") : host ? "Paste a YouTube playlist and everyone hears it." : "The host hasn't added music yet."}</span></div>
+      ${
+        host
+          ? `<div class="link-row"><input id="lobby-music" type="url" inputmode="url" placeholder="Paste a YouTube playlist link" value="${esc(store("lo-playlist") || "")}" aria-label="YouTube playlist link" autocomplete="off"><button class="btn" id="music-set" type="button">${mm ? "Change" : "Play"}</button>${mm ? '<button class="btn btn-quiet" id="music-clear" type="button">Stop</button>' : ""}</div>`
+          : ""
+      }
+    </section>`;
+  }
   function renderSpectator() {
     k.classList.remove("playing");
-    k.innerHTML = `<section class="setup lobby">
-      <header class="bar"><span class="brand">Last One</span><span class="bar-gap"></span>
+    let room = NET.room,
+      playing = room.seats.filter((s) => s.inGame),
+      waiting = room.seats.filter((s) => !s.inGame && !s.bot);
+    k.innerHTML = `<section class="setup lobby waiting">
+      <header class="bar"><span class="brand">Uno-fficial</span><span class="bar-gap"></span>
         ${micButton("lobby-mic")}
+        ${audioButtons(!0)}
         <button class="btn btn-quiet" id="leave-room" type="button">Leave</button></header>
-      <p class="lede">A round is already under way. You'll be dealt in when the host starts the next one. You can still talk to the table.</p>
-      ${seatList(NET.room, !1)}
+      <div class="room-code-card wait-card">
+        <span class="wait-tag">Waiting room</span>
+        <p class="wait-title">A round is in progress</p>
+        <p class="rules-note">You'll be dealt in when it ends. Only people in the waiting room can hear you until then.</p>
+      </div>
+      <div class="wait-cols">
+        <div><p class="pick-head small">At the table</p>
+          <div class="lobby-seats">${playing.map((s) => `<div class="lobby-seat dim" data-pid="${s.pid}"><span class="avatar" aria-hidden="true">${U(s.icon)}</span><span class="seat-name">${esc(s.name)}</span><span class="lobby-tag">${s.pid === room.hostId ? "Host" : s.bot ? "Computer" : "Playing"}</span></div>`).join("")}</div>
+        </div>
+        <div><p class="pick-head small">Waiting with you</p>
+          <div class="lobby-seats">${waiting.map((s) => `<div class="lobby-seat" data-pid="${s.pid}"><span class="avatar" aria-hidden="true">${U(s.icon)}</span><span class="seat-name">${s.pid === NET.pid ? `${esc(s.name)} (you)` : esc(s.name)}</span><span class="lobby-tag">${s.mic ? '<span class="mic-dot on">mic on</span>' : '<span class="mic-dot">muted</span>'}</span></div>`).join("")}</div>
+        </div>
+      </div>
     </section>`;
     wireCommon();
     y("#leave-room", () => leaveRoom());
@@ -4129,7 +4869,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     k.innerHTML = `
     <section class="setup lobby">
       <header class="bar">
-        <span class="brand">Last One</span>
+        <span class="brand">Uno-fficial</span>
         <span class="bar-gap"></span>
         ${micButton("lobby-mic")}
         ${audioButtons(!0)}
@@ -4151,6 +4891,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       </div>
       <div class="lobby-b">
       ${rouletteBox(room.spinning ? null : room.rule, { host, votes: room.votes || {}, spinning: room.spinning })}
+      ${musicLobby(room, host)}
       ${houseRules(room, host)}
       ${
         host
@@ -4165,7 +4906,7 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     y("#leave-room", () => leaveRoom());
     y("#lobby-mic", toggleMic);
     y("#copy-link", copyLink);
-    y("#share-link", () => navigator.share({ title: "Last One", text: "Join my game of Last One", url: gameLink(NET.id) }).catch(() => {}));
+    y("#share-link", () => navigator.share({ title: "Uno-fficial", text: "Join my game of Uno-fficial", url: gameLink(NET.id) }).catch(() => {}));
     y("#add-bot", () => send({ t: "addBot" }));
     k.querySelectorAll("[data-kick]").forEach((b) => b.addEventListener("click", () => send({ t: "kick", pid: b.dataset.kick })));
     y("#spin", () => send({ t: "spin" }));
@@ -4173,6 +4914,13 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
     y("#vote-keep", () => send({ t: "vote", keep: !0 }));
     y("#vote-nope", () => send({ t: "vote", keep: !1 }));
     y("#deal-online", () => send({ t: "deal" }));
+    y("#music-set", () => {
+      let v = document.getElementById("lobby-music")?.value.trim();
+      if (!parseYT(v)) return Se("Paste a YouTube playlist or video link");
+      store("lo-playlist", v);
+      send({ t: "music", url: v });
+    });
+    y("#music-clear", () => send({ t: "musicCtl", action: "clear" }));
     let pushSettings = (patch) => {
       let r = { ...room.rules, ...(patch.rules || {}) };
       send({ t: "settings", rules: r, timer: patch.timer ?? room.timer, speed: patch.speed ?? room.speed });
@@ -4259,7 +5007,10 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
   function voicePeersWanted() {
     let room = NET?.room;
     if (!room || !NET.pid) return [];
-    return room.seats.filter((s) => !s.bot && s.online && s.pid !== NET.pid);
+    // while a round is on, players and the waiting room can't hear each other
+    let me = room.seats.find((s) => s.pid === NET.pid),
+      split = room.status !== "lobby";
+    return room.seats.filter((s) => !s.bot && s.online && s.pid !== NET.pid && (!split || !!s.inGame === !!me?.inGame));
   }
   function voiceSync() {
     if (!NET?.pid || NET.ws?.readyState !== 1) return;
@@ -4457,13 +5208,14 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
           })
           .join("")}
       </div>
-      <h1>Last One</h1>
+      <h1>Uno-fficial</h1>
       <p class="lede">You've been invited to a table. Pick a name and a player, then join. Match the color or symbol and empty your hand first.</p>
       </div>
       <form id="join-form" class="setup-form">
         <label class="field"><span>Your name</span><input id="nick" maxlength="14" autocomplete="nickname" value="${esc(NICK)}" placeholder="Your name" required></label>
-        <fieldset class="icon-pick">
-          <legend>Pick your player</legend>
+        <fieldset class="icon-pick pick-step ${pe ? "" : "needs-pick"}" id="pick-step">
+          <legend><span class="step-num">1</span>Pick your player</legend>
+          <p class="pick-hint" id="pick-hint">${pe ? `You're playing as <span class="picked-name">${K[pe].name}</span>. Tap to change.` : "Tap a face to choose who you play as."}</p>
           <div class="icons">
             ${ce
               .map(
@@ -4488,12 +5240,12 @@ body { background: var(--kente-band) top left / 72px 6px repeat-x, var(--adinkra
       NICK = nick.value.trim();
       if (!NICK) return nick.focus();
       store("lo-nick", NICK);
-      pe = document.querySelector('input[name="icon"]:checked')?.value ?? pe;
-      store("lo-icon", pe);
+      if (!pickedIcon()) return;
       unlockAudio();
       connectGame(id, !1);
     });
     nick.value || nick.focus();
+    wirePicker();
   }
   function boot() {
     let id = gameIdFromUrl();

@@ -39,6 +39,22 @@ const ROOM_IDLE_MS = 30 * 60 * 1000;
 const ID_RE = /^[a-z0-9]{6,16}$/;
 const DEFAULT_RULES = { stacking: true, jumpIn: true, drawUntilPlayable: false, challengeWild4: false, noPowerFinish: false, handSize: 7, sevenZero: false };
 
+// a YouTube or YouTube Music playlist/video link -> what the players' embedded player needs
+function parseYT(raw) {
+  try {
+    const url = new URL(String(raw || "").trim());
+    const host = url.hostname.replace(/^(www|m|music)\./, "");
+    if (!/^(youtube\.com|youtu\.be|youtube-nocookie\.com)$/.test(host)) return null;
+    const ok = (x) => /^[\w-]{6,64}$/.test(x || "");
+    const list = url.searchParams.get("list");
+    const v = host === "youtu.be" ? url.pathname.slice(1).split("/")[0] : url.searchParams.get("v") || (url.pathname.match(/^\/(shorts|embed|live)\/([\w-]{11})/) || [])[2];
+    const base = { index: 0, startedAt: Date.now(), playing: true, pausedPos: 0 };
+    if (ok(list)) return { kind: "list", id: list, ...base };
+    if (/^[\w-]{11}$/.test(v || "")) return { kind: "video", id: v, ...base };
+  } catch (e) {}
+  return null;
+}
+
 function iceServers() {
   const list = [{ urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"] }];
   if (process.env.TURN_URLS)
@@ -122,6 +138,7 @@ function getRoom(id) {
       deadline: 0,
       emptySince: Date.now(),
       hostAwaySince: 0,
+      music: null,
     };
     rooms.set(id, r);
   }
@@ -175,6 +192,8 @@ function publicRoom(room) {
     ruleInPlay: room.ruleInPlay,
     votes: room.votes,
     spinning: room.spinning,
+    music: room.music,
+    now: Date.now(),
   };
 }
 
@@ -341,7 +360,7 @@ function botTick(room) {
 }
 
 /* ---------------- Messages ---------------- */
-const ACTION_FIELDS = ["type", "cardId", "color", "swapWith", "extraCardIds", "uno", "targetId"];
+const ACTION_FIELDS = ["type", "cardId", "color", "swapWith", "extraCardIds", "uno", "targetId", "blank"];
 const GAME_ACTIONS = new Set(["play", "draw", "pass", "callLastCard", "catch", "challenge"]);
 
 function handle(ws, msg) {
@@ -365,6 +384,11 @@ function handle(ws, msg) {
     case "signal": {
       const to = room.members.get(msg.to);
       if (!to || to.bot) return;
+      // during a round, players and the waiting room are kept apart
+      if (room.status !== "lobby" && room.state) {
+        const seated = (x) => room.state.players.some((p) => p.id === x);
+        if (seated(m.pid) !== seated(to.pid)) return;
+      }
       for (const c of to.conns) sendTo(c, { t: "signal", from: m.pid, data: msg.data });
       return;
     }
@@ -373,6 +397,10 @@ function handle(ws, msg) {
       const a = {};
       for (const k of ACTION_FIELDS) if (msg.a[k] !== undefined) a[k] = msg.a[k];
       if (a.extraCardIds && !Array.isArray(a.extraCardIds)) delete a.extraCardIds;
+      if (a.blank) {
+        const b = a.blank;
+        a.blank = typeof b === "object" && b ? { target: String(b.target || ""), effect: String(b.effect || ""), dare: String(b.dare || "").slice(0, 60) } : undefined;
+      }
       const e = apply(room, m.pid, a);
       if (e) {
         err(e);
@@ -413,6 +441,24 @@ function handle(ws, msg) {
       if (room.status === "playing" || !t || t.pid === m.pid) return;
       if (!t.bot) for (const c of t.conns) sendTo(c, { t: "kicked" });
       removeMember(room, t);
+      return broadcastRoom(room);
+    }
+    case "music": {
+      const mu = parseYT(msg.url);
+      if (!mu) return err("That isn't a YouTube link");
+      room.music = mu;
+      return broadcastRoom(room);
+    }
+    case "musicCtl": {
+      const mu = room.music;
+      if (!mu) return;
+      const now = Date.now();
+      if (msg.action === "clear") room.music = null;
+      else if (msg.action === "pause" && mu.playing) Object.assign(mu, { pausedPos: (now - mu.startedAt) / 1000, playing: false });
+      else if (msg.action === "play" && !mu.playing) Object.assign(mu, { startedAt: now - mu.pausedPos * 1000, playing: true });
+      else if (msg.action === "next") Object.assign(mu, { index: mu.index + 1, startedAt: now, playing: true, pausedPos: 0 });
+      else if (msg.action === "track" && Number.isInteger(msg.index) && msg.index >= 0 && msg.index < 5000) Object.assign(mu, { index: msg.index, startedAt: now });
+      else return;
       return broadcastRoom(room);
     }
     case "spin":
@@ -461,6 +507,8 @@ function hello(ws, msg) {
     if (first) {
       const s = cleanSettings(msg.settings);
       if (s) Object.assign(room, s);
+      const mu = msg.settings && parseYT(msg.settings.music);
+      if (mu) room.music = mu;
     }
     pid = "p" + rid(10);
     room.tokens.set(token, pid);

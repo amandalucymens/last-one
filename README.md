@@ -1,6 +1,6 @@
-# Last One
+# Uno-fficial
 
-**Last One** is an online card game for friends, with a Ghanaian look and built-in voice chat. Start a table, send the link, and everyone who opens it sits down to play and talk. No accounts and no downloads.
+**Uno-fficial** is an online card game for friends, with a Ghanaian look and built-in voice chat. Start a table, send the link, and everyone who opens it sits down to play and talk. No accounts and no downloads.
 
 **[Play now → last-one-xnx1.onrender.com](https://last-one-xnx1.onrender.com/)**
 
@@ -10,15 +10,18 @@
 
 - Match the top card by **colour or symbol** and be the first to empty your hand.
 - **Skip**, **Reverse**, **+2** and **+4** cards shake up the table; **wild** cards let you pick the next colour.
-- Down to your last card? Tap **Last one!** before you play it. Forget, and anyone can catch you for two extra cards.
+- Down to your last card? Tap **UNO!** before you play it. Forget, and anyone can catch you for two extra cards.
+- No card to play? The deck deals you one automatically.
+- The deck has 120 cards, including 8 Wild +4s, 2 Wild +10s, Shuffle Hands, Swap Hands and Blank Wilds that let you pick who to hit and how, even with a dare of your own.
 
 ## What makes it different
 
-- **Rule Roulette.** Before each round, the host spins a wheel for a twist rule, like *Threes Go Again* or *Blue Skips*, and the table votes to keep it or spin again.
+- **Rule Roulette.** Before each round, the host spins a wheel for a twist rule, like *Skip Everyone* or *Stack Any Draw*, and the table votes to keep it or try another.
 - **Talk while you play.** Tap the mic to chat with the table. A ring lights up around whoever is speaking.
-- **One link per game.** Share it in any chat; up to six players per table, and computer players can fill empty seats.
+- **One link per game.** Share it in any chat; up to six players per table, and computer players can fill empty seats. Anyone who arrives mid-round waits in a waiting room until the next deal.
+- **Music for the table.** The host pastes a YouTube or YouTube Music playlist and everyone hears it.
 - **House rules your way.** Stacking, jump-ins, a turn timer, starting hand size and more.
-- **Ghanaian design.** Kente-trimmed table, Adinkrahene card backs, Adinkra patterns and players in Ghanaian dress.
+- **Ghanaian design.** Emerald and cream with kente trim, Adinkrahene card backs and 20 players in Ghanaian dress.
 - **Practice mode.** Play against the computer on your own, anytime.
 
 ## Built with

@@ -5,18 +5,21 @@ const COLORS = ["red", "yellow", "green", "blue"];
 const TOGGLES = ["sevenZero", "jumpIn", "stacking", "drawUntilPlayable", "noPowerFinish", "challengeWild4"];
 
 const FALLBACK = [
-  { name: "Seven Penalty", effect: { type: "curse", value: "7", draw: 1 } },
+  { name: "Skip Everyone", effect: { type: "skipAll" } },
+  { name: "Draw to Your Color", effect: { type: "drawColor" } },
+  { name: "Zeros Discard All", effect: { type: "discardAll", value: "0" } },
+  { name: "Wilds Shuffle Hands", effect: { type: "shuffleHands" } },
+  { name: "Stack Any Draw", effect: { type: "stackAny" } },
+  { name: "Random Draws", effect: { type: "launcher" } },
+  { name: "Seven-Zero Swap", effect: { type: "toggle", rule: "sevenZero" } },
+  { name: "Jump-In On", effect: { type: "toggle", rule: "jumpIn" } },
+  { name: "Draw Till You Match", effect: { type: "toggle", rule: "drawUntilPlayable" } },
+  { name: "+4 Challenge", effect: { type: "toggle", rule: "challengeWild4" } },
   { name: "Threes Go Again", effect: { type: "bless", value: "3" } },
   { name: "Blue Skips", effect: { type: "charged", color: "blue" } },
-  { name: "Fives Pass a Card", effect: { type: "gift", value: "5" } },
   { name: "Heavier Penalties", effect: { type: "heavy", extra: 1 } },
-  { name: "Seven-Zero Swap", effect: { type: "toggle", rule: "sevenZero" } },
-  { name: "Zeros Go Again", effect: { type: "bless", value: "0" } },
-  { name: "Red Skips", effect: { type: "charged", color: "red" } },
-  { name: "Double Nine Penalty", effect: { type: "curse", value: "9", draw: 2 } },
-  { name: "Jump-In On", effect: { type: "toggle", rule: "jumpIn" } },
-  { name: "Twos Pass a Card", effect: { type: "gift", value: "2" } },
-  { name: "Green Skips", effect: { type: "charged", color: "green" } },
+  { name: "Seven Penalty", effect: { type: "curse", value: "7", draw: 1 } },
+  { name: "Fives Pass a Card", effect: { type: "gift", value: "5" } },
 ];
 
 function cleanRule(r) {
@@ -30,6 +33,8 @@ function cleanRule(r) {
   else if (ef.type === "charged" && COLORS.includes(ef.color)) out = { type: "charged", color: ef.color };
   else if (ef.type === "heavy") out = { type: "heavy", extra: Number(ef.extra) === 2 ? 2 : 1 };
   else if (ef.type === "toggle" && TOGGLES.includes(ef.rule)) out = { type: "toggle", rule: ef.rule };
+  else if (["skipAll", "drawColor", "shuffleHands", "stackAny", "launcher"].includes(ef.type)) out = { type: ef.type };
+  else if (ef.type === "discardAll" && digit(ef.value)) out = { type: "discardAll", value: digit(ef.value) };
   if (!out) return null;
   const name = String(r.name || "").replace(/\s+/g, " ").trim().slice(0, 28) || "Mystery Rule";
   return { name, pitch: "", effect: out, ai: !!r.ai };
@@ -38,6 +43,7 @@ function cleanRule(r) {
 function applyRule(rules, rule) {
   const out = { ...rules, roulette: rule && rule.effect ? rule.effect : null };
   if (rule && rule.effect && rule.effect.type === "toggle") out[rule.effect.rule] = true;
+  if (rule && rule.effect && rule.effect.type === "stackAny") out.stacking = true;
   return out;
 }
 
@@ -55,7 +61,13 @@ Pick exactly ONE effect from this kit, which is all the game can enforce:
 - {"type":"gift","value":"0"-"9"}: playing that number hands the player's highest number card to the next player.
 - {"type":"heavy","extra":1 or 2}: every +2 and +4 adds that many extra cards.
 - {"type":"toggle","rule":"sevenZero"|"jumpIn"|"stacking"|"drawUntilPlayable"|"noPowerFinish"|"challengeWild4"}: switches on a classic house rule.
-Name it plainly so a player knows what it does at a glance: 2-4 words, no themes, puns or invented words (good: "Sevens Go Again", "Blue Skips", "Heavier Penalties"). Avoid repeating these recent rules: ${recent.join(", ") || "none"}.
+- {"type":"skipAll"}: a skip card skips everyone, so the player goes again.
+- {"type":"drawColor"}: a wild +4 makes the next player draw until they get the chosen color.
+- {"type":"discardAll","value":"0"-"9"}: playing that number also discards all the player's cards of that color.
+- {"type":"shuffleHands"}: a plain wild shuffles every hand together and deals them out again.
+- {"type":"stackAny"}: +2 and +4 cards can be stacked on each other.
+- {"type":"launcher"}: a player with no match gets a random 0 to 4 cards instead of drawing 1.
+Name it plainly so a player knows what it does at a glance: 2-4 words, no themes, puns, invented words or brand names (good: "Skip Everyone", "Blue Skips", "Stack Any Draw"). Avoid repeating these recent rules: ${recent.join(", ") || "none"}.
 Reply with JSON only: {"name": string, "effect": {...}}`;
 
 /* Uses OpenAI when OPENAI_API_KEY is set; otherwise, or on any failure, a built-in twist. */
