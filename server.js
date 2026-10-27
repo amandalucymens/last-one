@@ -18,7 +18,7 @@ const R = require("./rules");
 const PORT = Number(process.env.PORT) || 3000;
 const INDEX_PATH = path.join(__dirname, "public", "index.html");
 // player avatars and whether each shows a woman (f) or a man (m); keys match public/index.html
-const ICON_G = { blue: "f", red: "m", gele: "f", green: "m", orange: "f", teal: "m", purple: "f", jersey: "m", queen: "f", bucket: "m", bantu: "f", white: "m", buns: "f", durag: "m", locs: "f", twists: "m", bun: "f", brown: "m", dj: "f", grad: "m" };
+const ICON_G = { queen: "f", green: "m", buns: "f", bucket: "m", dj: "f", twists: "m", bantu: "f", durag: "m", locs: "f", jersey: "m" };
 const ICONS = Object.keys(ICON_G);
 const BOTS = [
   { name: "Ama", g: "f" },
@@ -84,6 +84,13 @@ const server = http.createServer(async (req, res) => {
     if (req.method !== "GET" && req.method !== "HEAD") return send(405, "text/plain", "Method not allowed");
     if (p === "/" || /^\/g\/[a-z0-9]{6,16}\/?$/.test(p)) return send(200, "text/html; charset=utf-8", indexHtml());
     if (p === "/healthz") return send(200, "text/plain", "ok");
+    // which players are already taken at a table, so the invite screen can grey them out
+    const peek = p.match(/^\/api\/room\/([a-z0-9]{6,16})$/);
+    if (peek) {
+      const room = rooms.get(peek[1]);
+      const taken = room ? room.order.map((id) => room.members.get(id)?.icon).filter(Boolean) : [];
+      return send(200, "application/json", JSON.stringify({ taken, players: taken.length, status: room ? room.status : "new" }));
+    }
     if (p === "/config") return send(200, "application/json", JSON.stringify({ iceServers: iceServers() }));
     if (p === "/api/spin") {
       const ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
@@ -401,10 +408,15 @@ function handle(ws, msg) {
   const err = (text) => sendTo(ws, { t: "error", msg: text });
 
   switch (msg.t) {
-    case "profile":
-      m.name = cleanName(msg.name);
-      m.icon = freeIcon(room, msg.icon, m.pid);
+    case "profile": {
+      m.name = cleanName(msg.name || m.name);
+      if (msg.icon && msg.icon !== m.icon) {
+        const taken = room.order.some((id) => id !== m.pid && room.members.get(id)?.icon === msg.icon);
+        if (taken || !ICONS.includes(msg.icon)) err("Someone already has that player");
+        else m.icon = msg.icon;
+      }
       return broadcastRoom(room);
+    }
     case "mic":
       m.mic = !!msg.on;
       return broadcastRoom(room);

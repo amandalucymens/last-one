@@ -1771,6 +1771,21 @@ body {
 
 .out-notice { width: min(420px, calc(100vw - 32px)); }
 .on-text { flex: 1; min-width: 0; }
+
+/* ---- one character per player */
+.icon-opt.taken { cursor: not-allowed; position: relative; }
+.icon-opt.taken span[aria-hidden] { filter: grayscale(1) brightness(.6); opacity: .45; box-shadow: none; }
+.icon-opt.taken::after {
+  content: "Taken"; position: absolute; left: 50%; bottom: -4px; transform: translateX(-50%);
+  font-size: 10px; font-weight: 800; letter-spacing: .04em; padding: 0 6px; border-radius: 999px;
+  background: var(--panel); color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); pointer-events: none;
+}
+.icon-swap { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 12px; border-radius: 16px; background: var(--panel); box-shadow: 0 5px 0 var(--panel-edge), inset 0 0 0 1px var(--line); width: 100%; box-sizing: border-box; }
+.swap-opt { border: 0; padding: 0; background: none; cursor: pointer; font: inherit; }
+.swap-opt span[aria-hidden] { display: grid; place-items: center; aspect-ratio: 1; border-radius: 50%; padding: 3px; background: var(--panel-2); }
+.swap-opt.mine span[aria-hidden] { background: var(--yellow); }
+.swap-opt:not(:disabled):hover span[aria-hidden] { transform: translateY(-2px); }
+.lobby-seat #change-icon { grid-area: x; justify-self: start; padding: 2px 0; font-size: 12px; }
 </style>
 
 <main id="app"></main>
@@ -2507,29 +2522,19 @@ body {
     for (let t of e) t.color && n.set(t.color, n.get(t.color) + 1);
     return [...n.entries()].sort((t, a) => a[1] - t[1])[0][0];
   }
-  /* Avatars: 20 players in Ghanaian dress, ten women and ten men, alternating. Flat and minimal.
+  /* Avatars: 10 Gen Z players in Ghanaian style, five women and five men (a queen and a king among them). Flat and minimal.
      Keys are stored by the server, so keep them stable. */
   var K = {
-      blue: { name: "Indigo duku", g: "f", skin: "#8d5a3b", bg: "#dfe6f2", cloth: "#1f4f9e", hat: "duku", hatColor: "#1f4f9e", ear: "stud" },
-      red: { name: "Kente kufi", g: "m", skin: "#6b4028", bg: "#f3e3c3", cloth: "#1a110a", hat: "kufi" },
-      gele: { name: "Gele queen", g: "f", skin: "#5a3825", bg: "#fbe3d0", cloth: "kaba", clothColor: "#c8102e", hat: "gele", hatColor: "#0f8a45", ear: "hoop" },
-      green: { name: "Chief's crown", g: "m", skin: "#5a3825", bg: "#e4efe2", cloth: "kente", hat: "crown" },
-      orange: { name: "Afro puff", g: "f", skin: "#a06a43", bg: "#f6e0cc", cloth: "#d4622a", hat: "puff", ear: "stud" },
-      teal: { name: "Fugu smock", g: "m", skin: "#4a2c1b", bg: "#dcefea", cloth: "smock", hat: "none", beard: "#1a110a" },
-      purple: { name: "Gold beads", g: "f", skin: "#7b4a2d", bg: "#efe2ef", cloth: "#5b3a7a", hat: "braids", beads: !0 },
-      jersey: { name: "Black Stars fan", g: "m", skin: "#4a2c1b", bg: "#fdf0c4", cloth: "jersey", hat: "hightop" },
-      queen: { name: "Queen mother", g: "f", skin: "#6b4028", bg: "#f7dfe1", cloth: "kente", hat: "queencrown", ear: "stud", beads: !0 },
-      bucket: { name: "Bucket hat", g: "m", skin: "#8d5a3b", bg: "#f8ecc7", cloth: "hoodie", clothColor: "#0f8a45", hat: "bucket", ear: "pod" },
-      bantu: { name: "Bantu knots", g: "f", skin: "#3f2618", bg: "#e6dcf5", cloth: "#0f8a45", hat: "bantu", ear: "hoop", nose: !0 },
-      white: { name: "Elder", g: "m", skin: "#5a3825", bg: "#ecebe6", cloth: "#f4f1ea", hat: "bald", beard: "#e9e6df" },
+      queen: { name: "Queen", g: "f", skin: "#6b4028", bg: "#f7dfe1", cloth: "kente", hat: "queencrown", ear: "stud", beads: !0 },
+      green: { name: "King", g: "m", skin: "#5a3825", bg: "#e4efe2", cloth: "kente", hat: "crown" },
       buns: { name: "Space buns", g: "f", skin: "#a06a43", bg: "#e9f1d8", cloth: "crop", clothColor: "#b07cff", hat: "spacebuns", specs: "tint", ear: "stud", nose: !0 },
+      bucket: { name: "Bucket hat", g: "m", skin: "#8d5a3b", bg: "#f8ecc7", cloth: "hoodie", clothColor: "#0f8a45", hat: "bucket", ear: "pod" },
+      dj: { name: "DJ headphones", g: "f", skin: "#5a3825", bg: "#d8f3ec", cloth: "#1a110a", hat: "phones", ear: "none" },
+      twists: { name: "Blond twists", g: "m", skin: "#3f2618", bg: "#e8e1d4", cloth: "hoodie", clothColor: "#1a110a", hat: "twists", chain: !0, ear: "stud" },
+      bantu: { name: "Bantu knots", g: "f", skin: "#3f2618", bg: "#e6dcf5", cloth: "#0f8a45", hat: "bantu", ear: "hoop", nose: !0 },
       durag: { name: "Durag and shades", g: "m", skin: "#6b4028", bg: "#d7e9f7", cloth: "#f4f1ea", hat: "durag", hatColor: "#1f4f9e", specs: "shades", goatee: !0 },
       locs: { name: "Locs and cowries", g: "f", skin: "#7b4a2d", bg: "#f6e7c1", cloth: "#9a3b1e", hat: "locs", ear: "stud" },
-      twists: { name: "Blond twists", g: "m", skin: "#3f2618", bg: "#e8e1d4", cloth: "hoodie", clothColor: "#1a110a", hat: "twists", chain: !0, ear: "stud" },
-      bun: { name: "Top bun", g: "f", skin: "#a06a43", bg: "#f9dde4", cloth: "#e4572e", hat: "bun", ear: "hoop", blush: !0 },
-      brown: { name: "Fila cap", g: "m", skin: "#7b4a2d", bg: "#f0e2d2", cloth: "#9a7440", hat: "fila" },
-      dj: { name: "DJ headphones", g: "f", skin: "#5a3825", bg: "#d8f3ec", cloth: "#1a110a", hat: "phones", ear: "none" },
-      grad: { name: "Graduate", g: "m", skin: "#8d5a3b", bg: "#e9e4f7", cloth: "gown", hat: "gradcap" },
+      jersey: { name: "Black Stars fan", g: "m", skin: "#4a2c1b", bg: "#fdf0c4", cloth: "jersey", hat: "hightop" },
     },
     qe = Object.keys(K);
   var KENTE = ["#f2b705", "#0f8a45", "#f2b705", "#c8102e", "#1a110a"];
@@ -5047,6 +5052,8 @@ body {
     ue = oe[room.speed] ?? ue;
     voiceSync();
     let me = room.seats.find((s) => s.pid === NET.pid);
+    if (me && pe && me.icon !== pe) Se(`That player was taken, so you're ${K[me.icon]?.name || "someone else"}`);
+    me && ((pe = me.icon), store("lo-icon", pe));
     if (room.status === "lobby") {
       if (u) (clearInterval(Ie), (N = !1), (u = null));
       return renderLobby();
@@ -5132,6 +5139,7 @@ body {
               <span class="seat-name">${s.pid === NET.pid ? `${esc(s.name)} (you)` : esc(s.name)}</span>
               <span class="lobby-tag">${s.pid === room.hostId ? "Host" : s.bot ? "Computer" : s.online ? "Player" : "Reconnecting…"}${!s.bot ? (s.mic ? ' · <span class="mic-dot on">mic on</span>' : ' · <span class="mic-dot">muted</span>') : ""}</span>
               ${host && s.pid !== NET.pid ? `<button class="btn btn-quiet sm" data-kick="${s.pid}" type="button" aria-label="Remove ${esc(s.name)}">Remove</button>` : ""}
+              ${s.pid === NET.pid && room.status === "lobby" ? '<button class="btn btn-quiet sm" id="change-icon" type="button">Change</button>' : ""}
             </div>`,
           )
           .join("")}
@@ -5139,6 +5147,19 @@ body {
       </div>`;
   }
 
+  var CHANGE_OPEN = !1;
+  function iconSwap(room) {
+    let taken = room.seats.filter((s) => s.pid !== NET.pid).map((s) => s.icon),
+      mine = room.seats.find((s) => s.pid === NET.pid)?.icon;
+    return `<div class="icon-swap" aria-label="Choose a different player">
+      ${qe
+        .map(
+          (ic) =>
+            `<button type="button" class="icon-opt swap-opt ${taken.includes(ic) ? "taken" : ""} ${ic === mine ? "mine" : ""}" data-newicon="${ic}" ${taken.includes(ic) || ic === mine ? "disabled" : ""} title="${taken.includes(ic) ? "Taken" : K[ic].name}"><span aria-hidden="true">${U(ic)}</span><span class="sr">${K[ic].name}${taken.includes(ic) ? " (taken)" : ""}</span></button>`,
+        )
+        .join("")}
+    </div>`;
+  }
   function micButton(id) {
     let on = VOICE.micOn;
     return `<button class="mic ${on ? "on" : "off"} lobby-mic-btn" id="${id}" type="button" aria-pressed="${on}" aria-label="${on ? "Mute your mic" : "Turn on your mic"}">${on ? Zn : Ze}</button>`;
@@ -5207,6 +5228,7 @@ body {
         <span class="rules-note">Anyone with the link can join, up to 6 players. Tap the mic to talk.</span>
       </div>
       ${seatList(room, host)}
+      ${CHANGE_OPEN ? iconSwap(room) : ""}
       ${leaderboardHtml()}
       </div>
       <div class="lobby-b">
@@ -5228,6 +5250,13 @@ body {
     y("#copy-link", copyLink);
     y("#share-link", () => navigator.share({ title: "Uno-fficial", text: "Join my game of Uno-fficial", url: gameLink(NET.id) }).catch(() => {}));
     y("#add-bot", () => send({ t: "addBot" }));
+    y("#change-icon", () => ((CHANGE_OPEN = !CHANGE_OPEN), renderLobby()));
+    k.querySelectorAll("[data-newicon]").forEach((b) =>
+      b.addEventListener("click", () => {
+        CHANGE_OPEN = !1;
+        send({ t: "profile", icon: b.dataset.newicon });
+      }),
+    );
     k.querySelectorAll("[data-kick]").forEach((b) => b.addEventListener("click", () => send({ t: "kick", pid: b.dataset.kick })));
     y("#spin", () => send({ t: "spin" }));
     y("#clear-rule", () => send({ t: "clearRule" }));
@@ -5566,6 +5595,36 @@ body {
     });
     nick.value || nick.focus();
     wirePicker();
+    watchTaken(id);
+  }
+  // grey out characters other players at this table already have
+  function markTaken(taken, keep) {
+    document.querySelectorAll(".icon-opt").forEach((l) => {
+      let inp = l.querySelector("input"),
+        t = taken.includes(inp.value) && inp.value !== keep;
+      l.classList.toggle("taken", t);
+      l.title = t ? "Taken" : "";
+      inp.disabled = t;
+      if (t && inp.checked) {
+        inp.checked = !1;
+        pe = "";
+        let f = document.getElementById("pick-step"),
+          h = document.getElementById("pick-hint");
+        f && f.classList.add("needs-pick");
+        h && (h.textContent = "Someone just took that one. Pick another face.");
+      }
+    });
+  }
+  function watchTaken(id) {
+    let tick = async () => {
+      if (!document.getElementById("join-form")) return;
+      try {
+        let r = await fetch("/api/room/" + id, { cache: "no-store" });
+        r.ok && markTaken((await r.json()).taken || []);
+      } catch (e) {}
+      setTimeout(tick, 3000);
+    };
+    tick();
   }
   function boot() {
     let id = gameIdFromUrl();

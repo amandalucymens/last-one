@@ -23,7 +23,7 @@
 - **Music for the table.** The host pastes a YouTube or YouTube Music playlist and everyone hears it.
 - **Leaderboard.** Each table tracks wins and losses across rounds, with a trophy bubble on every player.
 - **House rules your way.** Stacking, jump-ins, a turn timer, starting hand size and more.
-- **Ghanaian design.** Emerald and cream with kente trim, Adinkrahene card backs and 20 players in Ghanaian dress.
+- **Ghanaian design.** Emerald and cream with kente trim, Adinkrahene card backs and 10 Gen Z players, including a king and a queen.
 - **Practice mode.** Play against the computer on your own, anytime.
 
 ## Built with
