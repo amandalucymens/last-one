@@ -139,6 +139,8 @@ function getRoom(id) {
       emptySince: Date.now(),
       hostAwaySince: 0,
       music: null,
+      stats: {}, // pid -> {name, icon, wins, losses, played}: the table's leaderboard
+      held: false,
     };
     rooms.set(id, r);
   }
@@ -193,6 +195,7 @@ function publicRoom(room) {
     votes: room.votes,
     spinning: room.spinning,
     music: room.music,
+    stats: room.stats,
     now: Date.now(),
   };
 }
@@ -236,6 +239,8 @@ function deal(room) {
     firstPlayer: crypto.randomInt(seats.length),
   });
   room.status = "playing";
+  room.evSeen = room.state.events.length;
+  room.held = false;
   room.round++;
   room.turnStart = Date.now();
   armTurnTimer(room);
@@ -263,15 +268,29 @@ function afterChange(room, before, actor, type) {
   if (s.phase === "finished") {
     room.status = "finished";
     clearTimers(room);
+    for (const pl of s.players) {
+      const mb = room.members.get(pl.id);
+      const st = (room.stats[pl.id] ||= { name: pl.name, icon: mb?.icon || "blue", wins: 0, losses: 0, played: 0 });
+      st.name = mb?.name || st.name;
+      st.icon = mb?.icon || st.icon;
+      st.played++;
+      if (pl.id === s.winnerId) st.wins++;
+      if (pl.id === s.loserId) st.losses++;
+    }
     broadcastState(room);
     broadcastRoom(room);
     return;
   }
   const now = currentPid(room);
-  if (now !== before || (type === "play" && now === actor)) room.turnStart = Date.now();
+  if (now !== before || (type === "play" && now === actor)) (room.turnStart = Date.now()), (room.held = false);
+  // give everyone a moment to take in a swap or shuffle before play moves on
+  const recent = s.events.slice(room.evSeen || 0);
+  room.evSeen = s.events.length;
+  const big = recent.some((e) => e.kind === "swap" || e.kind === "shuffleHands" || (e.kind === "roulette" && e.effect === "shuffle"));
+  if (big) room.turnStart += 1800;
   armTurnTimer(room);
   broadcastState(room);
-  scheduleBots(room);
+  scheduleBots(room, big ? 1800 : 0);
 }
 
 function clearTimers(room) {
@@ -355,7 +374,15 @@ function botTick(room) {
   }
   for (const id of ids) {
     const a = E.Be(E.z(room.state, id), { jumpInChance: 0.3, catchChance: 0.45 });
-    if (a && !apply(room, id, a)) return;
+    if (!a) continue;
+    const err = apply(room, id, a);
+    if (!err) return;
+    console.warn("bot move rejected:", id, a.type, err);
+  }
+  // never let a computer player's turn stall: draw, or pass after drawing
+  const cur = currentPid(room);
+  if (room.members.get(cur)?.bot) {
+    if (apply(room, cur, { type: "draw" }) && apply(room, cur, { type: "pass" })) scheduleBots(room, 400);
   }
 }
 
@@ -407,6 +434,14 @@ function handle(ws, msg) {
         sendState(room, m);
       }
       return;
+    }
+    case "hold": {
+      // a player picking a Blank Wild's target or typing a dare gets 30 more seconds, once per turn
+      if (room.status !== "playing" || currentPid(room) !== m.pid || room.held || !room.timer) return;
+      room.held = true;
+      room.turnStart += 30000;
+      armTurnTimer(room);
+      return sendState(room, m);
     }
     case "vote":
       if (room.status === "playing" || !room.rule) return;

@@ -1675,6 +1675,102 @@ body {
 @media (min-width: 1000px) { .opt-grid { background: none; box-shadow: none; } }
 .lobby .bar { flex-wrap: nowrap; gap: 4px; }
 @media (max-width: 560px) { .lobby .bar .btn-quiet:not(.icon-btn) { padding: 6px 8px; } .lobby .bar .icon-btn { width: 30px; } .lobby .lobby-mic-btn { width: 30px; height: 30px; padding: 6px; } }
+
+/* ---- leaderboard */
+.leaderboard { display: grid; gap: 8px; padding: 12px 14px; border-radius: 16px; width: 100%; box-sizing: border-box; background: var(--panel); color: var(--cream); box-shadow: 0 5px 0 var(--panel-edge), inset 0 0 0 1px var(--line); --muted: #a9c4b8; }
+.lb-head { display: flex; align-items: baseline; gap: 8px; }
+.lb-head strong { font-family: var(--font-display); font-weight: 800; color: var(--yellow); }
+.lb-head .rules-note { flex: 1; margin: 0; font-size: 12px; }
+.lb-reset { padding: 2px 8px; font-size: 12px; }
+.lb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.lb-list li { display: grid; grid-template-columns: 18px 30px minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 10px; background: var(--panel-2); font-size: 14px; }
+.lb-list li.me { box-shadow: inset 0 0 0 1px var(--yellow); }
+.lb-list li:first-child .lb-rank { color: var(--yellow); }
+.lb-rank { font-weight: 800; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.lb-list .avatar { width: 30px; height: 30px; border-radius: 50%; overflow: hidden; display: block; }
+.lb-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-stat { display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-variant-numeric: tabular-nums; min-width: 34px; justify-content: flex-end; }
+.lb-stat svg { width: 14px; height: 14px; }
+.lb-stat.win { color: var(--yellow); }
+.lb-stat.loss { color: #ff8a95; }
+.recap-win .leaderboard { box-shadow: inset 0 0 0 1px var(--line); }
+
+/* ---- win bubble and finishing place on seats */
+.seat .avatar { position: relative; overflow: visible; }
+.win-bubble {
+  position: absolute; left: -6px; top: -6px; z-index: 2; display: inline-flex; align-items: center; gap: 1px;
+  padding: 1px 5px 1px 3px; border-radius: 999px; background: var(--yellow); color: var(--ink-dark);
+  font: 800 11px/1.2 var(--font-body); box-shadow: 0 0 0 2px var(--room-deep);
+}
+.win-bubble svg { width: 11px; height: 11px; }
+.place-tag { font-size: 11px; font-weight: 800; padding: 1px 8px; border-radius: 999px; background: var(--yellow); color: var(--ink-dark); }
+.ring .seat.out { opacity: .55 !important; filter: none !important; }
+.ring .seat.out .avatar { box-shadow: 0 0 0 3px var(--yellow), 0 4px 0 3px var(--yellow-edge); }
+
+/* ---- game over: who was left holding cards, finishing order */
+.loser-line { display: inline-flex; align-items: center; gap: 8px; }
+.loser-line .avatar { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; display: inline-block; box-shadow: 0 0 0 2px #ff8a95; }
+.places { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.places li { display: inline-flex; gap: 5px; align-items: center; padding: 3px 10px; border-radius: 999px; background: var(--panel-2); font-size: 13px; }
+.places li b { color: var(--yellow); }
+.places li.last b { color: #ff8a95; }
+.recap-win { max-height: calc(100vh - 32px); overflow-y: auto; }
+
+/* ---- swap / shuffle notice */
+.big-notice {
+  position: fixed; left: 50%; top: 38%; z-index: 35; transform: translate(-50%, -50%);
+  display: grid; justify-items: center; gap: 6px; text-align: center; width: min(400px, calc(100vw - 32px)); box-sizing: border-box;
+  padding: 18px 20px; border-radius: 22px; background: var(--panel); color: var(--cream);
+  box-shadow: 0 10px 0 var(--panel-edge), 0 0 0 3px var(--yellow), 0 30px 60px rgba(0, 0, 0, .45);
+  animation: bn-in 2.6s cubic-bezier(.2, 1.3, .4, 1) forwards;
+}
+@keyframes bn-in { 0% { transform: translate(-50%, -50%) scale(.3) rotate(-8deg); opacity: 0; } 12% { transform: translate(-50%, -50%) scale(1.06) rotate(2deg); opacity: 1; } 22% { transform: translate(-50%, -50%) scale(1) rotate(0); } 85% { opacity: 1; } 100% { transform: translate(-50%, -60%) scale(.96); opacity: 0; } }
+.bn-faces { display: flex; align-items: center; gap: 14px; }
+.bn-face { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 3px var(--yellow); display: block; }
+.bn-face .av { width: 100%; height: 100%; }
+.bn-arrows { font-size: 34px; color: var(--yellow); animation: bn-spin 1s ease-in-out 2; }
+@keyframes bn-spin { 50% { transform: rotate(180deg) scale(1.2); } }
+.bn-title { font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--yellow); }
+.bn-sub { font-size: 15px; font-weight: 600; }
+.bn-cards { position: relative; width: 120px; height: 70px; }
+.bn-cards i { position: absolute; left: 44px; top: 4px; width: 34px; height: 50px; border-radius: 5px; background: #24170e; box-shadow: inset 0 0 0 2px var(--yellow); animation: bn-shuffle 1.1s ease-in-out 2; }
+.bn-cards i:nth-child(1) { --dx: -40px; --r: -18deg; }
+.bn-cards i:nth-child(2) { --dx: -14px; --r: -6deg; animation-delay: .08s; }
+.bn-cards i:nth-child(3) { --dx: 14px; --r: 6deg; animation-delay: .16s; }
+.bn-cards i:nth-child(4) { --dx: 40px; --r: 18deg; animation-delay: .24s; }
+@keyframes bn-shuffle { 50% { transform: translateX(var(--dx)) rotate(var(--r)); } }
+.out-notice {
+  position: fixed; left: 50%; top: calc(70px + env(safe-area-inset-top, 0px)); z-index: 34; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 8px; border-radius: 999px;
+  background: var(--panel); color: var(--cream); box-shadow: 0 6px 0 var(--panel-edge), 0 0 0 2px var(--yellow);
+  animation: dare-in .38s cubic-bezier(.2, 1.4, .4, 1); max-width: calc(100vw - 32px); box-sizing: border-box;
+}
+.on-face { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex: none; }
+.on-place { font-family: var(--font-display); font-weight: 900; color: var(--yellow); font-size: 18px; }
+.on-text { font-weight: 700; font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { .big-notice, .bn-arrows, .bn-cards i { animation: none; } }
+
+/* ---- penalty board badges for swaps and blanks */
+.pen-n.swap { background: var(--yellow); color: var(--ink-dark); }
+.pen-n.blank { background: var(--cream); color: var(--ink-dark); }
+
+/* ---- dare form: ideas to tap, room above the phone keyboard */
+.dare-form { display: grid; gap: 10px; width: 100%; }
+.dare-form[hidden] { display: none; }
+.dare-ideas { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.dare-idea { font-size: 12px; padding: 5px 10px; cursor: pointer; background: transparent; }
+.dare-note { margin: 0; text-align: center; font-size: 12px; }
+#dare-text { font-size: 16px; }
+.scrim.typing { align-items: start; padding-top: calc(12px + env(safe-area-inset-top, 0px)); }
+.scrim.typing .blank-fx { display: none; }
+
+.lb-list li > * { grid-area: auto; }
+.dare-form { grid-template-columns: minmax(0, 1fr); }
+.dare-row #dare-text { width: 0; flex: 1 1 auto; }
+.loser-line .avatar { grid-area: auto; }
+
+.out-notice { width: min(420px, calc(100vw - 32px)); }
+.on-text { flex: 1; min-width: 0; }
 </style>
 
 <main id="app"></main>
@@ -1920,13 +2016,13 @@ body {
       return "Choose a color for the wild card";
     let v = (e.rules.sevenZero && s.value === "7") || s.value === "wildSwap",
       L = -1;
-    if (v && ((L = e.players.findIndex((h) => h.id === l)), L < 0 || L === n))
+    if (v && ((L = e.players.findIndex((h) => h.id === l)), L < 0 || L === n || e.players[L].out))
       return "Choose another player to swap hands with";
     let bl = null;
     if (s.value === "wildBlank") {
       let b = t.blank || {},
         ti = e.players.findIndex((h) => h.id === b.target);
-      if (ti < 0 || ti === n) return "Pick who your blank card hits";
+      if (ti < 0 || ti === n || e.players[ti].out) return "Pick who your blank card hits";
       if (!BLANK_FX.includes(b.effect)) return "Pick what your blank card does";
       let dare = String(b.dare || "").replace(/\s+/g, " ").trim().slice(0, 60);
       if (b.effect === "dare" && !dare) return "Write a dare first";
@@ -1954,25 +2050,19 @@ body {
         jumpIn: c,
         ...(I > 1 ? { cards: M } : {}),
       }),
-      o.hand.length === 0)
+      o.hand.length === 0 && finishPlayer(e, n))
     )
-      return (
-        (e.phase = "finished"),
-        (e.winnerId = o.id),
-        (e.pendingDraw = 0),
-        e.events.push({ kind: "win", playerId: o.id }),
-        null
-      );
+      return null;
     (o.hand.length === 1 &&
       !o.calledLastCard &&
       t.uno &&
       ((o.calledLastCard = !0),
       e.events.push({ kind: "callLastCard", playerId: o.id })),
       o.hand.length === 1 && !o.calledLastCard && (e.vulnerableId = o.id));
-    let Ee = e.players.length;
+    let Ee = activeCount(e) + (o.out ? 1 : 0);
     switch (s.value) {
       case "skip": {
-        if (e.rules.roulette?.type === "skipAll") {
+        if (e.rules.roulette?.type === "skipAll" && !o.out) {
           for (let h = 1; h < Ee; h++) e.events.push({ kind: "skip", playerId: e.players[C(e, n, h)].id });
           e.events.push({ kind: "roulette", playerId: o.id, effect: "skipAll" });
           e.turn = n;
@@ -1987,7 +2077,7 @@ body {
         for (let h = 0; h < I; h++)
           ((e.direction = e.direction === 1 ? -1 : 1),
             e.events.push({ kind: "reverse", direction: e.direction }));
-        e.turn = Ee === 2 ? n : C(e, n, 1);
+        e.turn = Ee === 2 && !o.out ? n : C(e, n, 1);
         break;
       case "draw2":
       case "wild4":
@@ -2000,7 +2090,7 @@ body {
             k = drawUntil(e, w, (c) => c.color === e.currentColor || $(c), 25);
           e.events.push({ kind: "roulette", playerId: o.id, targetId: e.players[w].id, effect: "drawColor", count: k });
           e.turn = C(e, n, 2);
-        } else if (s.value === "wild4" && e.rules.challengeWild4) {
+        } else if (s.value === "wild4" && e.rules.challengeWild4 && !o.out) {
           ((e.pendingDraw += h),
             e.pendingDraw > h &&
               e.events.push({ kind: "stack", total: e.pendingDraw }));
@@ -2020,7 +2110,7 @@ body {
         break;
       }
       default:
-        if (v) {
+        if (v && !o.out) {
           let h = e.players[L];
           (([o.hand, h.hand] = [h.hand, o.hand]),
             (o.calledLastCard = !1),
@@ -2030,7 +2120,7 @@ body {
         } else if (e.rules.sevenZero && s.value === "0") {
           let h = e.players.map((w) => w.hand);
           e.players.forEach((w, P) => {
-            e.players[C(e, P, 1)].hand = h[P];
+            w.out || (e.players[C(e, P, 1)].hand = h[P]);
           });
           for (let w of e.players) w.calledLastCard = !1;
           ((e.vulnerableId = null),
@@ -2052,7 +2142,7 @@ body {
       let t = C(e, n, 1);
       e.events.push({ kind: "roulette", playerId: me.id, targetId: e.players[t].id, effect: "curse" });
       Y(e, t, r.draw * I, !0);
-    } else if (r.type === "bless" && s.value === r.value) {
+    } else if (r.type === "bless" && s.value === r.value && !me.out) {
       e.turn = n;
       e.events.push({ kind: "roulette", playerId: me.id, effect: "bless" });
     } else if (r.type === "charged" && s.color === r.color) {
@@ -2066,12 +2156,8 @@ body {
         me.hand = me.hand.filter((c) => c.color !== s.color);
         e.discardPile.splice(e.discardPile.length - 1, 0, ...drop);
         e.events.push({ kind: "roulette", playerId: me.id, effect: "discardAll", count: drop.length });
-        if (me.hand.length === 0) {
-          e.phase = "finished";
-          e.winnerId = me.id;
-          e.pendingDraw = 0;
-          e.events.push({ kind: "win", playerId: me.id });
-        } else if (me.hand.length === 1 && !me.calledLastCard) e.vulnerableId = me.id;
+        if (me.hand.length === 0) finishPlayer(e, n);
+        else if (me.hand.length === 1 && !me.calledLastCard) e.vulnerableId = me.id;
       }
     } else if (r.type === "gift" && s.value === r.value && me.hand.length > 1) {
       let t = C(e, n, 1),
@@ -2093,7 +2179,9 @@ body {
       sh;
     [sh, e.rngState] = ge(all, e.rngState);
     e.players.forEach((x) => ((x.hand = []), (x.calledLastCard = !1)));
-    sh.forEach((c, i) => e.players[C(e, n, i + 1)].hand.push(c));
+    let order = [];
+    for (let i = 1; order.length < activeCount(e); i++) order.push(C(e, n, i));
+    sh.forEach((c, i) => e.players[order[i % order.length]].hand.push(c));
     e.vulnerableId = null;
     e.events.push(twist ? { kind: "roulette", playerId: e.players[n].id, effect: "shuffle" } : { kind: "shuffleHands", playerId: e.players[n].id });
   }
@@ -2103,7 +2191,7 @@ body {
     e.events.push({ kind: "blank", playerId: me.id, targetId: t.id, effect: b.effect, ...(b.dare ? { dare: b.dare } : {}) });
     if (b.effect === "draw2" || b.effect === "draw4") Y(e, b.ti, b.effect === "draw2" ? 2 : 4, !0);
     else if (b.effect === "skip") t.skipNext = !0;
-    else if (b.effect === "swap") {
+    else if (b.effect === "swap" && !me.out) {
       [me.hand, t.hand] = [t.hand, me.hand];
       me.calledLastCard = t.calledLastCard = !1;
       e.vulnerableId = null;
@@ -2198,6 +2286,7 @@ body {
   }
   function pn(e, n) {
     let t = e.players[n];
+    if (t.out) return "You're already out";
     return t.hand.length > 2
       ? "Call it at 2 cards or fewer"
       : t.calledLastCard
@@ -2236,8 +2325,38 @@ body {
       (e.turn = C(e, e.turn, 1)));
   }
   function C(e, n, t) {
-    let a = e.players.length;
-    return (((n + e.direction * t) % a) + a) % a;
+    let a = e.players.length,
+      i = n;
+    for (let s = 0; s < t; s++) {
+      let g = 0;
+      do i = (((i + e.direction) % a) + a) % a;
+      while (e.players[i].out && ++g < a);
+    }
+    return i;
+  }
+  var activeCount = (e) => e.players.filter((x) => !x.out).length;
+  // a player who empties their hand finishes in the next place; the round ends when one is left holding cards
+  function finishPlayer(e, i) {
+    let pl = e.players[i];
+    if (pl.out) return e.phase === "finished";
+    e.places = e.places || [];
+    e.places.push(pl.id);
+    pl.out = e.places.length;
+    pl.calledLastCard = !1;
+    pl.skipNext = !1;
+    e.vulnerableId === pl.id && (e.vulnerableId = null);
+    e.winnerId = e.winnerId || pl.id;
+    e.events.push({ kind: "win", playerId: pl.id, place: pl.out });
+    let left = e.players.filter((x) => !x.out);
+    if (left.length <= 1) {
+      e.phase = "finished";
+      e.pendingDraw = 0;
+      e.challenge = null;
+      e.loserId = left[0]?.id ?? null;
+      left[0] && e.events.push({ kind: "lose", playerId: left[0].id });
+      return !0;
+    }
+    return !1;
   }
   function Y(e, n, t, a) {
     let r = e.players[n],
@@ -2287,6 +2406,7 @@ body {
         name: i.name,
         cardCount: i.hand.length,
         calledLastCard: i.calledLastCard,
+        out: i.out || 0,
       })),
       topCard: W(e),
       currentColor: e.currentColor,
@@ -2309,6 +2429,8 @@ body {
       vulnerableId: e.vulnerableId,
       phase: e.phase,
       winnerId: e.winnerId,
+      loserId: e.loserId ?? null,
+      places: e.places || [],
       rules: e.rules,
       recentEvents: e.events.slice(-t),
       version: e.version,
@@ -2375,7 +2497,7 @@ body {
       $(n) && (r.color = wn(e.you.hand.filter((o) => o.id !== n.id))),
       (e.rules.sevenZero && n.value === "7") || n.value === "wildSwap" || n.value === "wildBlank")
     ) {
-      let o = e.players.filter((i) => i.id !== a).sort((i, s) => i.cardCount - s.cardCount)[0].id;
+      let o = e.players.filter((i) => i.id !== a && !i.out).sort((i, s) => i.cardCount - s.cardCount)[0].id;
       n.value === "wildBlank" ? (r.blank = { target: o, effect: "draw4" }) : (r.swapWith = o);
     }
     return r;
@@ -2620,7 +2742,7 @@ body {
       noPowerFinish: !1,
       handSize: 7,
     },
-    F = 0,
+    F = 30,
     Pe = 0,
     N = !1,
     Ie,
@@ -2685,6 +2807,7 @@ body {
         <button class="btn btn-quiet" id="how-to" type="button">How to play</button>
         ${audioButtons(!1)}
       </div>
+        <div class="solo-only">${leaderboardHtml("Your practice record")}</div>
         <section class="online-only friends" aria-label="Play with friends">
           <label class="field"><span>Your name</span><input id="nick" maxlength="14" autocomplete="nickname" value="${esc(NICK)}" placeholder="Your name"></label>
           <div class="friends-row">
@@ -2842,12 +2965,16 @@ body {
   }
   function adopt(state) {
     ((u = state),
+      u.phase === "finished" && recordSolo(),
       u.players.find((l) => l.id === p).hand.length > 2 && (re = !1));
     let a = u.events
         .slice(he)
         .some(
           (l) =>
-            l.kind === "draw" && l.penalty && l.playerId === p && l.count > 0,
+            (l.kind === "draw" && l.penalty && l.playerId === p && l.count > 0) ||
+            (l.kind === "swap" && (l.playerId === p || l.targetId === p)) ||
+            l.kind === "shuffleHands" ||
+            (l.kind === "roulette" && l.effect === "shuffle"),
         ),
       r = u.players.find((l) => l.id === p).hand;
     if (
@@ -2906,7 +3033,8 @@ body {
     }
     g({ type: "play", playerId: p, cardId: e.id });
   }
-  var TG = null; // a card waiting for its target: {cardId, color, kind: "swap" | "blank", target?}
+  var TG = null; // a card waiting for its target: {cardId, color, kind: "swap" | "blank", target?, fx?, dareText?}
+  var DARE_IDEAS = ["Sing the chorus of a song", "Do 10 squats", "Speak in an accent", "Dance for 10 seconds", "Compliment everyone", "Talk like a news anchor"];
   var BLANK_OPTS = [
     ["draw2", "Draw 2"],
     ["draw4", "Draw 4"],
@@ -2915,7 +3043,7 @@ body {
     ["dare", "Give a dare"],
   ];
   function targetDialog(e) {
-    let others = e.players.filter((x) => x.id !== p),
+    let others = e.players.filter((x) => x.id !== p && !x.out),
       blank = TG.kind === "blank",
       tgt = TG.target && e.players.find((x) => x.id === TG.target);
     if (blank && tgt)
@@ -2926,9 +3054,13 @@ body {
         <div class="blank-fx">
           ${BLANK_OPTS.map(([k, label]) => `<button type="button" class="btn fx-btn" data-fx="${k}">${label}</button>`).join("")}
         </div>
-        <form class="dare-row" id="dare-form" ${TG.fx === "dare" ? "" : "hidden"}>
-          <input id="dare-text" maxlength="60" placeholder="e.g. Sing the next round" aria-label="Your dare" autocomplete="off">
-          <button class="btn btn-primary" type="submit">Send dare</button>
+        <form class="dare-form" id="dare-form" ${TG.fx === "dare" ? "" : "hidden"}>
+          <div class="dare-ideas">${DARE_IDEAS.map((d) => `<button type="button" class="chip dare-idea" data-dare="${esc(d)}">${esc(d)}</button>`).join("")}</div>
+          <div class="dare-row">
+            <input id="dare-text" maxlength="60" placeholder="Or write your own" aria-label="Your dare" autocomplete="off" autocapitalize="sentences" enterkeyhint="send" value="${esc(TG.dareText || "")}">
+            <button class="btn btn-primary" type="submit">Send dare</button>
+          </div>
+          <p class="rules-note dare-note">Your turn timer pauses while you choose.</p>
         </form>
         <button class="btn btn-quiet" id="target-back" type="button">Pick someone else</button>
       </div>
@@ -2953,7 +3085,7 @@ body {
     </div>`;
   }
   function wireTarget(e) {
-    let send = (extra) => {
+    let fire = (extra) => {
       let t = TG;
       TG = null;
       kn({ type: "play", playerId: p, cardId: t.cardId, ...(t.color ? { color: t.color } : {}), ...extra }, e);
@@ -2961,7 +3093,7 @@ body {
     k.querySelectorAll("[data-target]").forEach((b) =>
       b.addEventListener("click", () => {
         if (TG.kind === "blank") ((TG.target = b.dataset.target), m());
-        else send({ swapWith: b.dataset.target });
+        else fire({ swapWith: b.dataset.target });
       }),
     );
     k.querySelectorAll("[data-fx]").forEach((b) =>
@@ -2969,19 +3101,36 @@ body {
         if (b.dataset.fx === "dare") {
           TG.fx = "dare";
           let f = document.getElementById("dare-form");
-          f && ((f.hidden = !1), document.getElementById("dare-text").focus());
+          f && ((f.hidden = !1), f.closest(".scrim")?.classList.add("typing"), document.getElementById("dare-text").focus());
           return;
         }
-        send({ blank: { target: TG.target, effect: b.dataset.fx } });
+        fire({ blank: { target: TG.target, effect: b.dataset.fx } });
       }),
     );
-    let f = document.getElementById("dare-form");
+    let f = document.getElementById("dare-form"),
+      dt = document.getElementById("dare-text");
+    dt && dt.addEventListener("input", () => (TG.dareText = dt.value));
+    k.querySelectorAll("[data-dare]").forEach((b) =>
+      b.addEventListener("click", () => {
+        TG.dareText = b.dataset.dare;
+        dt && ((dt.value = b.dataset.dare), dt.focus());
+      }),
+    );
+    if (TG && TG.fx === "dare" && dt) {
+      f.closest(".scrim")?.classList.add("typing");
+      dt.focus({ preventScroll: !0 });
+      let end = dt.value.length;
+      try {
+        dt.setSelectionRange(end, end);
+      } catch (e) {}
+    }
+    if (TG && TG.kind === "blank" && !TG.held && MODE === "online" && typeof send === "function") ((TG.held = !0), send({ t: "hold" }));
     f &&
       f.addEventListener("submit", (ev) => {
         ev.preventDefault();
         let d = document.getElementById("dare-text").value.trim();
         if (!d) return Se("Write a dare first");
-        send({ blank: { target: TG.target, effect: "dare", dare: d } });
+        fire({ blank: { target: TG.target, effect: "dare", dare: d } });
       });
     y("#target-back", () => ((TG.target = null), (TG.fx = null), m()));
     y("#target-cancel", () => ((TG = null), m()));
@@ -3018,6 +3167,7 @@ body {
   }
   function Pn() {
     if (!u || !N) return;
+    if (TG && MODE !== "online") Pe += 250;
     let e = Pe - Date.now(),
       n = document.querySelector(".clock");
     if (
@@ -3275,8 +3425,7 @@ body {
     ${Yn(e)}`),
       (xe = new Set(e.you.hand.map((i) => i.id))),
       An(e),
-      xn(e),
-      autoDraw(e));
+      xn(e));
     let o = document.querySelector(".clock");
     (o && (o.textContent = nn()),
       Rn(),
@@ -3366,6 +3515,7 @@ body {
         ((O = null), g(i) || m());
       }),
       y("#again", () => (MODE === "online" ? playAgainOnline() : de())),
+      y("#lb-reset", () => ((SOLO_STATS = {}), store("lo-board", "{}"), m())),
       y("#not-now", () => {
         ((ke = !0), m());
       }),
@@ -3536,8 +3686,13 @@ body {
   }
   function Hn() {
     let e = u.events,
-      n = [];
+      n = [],
+      row = (badge, cls, who, why) => `<li><span class="pen-n ${cls}">${badge}</span><span class="pen-who">${who}</span><span class="pen-why">${why}</span></li>`;
     e.forEach((a, r) => {
+      if (a.kind === "swap") return n.push(row("⇄", "swap", `${A(a.playerId)} ⇄ ${A(a.targetId)}`, "swapped hands"));
+      if (a.kind === "shuffleHands" || (a.kind === "roulette" && a.effect === "shuffle")) return n.push(row("⤨", "swap", A(a.playerId), "shuffled hands"));
+      if (a.kind === "blank" && a.effect === "skip") return n.push(row("?", "blank", A(a.targetId), `skipped by ${A(a.playerId)}`));
+      if (a.kind === "blank" && a.effect === "dare") return n.push(row("?", "blank", A(a.targetId), `dared by ${A(a.playerId)}`));
       if (a.kind !== "draw" || !a.penalty || a.count === 0) return;
       let l = e[r + 1],
         o = A(a.playerId),
@@ -3549,10 +3704,10 @@ body {
             ? s.success
               ? "bluff caught"
               : "challenge failed"
-            : "penalty";
-      n.push(
-        `<li><span class="pen-n">+${a.count}</span><span class="pen-who">${o}</span><span class="pen-why">${c}</span></li>`,
-      );
+            : s?.kind === "blank"
+              ? `blank wild from ${A(s.playerId)}`
+              : "penalty";
+      n.push(row(`+${a.count}`, "", o, c));
     });
     let t = n.reverse().slice(0, 4);
     return `
@@ -3561,6 +3716,7 @@ body {
       ${t.length ? `<ol>${t.join("")}</ol>` : '<p class="pen-empty">None yet</p>'}
     </aside>`;
   }
+
   function Vn(e, n, t) {
     let a = t.players.length,
       r = Te(n, a),
@@ -3570,8 +3726,9 @@ body {
       s = e.id === p,
       c = t.vulnerableId === e.id && !s;
     return `
-    <div class="seat ${i ? "turn" : ""} ${s ? "seat-me" : ""} ${t.winnerId === e.id ? "winner" : ""}" data-pid="${e.id}" style="left:${l}%; top:${o}%">
-      <span class="avatar" aria-hidden="true">${U(Q[e.id])}</span>
+    <div class="seat ${i ? "turn" : ""} ${s ? "seat-me" : ""} ${t.winnerId === e.id ? "winner" : ""} ${e.out ? "out" : ""}" data-pid="${e.id}" style="left:${l}%; top:${o}%">
+      <span class="avatar" aria-hidden="true">${U(Q[e.id])}${((w) => (w ? `<span class="win-bubble" title="${w} ${w === 1 ? "win" : "wins"}">${TROPHY}${w}</span>` : ""))(winsOf(e.id))}</span>
+      ${e.out ? `<span class="place-tag">${ORD(e.out)}</span>` : ""}
       <span class="seat-name">${s ? "You" : esc(e.name)}</span>
       <span class="seat-count">${e.cardCount} ${e.cardCount === 1 ? "card" : "cards"}</span>
       ${MODE !== "online" ? "" : s ? `<button class="mic ${VOICE.micOn ? "on" : "off"}" id="mic" type="button" aria-pressed="${VOICE.micOn}" aria-label="${VOICE.micOn ? "Mute your mic" : "Turn on your mic"}">${VOICE.micOn ? Zn : Ze}</button>` : isBot(e.id) ? "" : seatMic(e.id, e.name)}
@@ -3674,14 +3831,17 @@ body {
     </div>`;
   }
   function Bn(e) {
-    let n = e.winnerId === p;
+    let n = e.winnerId === p,
+      lost = e.loserId,
+      order = [...(e.places || []), ...(lost ? [lost] : [])];
     return `
     <div class="scrim" role="dialog" aria-modal="true" aria-label="Game over">
       <div class="picker win recap-win">
         <span class="win-icon" aria-hidden="true">${U(Q[e.winnerId])}</span>
         <p class="win-title">${n ? "You win" : `${A(e.winnerId)} wins`}</p>
-        <p class="win-sub">${n ? "Clean hand." : `You finished holding ${e.you.hand.length} ${e.you.hand.length === 1 ? "card" : "cards"}.`}</p>
-        ${recapHtml()}
+        ${lost ? `<p class="win-sub loser-line"><span class="avatar" aria-hidden="true">${U(Q[lost])}</span>${lost === p ? "You were left holding cards" : `${esc(A(lost))} was left holding cards`}</p>` : ""}
+        ${order.length > 2 ? `<ol class="places">${order.map((id, i) => `<li class="${id === lost ? "last" : ""}"><b>${i === order.length - 1 && id === lost ? "Last" : ORD(i + 1)}</b>${esc(A(id))}</li>`).join("")}</ol>` : ""}
+        ${leaderboardHtml()}
         <div class="pair">
           <button class="btn" id="not-now" type="button">Not now</button>
           ${MODE === "online" && !NET.isHost ? '<span class="win-sub">Waiting for the host to start the next round</span>' : `<button class="btn btn-primary" id="again" type="button">${MODE === "online" ? "Back to the lobby" : "Play again"}</button>`}
@@ -3689,6 +3849,7 @@ body {
       </div>
     </div>`;
   }
+
   // no card you can play: the deck deals you one automatically (penalties and +4 challenges still wait for you)
   var AUTO_V = -1;
   function needsAutoDraw(e) {
@@ -3726,6 +3887,8 @@ body {
   }
   function Un(e) {
     if (e.phase === "finished") return `${A(e.winnerId)} won.`;
+    let mine = e.players.find((x) => x.id === p);
+    if (mine?.out) return `You finished ${ORD(mine.out)}. Watching the rest…`;
     let t = !e.isYourTurn && e.playableCardIds.length > 0;
     if (e.isYourTurn) {
       if (e.challenge) return `+4 from ${A(e.challenge.offenderId)}. Take ${e.pendingDraw} or challenge.`;
@@ -3740,7 +3903,7 @@ body {
             ? "Last card must be a number. Draw."
             : e.playableCardIds.length
               ? ""
-              : "No match. Dealing you a card…";
+              : "No match. Tap the deck.";
     }
     return e.vulnerableId === p ? "Tap UNO! now." : t ? "Jump in with your match!" : "";
   }
@@ -3999,15 +4162,114 @@ body {
                     : ev.kind === "win"
                       ? ev.playerId === p
                         ? "win"
-                        : "lose"
-                      : "";
+                        : "call"
+                      : ev.kind === "lose"
+                        ? ev.playerId === p
+                          ? "lose"
+                          : "win"
+                        : ev.kind === "swap" || ev.kind === "shuffleHands"
+                          ? "magic"
+                          : "";
       k && !did.has(k) && (did.add(k), sfx(k));
       ev.kind === "roulette" && rouletteToast(ev);
       ev.kind === "blank" && blankNotice(ev);
-      ev.kind === "shuffleHands" && (Se(`${A(ev.playerId)} shuffled everyone's hands`), sfx("magic"));
-      ev.kind === "swap" && Se(`${A(ev.playerId)} swapped hands with ${ev.targetId === p ? "you" : A(ev.targetId)}`);
+      ev.kind === "shuffleHands" && bigNotice("shuffle", ev);
+      ev.kind === "roulette" && ev.effect === "shuffle" && bigNotice("shuffle", ev);
+      ev.kind === "swap" && (ev.playerId === p || ev.targetId === p ? bigNotice("swap", ev) : Se(`${A(ev.playerId)} swapped hands with ${A(ev.targetId)}`));
+      ev.kind === "win" && u.phase === "playing" && outNotice(ev);
+      ev.kind === "lose" && recordSolo();
     }
   }
+  // swaps and shuffles get a clear, unmissable moment and a short pause before play goes on
+  function bigNotice(kind, ev) {
+    ve = Math.max(ve, 1800);
+    let el = document.createElement("div");
+    el.className = "big-notice " + kind;
+    el.setAttribute("role", "alert");
+    if (kind === "swap") {
+      let other = ev.playerId === p ? ev.targetId : ev.playerId;
+      el.innerHTML = `<span class="bn-faces"><span class="bn-face">${U(Q[p])}</span><span class="bn-arrows" aria-hidden="true">⇄</span><span class="bn-face">${U(Q[other])}</span></span>
+        <span class="bn-title">Hands swapped!</span><span class="bn-sub"></span>`;
+      el.querySelector(".bn-sub").textContent = ev.playerId === p ? `You took ${A(other)}'s cards` : `${A(other)} took your cards. These are theirs now.`;
+    } else {
+      el.innerHTML = `<span class="bn-cards" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="bn-title">Hands shuffled!</span><span class="bn-sub"></span>`;
+      el.querySelector(".bn-sub").textContent = `${A(ev.playerId) === "You" ? "You" : A(ev.playerId)} mixed everyone's cards and dealt them out again`;
+    }
+    B.appendChild(el);
+    setTimeout(() => el.remove(), 2600);
+  }
+  var ORD = (n) => n + (["th", "st", "nd", "rd"][(n % 100 >= 11 && n % 100 <= 13) || n % 10 > 3 ? 0 : n % 10]);
+  function outNotice(ev) {
+    let me = ev.playerId === p,
+      el = document.createElement("div");
+    el.className = "out-notice";
+    el.setAttribute("role", "status");
+    el.innerHTML = `<span class="on-face">${U(Q[ev.playerId])}</span><span class="on-place">${ORD(ev.place)}</span><span class="on-text"></span>`;
+    el.querySelector(".on-text").textContent = me ? "You're out! Watch who's left holding cards." : `${A(ev.playerId)} is out`;
+    B.appendChild(el);
+    setTimeout(() => el.remove(), 2600);
+  }
+  // practice games keep their own leaderboard on this device
+  var SOLO_STATS = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("lo-board") || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  })();
+  function recordSolo() {
+    if (MODE !== "solo" || !u || u.phase !== "finished" || u._recorded) return;
+    u._recorded = !0;
+    for (let pl of u.players) {
+      let key = pl.id === p ? "You" : pl.name,
+        st = (SOLO_STATS[key] = SOLO_STATS[key] || { name: key, icon: Q[pl.id], wins: 0, losses: 0, played: 0 });
+      st.icon = Q[pl.id];
+      st.played++;
+      pl.id === u.winnerId && st.wins++;
+      pl.id === u.loserId && st.losses++;
+    }
+    store("lo-board", JSON.stringify(SOLO_STATS));
+  }
+  function boardRows() {
+    if (MODE === "online") {
+      let st = NET?.room?.stats || {};
+      return Object.entries(st).map(([pid, x]) => ({ key: pid, me: pid === p, ...x }));
+    }
+    return Object.values(SOLO_STATS).map((x) => ({ key: x.name, me: x.name === "You", ...x }));
+  }
+  function winsOf(pid) {
+    if (MODE === "online") return NET?.room?.stats?.[pid]?.wins || 0;
+    let pl = u?.players.find((x) => x.id === pid),
+      key = pid === p ? "You" : pl?.name;
+    return SOLO_STATS[key]?.wins || 0;
+  }
+  function leaderboardHtml(title = "Leaderboard") {
+    let rows = boardRows()
+      .filter((r) => r.played > 0)
+      .sort((a, b) => b.wins - a.wins || a.losses - b.losses || b.played - a.played);
+    if (!rows.length) return "";
+    return `<section class="leaderboard" aria-label="${title}">
+      <div class="lb-head"><strong>${title}</strong><span class="rules-note">${rows[0].played > 1 || rows.length ? `${Math.max(...rows.map((r) => r.played))} ${Math.max(...rows.map((r) => r.played)) === 1 ? "game" : "games"}` : ""}</span>${MODE === "solo" ? '<button class="btn btn-quiet lb-reset" id="lb-reset" type="button">Reset</button>' : ""}</div>
+      <ol class="lb-list">
+        ${rows
+          .slice(0, 8)
+          .map(
+            (r, i) => `<li class="${r.me ? "me" : ""}">
+              <span class="lb-rank">${i + 1}</span>
+              <span class="avatar" aria-hidden="true">${U(r.icon)}</span>
+              <span class="lb-name">${esc(r.me ? (MODE === "solo" ? "You" : `${r.name} (you)`) : r.name)}</span>
+              <span class="lb-stat win" title="Wins">${TROPHY}${r.wins}</span>
+              <span class="lb-stat loss" title="Times left holding cards">${LOSS_ICON}${r.losses}</span>
+            </li>`,
+          )
+          .join("")}
+      </ol>
+    </section>`;
+  }
+  var TROPHY =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v3a5 5 0 0 1-10 0V4zM5 5H3a3 3 0 0 0 3 4M19 5h2a3 3 0 0 1-3 4M10 13h4v3h-4zM8 19h8v2H8z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+    LOSS_ICON =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="11" height="15" rx="2" transform="rotate(-12 11 10)" fill="none" stroke="currentColor" stroke-width="2"/><rect x="8" y="6" width="11" height="15" rx="2" transform="rotate(8 13 13)" fill="currentColor"/></svg>';
   function blankNotice(ev) {
     let who = A(ev.playerId),
       tgt = ev.targetId === p ? "you" : A(ev.targetId),
@@ -4945,6 +5207,7 @@ body {
         <span class="rules-note">Anyone with the link can join, up to 6 players. Tap the mic to talk.</span>
       </div>
       ${seatList(room, host)}
+      ${leaderboardHtml()}
       </div>
       <div class="lobby-b">
       ${rouletteBox(room.spinning ? null : room.rule, { host, votes: room.votes || {}, spinning: room.spinning })}

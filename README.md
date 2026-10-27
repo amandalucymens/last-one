@@ -11,7 +11,8 @@
 - Match the top card by **colour or symbol** and be the first to empty your hand.
 - **Skip**, **Reverse**, **+2** and **+4** cards shake up the table; **wild** cards let you pick the next colour.
 - Down to your last card? Tap **UNO!** before you play it. Forget, and anyone can catch you for two extra cards.
-- No card to play? The deck deals you one automatically.
+- No card to play? Tap the deck. If your turn timer runs out, you're dealt one automatically.
+- Rounds play on until one player is left holding cards, so there's a winner, a finishing order and a loser.
 - The deck has 120 cards, including 8 Wild +4s, 2 Wild +10s, Shuffle Hands, Swap Hands and Blank Wilds that let you pick who to hit and how, even with a dare of your own.
 
 ## What makes it different
@@ -20,6 +21,7 @@
 - **Talk while you play.** Tap the mic to chat with the table. A ring lights up around whoever is speaking.
 - **One link per game.** Share it in any chat; up to six players per table, and computer players can fill empty seats. Anyone who arrives mid-round waits in a waiting room until the next deal.
 - **Music for the table.** The host pastes a YouTube or YouTube Music playlist and everyone hears it.
+- **Leaderboard.** Each table tracks wins and losses across rounds, with a trophy bubble on every player.
 - **House rules your way.** Stacking, jump-ins, a turn timer, starting hand size and more.
 - **Ghanaian design.** Emerald and cream with kente trim, Adinkrahene card backs and 20 players in Ghanaian dress.
 - **Practice mode.** Play against the computer on your own, anytime.

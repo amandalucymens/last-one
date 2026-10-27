@@ -237,13 +237,13 @@
       return "Choose a color for the wild card";
     let v = (e.rules.sevenZero && s.value === "7") || s.value === "wildSwap",
       L = -1;
-    if (v && ((L = e.players.findIndex((h) => h.id === l)), L < 0 || L === n))
+    if (v && ((L = e.players.findIndex((h) => h.id === l)), L < 0 || L === n || e.players[L].out))
       return "Choose another player to swap hands with";
     let bl = null;
     if (s.value === "wildBlank") {
       let b = t.blank || {},
         ti = e.players.findIndex((h) => h.id === b.target);
-      if (ti < 0 || ti === n) return "Pick who your blank card hits";
+      if (ti < 0 || ti === n || e.players[ti].out) return "Pick who your blank card hits";
       if (!BLANK_FX.includes(b.effect)) return "Pick what your blank card does";
       let dare = String(b.dare || "").replace(/\s+/g, " ").trim().slice(0, 60);
       if (b.effect === "dare" && !dare) return "Write a dare first";
@@ -271,25 +271,19 @@
         jumpIn: c,
         ...(I > 1 ? { cards: M } : {}),
       }),
-      o.hand.length === 0)
+      o.hand.length === 0 && finishPlayer(e, n))
     )
-      return (
-        (e.phase = "finished"),
-        (e.winnerId = o.id),
-        (e.pendingDraw = 0),
-        e.events.push({ kind: "win", playerId: o.id }),
-        null
-      );
+      return null;
     (o.hand.length === 1 &&
       !o.calledLastCard &&
       t.uno &&
       ((o.calledLastCard = !0),
       e.events.push({ kind: "callLastCard", playerId: o.id })),
       o.hand.length === 1 && !o.calledLastCard && (e.vulnerableId = o.id));
-    let Ee = e.players.length;
+    let Ee = activeCount(e) + (o.out ? 1 : 0);
     switch (s.value) {
       case "skip": {
-        if (e.rules.roulette?.type === "skipAll") {
+        if (e.rules.roulette?.type === "skipAll" && !o.out) {
           for (let h = 1; h < Ee; h++) e.events.push({ kind: "skip", playerId: e.players[C(e, n, h)].id });
           e.events.push({ kind: "roulette", playerId: o.id, effect: "skipAll" });
           e.turn = n;
@@ -304,7 +298,7 @@
         for (let h = 0; h < I; h++)
           ((e.direction = e.direction === 1 ? -1 : 1),
             e.events.push({ kind: "reverse", direction: e.direction }));
-        e.turn = Ee === 2 ? n : C(e, n, 1);
+        e.turn = Ee === 2 && !o.out ? n : C(e, n, 1);
         break;
       case "draw2":
       case "wild4":
@@ -317,7 +311,7 @@
             k = drawUntil(e, w, (c) => c.color === e.currentColor || $(c), 25);
           e.events.push({ kind: "roulette", playerId: o.id, targetId: e.players[w].id, effect: "drawColor", count: k });
           e.turn = C(e, n, 2);
-        } else if (s.value === "wild4" && e.rules.challengeWild4) {
+        } else if (s.value === "wild4" && e.rules.challengeWild4 && !o.out) {
           ((e.pendingDraw += h),
             e.pendingDraw > h &&
               e.events.push({ kind: "stack", total: e.pendingDraw }));
@@ -337,7 +331,7 @@
         break;
       }
       default:
-        if (v) {
+        if (v && !o.out) {
           let h = e.players[L];
           (([o.hand, h.hand] = [h.hand, o.hand]),
             (o.calledLastCard = !1),
@@ -347,7 +341,7 @@
         } else if (e.rules.sevenZero && s.value === "0") {
           let h = e.players.map((w) => w.hand);
           e.players.forEach((w, P) => {
-            e.players[C(e, P, 1)].hand = h[P];
+            w.out || (e.players[C(e, P, 1)].hand = h[P]);
           });
           for (let w of e.players) w.calledLastCard = !1;
           ((e.vulnerableId = null),
@@ -369,7 +363,7 @@
       let t = C(e, n, 1);
       e.events.push({ kind: "roulette", playerId: me.id, targetId: e.players[t].id, effect: "curse" });
       Y(e, t, r.draw * I, !0);
-    } else if (r.type === "bless" && s.value === r.value) {
+    } else if (r.type === "bless" && s.value === r.value && !me.out) {
       e.turn = n;
       e.events.push({ kind: "roulette", playerId: me.id, effect: "bless" });
     } else if (r.type === "charged" && s.color === r.color) {
@@ -383,12 +377,8 @@
         me.hand = me.hand.filter((c) => c.color !== s.color);
         e.discardPile.splice(e.discardPile.length - 1, 0, ...drop);
         e.events.push({ kind: "roulette", playerId: me.id, effect: "discardAll", count: drop.length });
-        if (me.hand.length === 0) {
-          e.phase = "finished";
-          e.winnerId = me.id;
-          e.pendingDraw = 0;
-          e.events.push({ kind: "win", playerId: me.id });
-        } else if (me.hand.length === 1 && !me.calledLastCard) e.vulnerableId = me.id;
+        if (me.hand.length === 0) finishPlayer(e, n);
+        else if (me.hand.length === 1 && !me.calledLastCard) e.vulnerableId = me.id;
       }
     } else if (r.type === "gift" && s.value === r.value && me.hand.length > 1) {
       let t = C(e, n, 1),
@@ -410,7 +400,9 @@
       sh;
     [sh, e.rngState] = ge(all, e.rngState);
     e.players.forEach((x) => ((x.hand = []), (x.calledLastCard = !1)));
-    sh.forEach((c, i) => e.players[C(e, n, i + 1)].hand.push(c));
+    let order = [];
+    for (let i = 1; order.length < activeCount(e); i++) order.push(C(e, n, i));
+    sh.forEach((c, i) => e.players[order[i % order.length]].hand.push(c));
     e.vulnerableId = null;
     e.events.push(twist ? { kind: "roulette", playerId: e.players[n].id, effect: "shuffle" } : { kind: "shuffleHands", playerId: e.players[n].id });
   }
@@ -420,7 +412,7 @@
     e.events.push({ kind: "blank", playerId: me.id, targetId: t.id, effect: b.effect, ...(b.dare ? { dare: b.dare } : {}) });
     if (b.effect === "draw2" || b.effect === "draw4") Y(e, b.ti, b.effect === "draw2" ? 2 : 4, !0);
     else if (b.effect === "skip") t.skipNext = !0;
-    else if (b.effect === "swap") {
+    else if (b.effect === "swap" && !me.out) {
       [me.hand, t.hand] = [t.hand, me.hand];
       me.calledLastCard = t.calledLastCard = !1;
       e.vulnerableId = null;
@@ -515,6 +507,7 @@
   }
   function pn(e, n) {
     let t = e.players[n];
+    if (t.out) return "You're already out";
     return t.hand.length > 2
       ? "Call it at 2 cards or fewer"
       : t.calledLastCard
@@ -553,8 +546,38 @@
       (e.turn = C(e, e.turn, 1)));
   }
   function C(e, n, t) {
-    let a = e.players.length;
-    return (((n + e.direction * t) % a) + a) % a;
+    let a = e.players.length,
+      i = n;
+    for (let s = 0; s < t; s++) {
+      let g = 0;
+      do i = (((i + e.direction) % a) + a) % a;
+      while (e.players[i].out && ++g < a);
+    }
+    return i;
+  }
+  var activeCount = (e) => e.players.filter((x) => !x.out).length;
+  // a player who empties their hand finishes in the next place; the round ends when one is left holding cards
+  function finishPlayer(e, i) {
+    let pl = e.players[i];
+    if (pl.out) return e.phase === "finished";
+    e.places = e.places || [];
+    e.places.push(pl.id);
+    pl.out = e.places.length;
+    pl.calledLastCard = !1;
+    pl.skipNext = !1;
+    e.vulnerableId === pl.id && (e.vulnerableId = null);
+    e.winnerId = e.winnerId || pl.id;
+    e.events.push({ kind: "win", playerId: pl.id, place: pl.out });
+    let left = e.players.filter((x) => !x.out);
+    if (left.length <= 1) {
+      e.phase = "finished";
+      e.pendingDraw = 0;
+      e.challenge = null;
+      e.loserId = left[0]?.id ?? null;
+      left[0] && e.events.push({ kind: "lose", playerId: left[0].id });
+      return !0;
+    }
+    return !1;
   }
   function Y(e, n, t, a) {
     let r = e.players[n],
@@ -604,6 +627,7 @@
         name: i.name,
         cardCount: i.hand.length,
         calledLastCard: i.calledLastCard,
+        out: i.out || 0,
       })),
       topCard: W(e),
       currentColor: e.currentColor,
@@ -626,6 +650,8 @@
       vulnerableId: e.vulnerableId,
       phase: e.phase,
       winnerId: e.winnerId,
+      loserId: e.loserId ?? null,
+      places: e.places || [],
       rules: e.rules,
       recentEvents: e.events.slice(-t),
       version: e.version,
@@ -692,7 +718,7 @@
       $(n) && (r.color = wn(e.you.hand.filter((o) => o.id !== n.id))),
       (e.rules.sevenZero && n.value === "7") || n.value === "wildSwap" || n.value === "wildBlank")
     ) {
-      let o = e.players.filter((i) => i.id !== a).sort((i, s) => i.cardCount - s.cardCount)[0].id;
+      let o = e.players.filter((i) => i.id !== a && !i.out).sort((i, s) => i.cardCount - s.cardCount)[0].id;
       n.value === "wildBlank" ? (r.blank = { target: o, effect: "draw4" }) : (r.swapWith = o);
     }
     return r;
