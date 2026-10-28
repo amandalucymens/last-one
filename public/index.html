@@ -1786,6 +1786,39 @@ body {
 .swap-opt.mine span[aria-hidden] { background: var(--yellow); }
 .swap-opt:not(:disabled):hover span[aria-hidden] { transform: translateY(-2px); }
 .lobby-seat #change-icon { grid-area: x; justify-self: start; padding: 2px 0; font-size: 12px; }
+
+/* ---- big hands on phones: rows of 8, layered ---- */
+.me .hand.layered { overflow: visible; display: flex; flex-direction: column; align-items: center; padding-top: 24px; }
+.me .hand.layered .hand-row { width: max-content; margin-inline: auto; }
+.me .hand.layered .hand-row + .hand-row { margin-top: calc(var(--cw) * -.6); }
+.me .hand.layered .hand-card.playable, .me .hand.layered .hand-card.playable:hover { transform: none; }
+.me .hand.layered .hand-card.playable .card { outline-width: 3px; }
+.me .hand.layered .hand-row:nth-child(2) { position: relative; z-index: 1; }
+.me .hand.layered .hand-row:nth-child(3) { position: relative; z-index: 2; }
+.me .hand.layered .hand-row:nth-child(n+4) { position: relative; z-index: 3; }
+
+/* ---- dare judging ---- */
+.dare-judge .dare-quote { display: flex; align-items: center; gap: 10px; margin: 4px 0 14px; padding: 10px 12px; border-radius: 12px; background: rgba(0,0,0,.25); font-weight: 600; text-align: left; }
+.dare-judge .dare-quote .avatar { width: 36px; height: 36px; flex: none; }
+.dare-judge .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dare-judge .rules-note { margin-top: 10px; }
+
+/* ---- special wilds that are easy to tell apart ---- */
+.card.v-wildBlank { background: var(--grain), #fbf8f1; color: #1a1324; box-shadow: inset 0 0 0 calc(var(--cw) * .05) #1a1324, 0 calc(var(--cw) * .045) 0 rgba(10, 20, 50, .35); }
+.card.v-wildBlank:not([data-c="wild"]) { box-shadow: inset 0 0 0 calc(var(--cw) * .09) var(--ink), 0 calc(var(--cw) * .045) 0 rgba(10, 20, 50, .35); }
+.card.v-wildBlank .idx { display: none; }
+.card.v-wildBlank .glyph { color: #1a1324; text-shadow: none; }
+.card.v-wildBlank .blank-q { font-size: calc(var(--cw) * .82); font-weight: 800; line-height: 1; display: block; transform: translateY(-2%); }
+.card .dots { position: absolute; display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--cw) * .025); width: calc(var(--cw) * .2); }
+.card .dots.tl { top: 9%; left: 11%; }
+.card .dots.br { bottom: 9%; right: 11%; transform: rotate(180deg); }
+.card .dots i { aspect-ratio: 1; border-radius: 50%; }
+.card .dots i:nth-child(1) { background: var(--red); }
+.card .dots i:nth-child(2) { background: var(--yellow); }
+.card .dots i:nth-child(3) { background: var(--green); }
+.card .dots i:nth-child(4) { background: var(--blue); }
+.card .wild-ring { position: absolute; width: 74%; aspect-ratio: 1; border-radius: 50%; background: conic-gradient(var(--red) 0 25%, var(--yellow) 0 50%, var(--green) 0 75%, var(--blue) 0); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - calc(var(--cw) * .06)), #000 calc(100% - calc(var(--cw) * .06) + 1px)); mask: radial-gradient(farthest-side, transparent calc(100% - calc(var(--cw) * .06)), #000 calc(100% - calc(var(--cw) * .06) + 1px)); }
+.card.special .glyph svg.ic-swap, .card.special .glyph svg.ic-shuffle { width: calc(var(--cw) * .56); height: calc(var(--cw) * .56); filter: none; }
 </style>
 
 <main id="app"></main>
@@ -1847,8 +1880,8 @@ body {
         (e.push({ id: `${t}-${r}-a`, color: n, value: r }),
           e.push({ id: `${t}-${r}-b`, color: n, value: r }));
     }
-    // wilds: 4 Wild, 8 Wild +4, 2 Wild +10, 1 Shuffle Hands, 2 Swap Hands, 3 Blank Wild (120 cards in all)
-    for (let [v, k] of [["wild", 4], ["wild4", 8], ["wild10", 2], ["wildShuffle", 1], ["wildSwap", 2], ["wildBlank", 3]])
+    // wilds: 4 Wild, 6 Wild +4 (the usual 4 plus 2), and no more than 2 of each extra: 2 Wild +10, 1 Shuffle Hands, 2 Swap Hands, 2 Blank Wild (117 cards)
+    for (let [v, k] of [["wild", 4], ["wild4", 6], ["wild10", 2], ["wildShuffle", 1], ["wildSwap", 2], ["wildBlank", 2]])
       for (let n = 0; n < k; n++) e.push({ id: `w-${v}-${n}`, color: null, value: v });
     return e;
   }
@@ -1856,7 +1889,29 @@ body {
     return e.value.startsWith("wild");
   }
   var DRAWS = { draw2: 2, wild4: 4, wild10: 10 },
-    BLANK_FX = ["draw2", "draw4", "skip", "swap", "dare"];
+    BLANK_FX = ["draw2", "draw4", "draw15", "skip", "swap", "dare"],
+    POWER = new Set(["wild4", "wild10", "wildShuffle", "wildSwap", "wildBlank"]);
+  var isPower = (c) => POWER.has(c.value);
+  // spread the penalty cards through a shuffled pile so they don't bunch up, with some jitter so it still feels random
+  function spreadPower(pile, rng) {
+    let pw = pile.filter(isPower),
+      rest = pile.filter((c) => !isPower(c));
+    if (pw.length < 2 || rest.length < pw.length) return [pile, rng];
+    let gap = rest.length / pw.length,
+      out = [],
+      at = [];
+    for (let i = 0; i < pw.length; i++) {
+      let x;
+      [x, rng] = ln(rng);
+      at.push(Math.min(rest.length, Math.floor(i * gap + x * gap)));
+    }
+    let j = 0;
+    for (let i = 0; i <= rest.length; i++) {
+      while (j < pw.length && at[j] === i) out.push(pw[j++]);
+      i < rest.length && out.push(rest[i]);
+    }
+    return [out, rng];
+  }
   function ie(e) {
     return /^[0-9]$/.test(e.value);
   }
@@ -1880,6 +1935,16 @@ body {
         calledLastCard: !1,
       }));
     for (let c = 0; c < n.handSize; c++) for (let d of l) d.hand.push(a.pop());
+    // nobody starts with more than their share of penalty cards
+    let capP = Math.max(1, Math.ceil(l.reduce((x, d) => x + d.hand.filter(isPower).length, 0) / t));
+    for (let d of l)
+      for (let k = d.hand.filter(isPower).length; k > capP; k--) {
+        let bi = d.hand.findIndex(isPower),
+          si = a.findIndex((c) => !isPower(c));
+        if (bi < 0 || si < 0) break;
+        [d.hand[bi], a[si]] = [a[si], d.hand[bi]];
+      }
+    [a, r] = spreadPower(a, r);
     let o = gn(a, ie),
       [i] = a.splice(o, 1),
       s = (((e.firstPlayer ?? 0) % t) + t) % t;
@@ -1894,6 +1959,7 @@ body {
       drawnCardId: null,
       challenge: null,
       vulnerableId: null,
+      dare: null,
       phase: "playing",
       winnerId: null,
       rules: n,
@@ -1937,7 +2003,7 @@ body {
   }
   function je(e, n, t) {
     let a = e.players.findIndex((i) => i.id === n);
-    if (a < 0 || a !== e.turn || e.drawnCardId) return [];
+    if (a < 0 || a !== e.turn || e.dare || (e.drawnCardId && t !== e.drawnCardId)) return [];
     let r = e.players[a].hand,
       l = r.find((i) => i.id === t);
     if (!l || $(l)) return [];
@@ -1949,9 +2015,14 @@ body {
     if (e.phase !== "playing") return we("The game is over");
     let t = e.players.findIndex((l) => l.id === n.playerId);
     if (t < 0) return we("You are not in this game");
+    if (e.dare && n.type !== "dareVerdict")
+      return we(`Waiting for ${e.players.find((x) => x.id === e.dare.by)?.name ?? "the dare giver"} to say if the dare was done`);
     let a = structuredClone(e),
       r;
     switch (n.type) {
+      case "dareVerdict":
+        r = dareVerdict(a, t, n);
+        break;
       case "play":
         r = sn(a, t, n);
         break;
@@ -1999,7 +2070,7 @@ body {
       if (!e.rules.stacking && !(e.rules.doubleReverse && s.value === "reverse"))
         return "Stacking is off";
       if (c) return "You can only jump in with one card";
-      if (e.drawnCardId)
+      if (e.drawnCardId && ![a, ...d].includes(e.drawnCardId))
         return "Play the card you drew";
       if ($(s)) return "Wild cards are played one at a time";
       let h = new Set([a]);
@@ -2199,6 +2270,7 @@ body {
     let all = e.players.flatMap((x) => x.hand),
       sh;
     [sh, e.rngState] = ge(all, e.rngState);
+    sh = [...sh.filter(isPower), ...sh.filter((c) => !isPower(c))];
     e.players.forEach((x) => ((x.hand = []), (x.calledLastCard = !1)));
     let order = [];
     for (let i = 1; order.length < activeCount(e); i++) order.push(C(e, n, i));
@@ -2206,11 +2278,22 @@ body {
     e.vulnerableId = null;
     e.events.push(twist ? { kind: "roulette", playerId: e.players[n].id, effect: "shuffle" } : { kind: "shuffleHands", playerId: e.players[n].id });
   }
+  function dareVerdict(e, n, act) {
+    let d = e.dare;
+    if (!d) return "There's no dare to judge";
+    if (e.players[n].id !== d.by) return "Only the player who gave the dare can judge it";
+    e.dare = null;
+    let ti = e.players.findIndex((x) => x.id === d.target);
+    e.events.push({ kind: "dareResult", playerId: d.by, targetId: d.target, done: !!act.done });
+    ti >= 0 && !act.done && !e.players[ti].out && Y(e, ti, 4, !0);
+    return null;
+  }
   function applyBlank(e, n, b) {
     let me = e.players[n],
       t = e.players[b.ti];
     e.events.push({ kind: "blank", playerId: me.id, targetId: t.id, effect: b.effect, ...(b.dare ? { dare: b.dare } : {}) });
-    if (b.effect === "draw2" || b.effect === "draw4") Y(e, b.ti, b.effect === "draw2" ? 2 : 4, !0);
+    if (b.effect === "draw2" || b.effect === "draw4" || b.effect === "draw15") Y(e, b.ti, { draw2: 2, draw4: 4, draw15: 15 }[b.effect], !0);
+    else if (b.effect === "dare") e.dare = { by: me.id, target: t.id, text: b.dare };
     else if (b.effect === "skip") t.skipNext = !0;
     else if (b.effect === "swap" && !me.out) {
       [me.hand, t.hand] = [t.hand, me.hand];
@@ -2405,6 +2488,7 @@ body {
     if (e.discardPile.length <= 1) return;
     let n = e.discardPile.pop(),
       [t, a] = ge(e.discardPile, e.rngState);
+    [t, a] = spreadPower(t, a);
     ((e.drawPile = t),
       (e.discardPile = [n]),
       (e.rngState = a),
@@ -2448,6 +2532,7 @@ body {
           ? { offenderId: e.challenge.offenderId, color: e.challenge.color }
           : null,
       vulnerableId: e.vulnerableId,
+      dare: e.dare || null,
       phase: e.phase,
       winnerId: e.winnerId,
       loserId: e.loserId ?? null,
@@ -2461,6 +2546,7 @@ body {
     let t = n.random ?? Math.random,
       a = e.you.id;
     if (e.phase !== "playing") return null;
+    if (e.dare) return e.dare.by === a ? { type: "dareVerdict", playerId: a, done: !0 } : null;
     if (e.vulnerableId && e.vulnerableId !== a && t() < (n.catchChance ?? 0.6))
       return { type: "catch", playerId: a, targetId: e.vulnerableId };
     let r = e.you.hand;
@@ -2914,6 +3000,15 @@ body {
       <span class="rule-text"><strong>${n}</strong><span>${t}</span></span>
     </label>`;
   }
+  // new seating every round
+  function shuffleSeats(list) {
+    let a = list.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      let j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
   function Cn(e, n) {
     let t = [
         { id: p, name: "You" },
@@ -2931,13 +3026,13 @@ body {
       let i = a.findIndex((ic) => K[ic].g === r.g);
       icons[r.id] = a.splice(i < 0 ? 0 : i, 1)[0];
     });
-    t = t.map(({ g, ...rest }) => rest);
+    t = shuffleSeats(t.map(({ g, ...rest }) => rest));
     beginLocal(
       He({
         players: t,
         rules: applyRule(n, SOLO_RULE),
         seed: Math.floor(Math.random() * 2 ** 31),
-        firstPlayer: 0,
+        firstPlayer: t.findIndex((x) => x.id === p),
       }),
       icons,
       SOLO_RULE,
@@ -3047,11 +3142,22 @@ body {
     }
     g({ type: "play", playerId: p, cardId: e.id });
   }
+  // true while you are choosing a Blank Wild's colour (the timer pauses)
+  function blankPicking() {
+    return !!(G && u && u.players.find((x) => x.id === p)?.hand.find((c) => c.id === G)?.value === "wildBlank");
+  }
+  var HOLD_ON = !1;
+  function syncHold(e) {
+    if (MODE !== "online" || typeof send !== "function") return;
+    let want = !!(e.phase === "playing" && e.isYourTurn && !e.dare && ((TG && TG.kind === "blank") || blankPicking()));
+    want !== HOLD_ON && ((HOLD_ON = want), send({ t: "hold", on: want }));
+  }
   var TG = null; // a card waiting for its target: {cardId, color, kind: "swap" | "blank", target?, fx?, dareText?}
   var DARE_IDEAS = ["Sing the chorus of a song", "Do 10 squats", "Speak in an accent", "Dance for 10 seconds", "Compliment everyone", "Talk like a news anchor"];
   var BLANK_OPTS = [
     ["draw2", "Draw 2"],
     ["draw4", "Draw 4"],
+    ["draw15", "Draw 15"],
     ["skip", "Skip their turn"],
     ["swap", "Swap hands"],
     ["dare", "Give a dare"],
@@ -3074,7 +3180,7 @@ body {
             <input id="dare-text" maxlength="60" placeholder="Or write your own" aria-label="Your dare" autocomplete="off" autocapitalize="sentences" enterkeyhint="send" value="${esc(TG.dareText || "")}">
             <button class="btn btn-primary" type="submit">Send dare</button>
           </div>
-          <p class="rules-note dare-note">Your turn timer pauses while you choose.</p>
+          <p class="rules-note dare-note">Your timer is paused. You'll judge the dare after: if they don't do it, they draw 4.</p>
         </form>
         <button class="btn btn-quiet" id="target-back" type="button">Pick someone else</button>
       </div>
@@ -3138,7 +3244,6 @@ body {
         dt.setSelectionRange(end, end);
       } catch (e) {}
     }
-    if (TG && TG.kind === "blank" && !TG.held && MODE === "online" && typeof send === "function") ((TG.held = !0), send({ t: "hold" }));
     f &&
       f.addEventListener("submit", (ev) => {
         ev.preventDefault();
@@ -3173,6 +3278,7 @@ body {
     N || ((N = !0), (Pe = Date.now() + F * 1e3));
   }
   function nn() {
+    if ((MODE === "online" && NET?.paused) || (MODE !== "online" && u && (u.dare || TG || blankPicking()))) return "paused";
     let e = Math.max(0, Math.ceil((Pe - Date.now()) / 1e3));
     return `0:${String(Math.min(e, 59)).padStart(2, "0")}`.replace(
       "0:60",
@@ -3181,7 +3287,7 @@ body {
   }
   function Pn() {
     if (!u || !N) return;
-    if (TG && MODE !== "online") Pe += 250;
+    if ((TG || blankPicking() || u.dare) && MODE !== "online") Pe += 250;
     let e = Pe - Date.now(),
       n = document.querySelector(".clock");
     if (
@@ -3410,14 +3516,14 @@ body {
 
     <section class="me ${e.isYourTurn ? "my-turn" : ""} ${a ? "under-fire" : ""}" aria-label="Your hand">
       ${Hn()}
-      <div class="hand" role="list" aria-label="Your hand, ${e.you.hand.length} cards">
+      <div class="hand ${handRows(e.you.hand.length) > 1 ? "layered" : ""}" role="list" aria-label="Your hand, ${e.you.hand.length} cards">
         <div class="hand-row">
           ${Kn(e.you.hand)
-            .map((i) => {
+            .map((i, ix) => {
               let s = e.isYourTurn ? (e.companions[i.id]?.length ?? 0) : 0,
                 c = e.playableCardIds.includes(i.id) || s > 0,
                 d = c && !e.isYourTurn;
-              return `<button class="hand-card ${c ? "playable" : ""} ${d ? "jump" : ""}${r(i.id)}" role="listitem" data-id="${i.id}" type="button" aria-label="${me(i)}${d ? ", jump in" : c ? ", playable" : ""}${s ? `, can be played with ${s} more` : ""}">${ae(i)}${s ? `<span class="combo" aria-hidden="true">\xD7${s + 1}</span>` : ""}</button>`;
+              return `${ix && handRows(e.you.hand.length) > 1 && ix % ROW_MAX === 0 ? '</div><div class="hand-row">' : ""}<button class="hand-card ${c ? "playable" : ""} ${d ? "jump" : ""}${r(i.id)}" role="listitem" data-id="${i.id}" type="button" aria-label="${me(i)}${d ? ", jump in" : c ? ", playable" : ""}${s ? `, can be played with ${s} more` : ""}">${ae(i)}${s ? `<span class="combo" aria-hidden="true">\xD7${s + 1}</span>` : ""}</button>`;
             })
             .join("")}
         </div>
@@ -3454,6 +3560,8 @@ body {
       y("#mic", toggleMic),
       y("#copy-link", copyLink),
       y("#pass", () => g({ type: "pass", playerId: p })),
+      y("#dare-done", () => g({ type: "dareVerdict", playerId: p, done: !0 })),
+      y("#dare-fail", () => g({ type: "dareVerdict", playerId: p, done: !1 })),
       y("#call", () => g({ type: "callLastCard", playerId: p })),
       y("#uno-big", () => g({ type: "callLastCard", playerId: p })),
       y("#uno-skip", () => {
@@ -3496,6 +3604,7 @@ body {
         ((G = null), m());
       }),
       TG && wireTarget(e),
+      syncHold(e),
       k.querySelectorAll("[data-extra]").forEach((i) =>
         i.addEventListener("click", () => {
           let s = i.dataset.extra,
@@ -3707,6 +3816,7 @@ body {
       if (a.kind === "shuffleHands" || (a.kind === "roulette" && a.effect === "shuffle")) return n.push(row("⤨", "swap", A(a.playerId), "shuffled hands"));
       if (a.kind === "blank" && a.effect === "skip") return n.push(row("?", "blank", A(a.targetId), `skipped by ${A(a.playerId)}`));
       if (a.kind === "blank" && a.effect === "dare") return n.push(row("?", "blank", A(a.targetId), `dared by ${A(a.playerId)}`));
+      if (a.kind === "dareResult" && a.done) return n.push(row("✓", "blank", A(a.targetId), "did the dare"));
       if (a.kind !== "draw" || !a.penalty || a.count === 0) return;
       let l = e[r + 1],
         o = A(a.playerId),
@@ -3720,7 +3830,9 @@ body {
               : "challenge failed"
             : s?.kind === "blank"
               ? `blank wild from ${A(s.playerId)}`
-              : "penalty";
+              : s?.kind === "dareResult"
+                ? "skipped the dare"
+                : "penalty";
       n.push(row(`+${a.count}`, "", o, c));
     });
     let t = n.reverse().slice(0, 4);
@@ -3768,7 +3880,9 @@ body {
           </div>
         </div>
       </div>`
-        : TG
+        : e.dare && e.dare.by === p
+          ? dareJudge(e)
+          : TG
           ? targetDialog(e)
           : G
           ? Nn()
@@ -3779,6 +3893,27 @@ body {
               : jn(e)
                 ? Qe(e)
                 : "";
+  }
+  // on a phone a big hand wraps into rows of up to 8 cards, stacked like a layered deck
+  var ROW_MAX = 8;
+  function handRows(n) {
+    return window.matchMedia("(max-width: 700px)").matches && n > ROW_MAX ? Math.ceil(n / ROW_MAX) : 1;
+  }
+  function dareJudge(e) {
+    let d = e.dare,
+      who = d.target === p ? "you" : esc(A(d.target));
+    return `
+    <div class="scrim" role="dialog" aria-modal="true" aria-label="Judge the dare">
+      <div class="picker target-pick dare-judge">
+        <p class="picker-title">Did ${who} do the dare?</p>
+        <p class="dare-quote"><span class="avatar" aria-hidden="true">${U(Q[d.target])}</span><span>${esc(d.text)}</span></p>
+        <div class="pair">
+          <button class="btn btn-primary" id="dare-done" type="button">Yes, they did it</button>
+          <button class="btn btn-take" id="dare-fail" type="button">No: they draw 4</button>
+        </div>
+        <p class="rules-note">The game waits for you, so take your time.</p>
+      </div>
+    </div>`;
   }
   function jn(e) {
     return e.phase !== "playing" || e.you.calledLastCard || re
@@ -3871,6 +4006,7 @@ body {
       e.phase === "playing" &&
       e.isYourTurn &&
       !e.drawnCardId &&
+      !e.dare &&
       e.pendingDraw === 0 &&
       !e.challenge &&
       e.playableCardIds.length === 0 &&
@@ -3926,6 +4062,11 @@ body {
       '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 18 18 6" stroke="currentColor" stroke-width="3"/></svg>',
     Qn =
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h11l-3-3M19 15H8l3 3" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  // swap hands: two hands of cards trading places; shuffle hands: cards fanned out under crossing arrows
+  var SWAP_ICON =
+      '<svg class="ic-swap" viewBox="0 0 48 48" aria-hidden="true"><g fill="currentColor" stroke="#1a1324" stroke-width="1.6" stroke-linejoin="round"><rect x="4" y="25" width="11" height="16" rx="2" transform="rotate(-14 9.5 33)"/><rect x="9" y="24" width="11" height="16" rx="2" transform="rotate(6 14.5 32)"/><rect x="27" y="7" width="11" height="16" rx="2" transform="rotate(-6 32.5 15)"/><rect x="33" y="8" width="11" height="16" rx="2" transform="rotate(14 38.5 16)"/></g><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20C9 11 16 6 24 6"/><path d="M20 2l4 4-4 4"/><path d="M40 28c-1 9-8 14-16 14"/><path d="M28 46l-4-4 4-4"/></g></svg>',
+    SHUFFLE_ICON =
+      '<svg class="ic-shuffle" viewBox="0 0 48 48" aria-hidden="true"><g fill="currentColor" stroke="#1a1324" stroke-width="1.6" stroke-linejoin="round"><rect x="11" y="25" width="11" height="16" rx="2" transform="rotate(-20 16.5 41)"/><rect x="18.5" y="23" width="11" height="16" rx="2"/><rect x="26" y="25" width="11" height="16" rx="2" transform="rotate(20 31.5 41)"/></g><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h6c6 0 9 12 15 12h11"/><path d="M4 18h6c3 0 5-3 7-6M25 6h11"/><path d="M32 2l4 4-4 4M32 14l4 4-4 4"/></g></svg>';
   function Fn(e) {
     switch (e.value) {
       case "skip":
@@ -3941,11 +4082,11 @@ body {
       case "wild10":
         return "+10";
       case "wildShuffle":
-        return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c3 0 4 2 5.5 5S16 17 19 17h2M3 17h4c1.6 0 2.6-.7 3.4-1.8M14 8.6C14.8 7.6 16 7 19 7h2M18 4l3 3-3 3M18 14l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        return SHUFFLE_ICON;
       case "wildSwap":
-        return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v13M7 17l-3-3M7 17l3-3M17 20V7M17 7l-3 3M17 7l3 3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        return SWAP_ICON;
       case "wildBlank":
-        return '<span class="blank-mark">?</span>';
+        return '<span class="blank-q">?</span>';
       default:
         return e.value;
     }
@@ -3964,7 +4105,7 @@ body {
     return `
     <span class="card ${t ? "wild" : ""} ${t && e.value !== "wild" && e.value !== "wild4" ? "special v-" + e.value : ""}" data-c="${a ?? "wild"}" style="${a ? `--ink: var(--${a})` : ""}">
       <span class="idx tl${r}">${Fe(e)}</span>
-      ${t ? '<span class="riso" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ""}
+      ${e.value === "wildBlank" ? '<span class="dots tl" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="dots br" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : e.value === "wildSwap" || e.value === "wildShuffle" ? '<span class="wild-ring" aria-hidden="true"></span>' : t ? '<span class="riso" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' : ""}
       <span class="glyph${r}">${Fn(e)}</span>
       <span class="idx br${r}">${Fe(e)}</span>
     </span>`;
@@ -4192,6 +4333,7 @@ body {
       ev.kind === "swap" && (ev.playerId === p || ev.targetId === p ? bigNotice("swap", ev) : Se(`${A(ev.playerId)} swapped hands with ${A(ev.targetId)}`));
       ev.kind === "win" && u.phase === "playing" && outNotice(ev);
       ev.kind === "lose" && recordSolo();
+      ev.kind === "dareResult" && Se(ev.done ? `${ev.targetId === p ? "You" : A(ev.targetId)} did the dare` : `${ev.targetId === p ? "You" : A(ev.targetId)} skipped the dare: +4`);
       ev.kind === "doubleReverse" && Se(ev.playerId === p ? "Double reverse! Play again" : `Double reverse! ${A(ev.playerId)} goes again`);
     }
   }
@@ -4288,7 +4430,7 @@ body {
   function blankNotice(ev) {
     let who = A(ev.playerId),
       tgt = ev.targetId === p ? "you" : A(ev.targetId),
-      what = { draw2: "draw 2", draw4: "draw 4", skip: "lose a turn", swap: "swap hands" }[ev.effect];
+      what = { draw2: "draw 2", draw4: "draw 4", draw15: "draw 15", skip: "lose a turn", swap: "swap hands" }[ev.effect];
     sfx("magic");
     if (ev.effect !== "dare") return Se(`Blank Wild: ${who} made ${tgt} ${what}`);
     let el = document.createElement("div");
@@ -5078,6 +5220,7 @@ body {
 
   function onState(msg) {
     NET.deadlineAt = msg.msLeft ? Date.now() + msg.msLeft : 0;
+    NET.paused = !!msg.paused;
     let st = msg.state,
       room = NET.room;
     if (!st || !st.players.some((x) => x.id === NET.pid)) return;

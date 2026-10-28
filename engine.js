@@ -53,8 +53,8 @@
         (e.push({ id: `${t}-${r}-a`, color: n, value: r }),
           e.push({ id: `${t}-${r}-b`, color: n, value: r }));
     }
-    // wilds: 4 Wild, 8 Wild +4, 2 Wild +10, 1 Shuffle Hands, 2 Swap Hands, 3 Blank Wild (120 cards in all)
-    for (let [v, k] of [["wild", 4], ["wild4", 8], ["wild10", 2], ["wildShuffle", 1], ["wildSwap", 2], ["wildBlank", 3]])
+    // wilds: 4 Wild, 6 Wild +4 (the usual 4 plus 2), and no more than 2 of each extra: 2 Wild +10, 1 Shuffle Hands, 2 Swap Hands, 2 Blank Wild (117 cards)
+    for (let [v, k] of [["wild", 4], ["wild4", 6], ["wild10", 2], ["wildShuffle", 1], ["wildSwap", 2], ["wildBlank", 2]])
       for (let n = 0; n < k; n++) e.push({ id: `w-${v}-${n}`, color: null, value: v });
     return e;
   }
@@ -62,7 +62,29 @@
     return e.value.startsWith("wild");
   }
   var DRAWS = { draw2: 2, wild4: 4, wild10: 10 },
-    BLANK_FX = ["draw2", "draw4", "skip", "swap", "dare"];
+    BLANK_FX = ["draw2", "draw4", "draw15", "skip", "swap", "dare"],
+    POWER = new Set(["wild4", "wild10", "wildShuffle", "wildSwap", "wildBlank"]);
+  var isPower = (c) => POWER.has(c.value);
+  // spread the penalty cards through a shuffled pile so they don't bunch up, with some jitter so it still feels random
+  function spreadPower(pile, rng) {
+    let pw = pile.filter(isPower),
+      rest = pile.filter((c) => !isPower(c));
+    if (pw.length < 2 || rest.length < pw.length) return [pile, rng];
+    let gap = rest.length / pw.length,
+      out = [],
+      at = [];
+    for (let i = 0; i < pw.length; i++) {
+      let x;
+      [x, rng] = ln(rng);
+      at.push(Math.min(rest.length, Math.floor(i * gap + x * gap)));
+    }
+    let j = 0;
+    for (let i = 0; i <= rest.length; i++) {
+      while (j < pw.length && at[j] === i) out.push(pw[j++]);
+      i < rest.length && out.push(rest[i]);
+    }
+    return [out, rng];
+  }
   function ie(e) {
     return /^[0-9]$/.test(e.value);
   }
@@ -86,6 +108,16 @@
         calledLastCard: !1,
       }));
     for (let c = 0; c < n.handSize; c++) for (let d of l) d.hand.push(a.pop());
+    // nobody starts with more than their share of penalty cards
+    let capP = Math.max(1, Math.ceil(l.reduce((x, d) => x + d.hand.filter(isPower).length, 0) / t));
+    for (let d of l)
+      for (let k = d.hand.filter(isPower).length; k > capP; k--) {
+        let bi = d.hand.findIndex(isPower),
+          si = a.findIndex((c) => !isPower(c));
+        if (bi < 0 || si < 0) break;
+        [d.hand[bi], a[si]] = [a[si], d.hand[bi]];
+      }
+    [a, r] = spreadPower(a, r);
     let o = gn(a, ie),
       [i] = a.splice(o, 1),
       s = (((e.firstPlayer ?? 0) % t) + t) % t;
@@ -100,6 +132,7 @@
       drawnCardId: null,
       challenge: null,
       vulnerableId: null,
+      dare: null,
       phase: "playing",
       winnerId: null,
       rules: n,
@@ -143,7 +176,7 @@
   }
   function je(e, n, t) {
     let a = e.players.findIndex((i) => i.id === n);
-    if (a < 0 || a !== e.turn || e.drawnCardId) return [];
+    if (a < 0 || a !== e.turn || e.dare || (e.drawnCardId && t !== e.drawnCardId)) return [];
     let r = e.players[a].hand,
       l = r.find((i) => i.id === t);
     if (!l || $(l)) return [];
@@ -155,9 +188,14 @@
     if (e.phase !== "playing") return we("The game is over");
     let t = e.players.findIndex((l) => l.id === n.playerId);
     if (t < 0) return we("You are not in this game");
+    if (e.dare && n.type !== "dareVerdict")
+      return we(`Waiting for ${e.players.find((x) => x.id === e.dare.by)?.name ?? "the dare giver"} to say if the dare was done`);
     let a = structuredClone(e),
       r;
     switch (n.type) {
+      case "dareVerdict":
+        r = dareVerdict(a, t, n);
+        break;
       case "play":
         r = sn(a, t, n);
         break;
@@ -205,7 +243,7 @@
       if (!e.rules.stacking && !(e.rules.doubleReverse && s.value === "reverse"))
         return "Stacking is off";
       if (c) return "You can only jump in with one card";
-      if (e.drawnCardId)
+      if (e.drawnCardId && ![a, ...d].includes(e.drawnCardId))
         return "Play the card you drew";
       if ($(s)) return "Wild cards are played one at a time";
       let h = new Set([a]);
@@ -405,6 +443,7 @@
     let all = e.players.flatMap((x) => x.hand),
       sh;
     [sh, e.rngState] = ge(all, e.rngState);
+    sh = [...sh.filter(isPower), ...sh.filter((c) => !isPower(c))];
     e.players.forEach((x) => ((x.hand = []), (x.calledLastCard = !1)));
     let order = [];
     for (let i = 1; order.length < activeCount(e); i++) order.push(C(e, n, i));
@@ -412,11 +451,22 @@
     e.vulnerableId = null;
     e.events.push(twist ? { kind: "roulette", playerId: e.players[n].id, effect: "shuffle" } : { kind: "shuffleHands", playerId: e.players[n].id });
   }
+  function dareVerdict(e, n, act) {
+    let d = e.dare;
+    if (!d) return "There's no dare to judge";
+    if (e.players[n].id !== d.by) return "Only the player who gave the dare can judge it";
+    e.dare = null;
+    let ti = e.players.findIndex((x) => x.id === d.target);
+    e.events.push({ kind: "dareResult", playerId: d.by, targetId: d.target, done: !!act.done });
+    ti >= 0 && !act.done && !e.players[ti].out && Y(e, ti, 4, !0);
+    return null;
+  }
   function applyBlank(e, n, b) {
     let me = e.players[n],
       t = e.players[b.ti];
     e.events.push({ kind: "blank", playerId: me.id, targetId: t.id, effect: b.effect, ...(b.dare ? { dare: b.dare } : {}) });
-    if (b.effect === "draw2" || b.effect === "draw4") Y(e, b.ti, b.effect === "draw2" ? 2 : 4, !0);
+    if (b.effect === "draw2" || b.effect === "draw4" || b.effect === "draw15") Y(e, b.ti, { draw2: 2, draw4: 4, draw15: 15 }[b.effect], !0);
+    else if (b.effect === "dare") e.dare = { by: me.id, target: t.id, text: b.dare };
     else if (b.effect === "skip") t.skipNext = !0;
     else if (b.effect === "swap" && !me.out) {
       [me.hand, t.hand] = [t.hand, me.hand];
@@ -611,6 +661,7 @@
     if (e.discardPile.length <= 1) return;
     let n = e.discardPile.pop(),
       [t, a] = ge(e.discardPile, e.rngState);
+    [t, a] = spreadPower(t, a);
     ((e.drawPile = t),
       (e.discardPile = [n]),
       (e.rngState = a),
@@ -654,6 +705,7 @@
           ? { offenderId: e.challenge.offenderId, color: e.challenge.color }
           : null,
       vulnerableId: e.vulnerableId,
+      dare: e.dare || null,
       phase: e.phase,
       winnerId: e.winnerId,
       loserId: e.loserId ?? null,
@@ -667,6 +719,7 @@
     let t = n.random ?? Math.random,
       a = e.you.id;
     if (e.phase !== "playing") return null;
+    if (e.dare) return e.dare.by === a ? { type: "dareVerdict", playerId: a, done: !0 } : null;
     if (e.vulnerableId && e.vulnerableId !== a && t() < (n.catchChance ?? 0.6))
       return { type: "catch", playerId: a, targetId: e.vulnerableId };
     let r = e.you.hand;

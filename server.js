@@ -227,7 +227,8 @@ function broadcastRoom(room) {
 function sendState(room, m) {
   if (!room.state || !room.state.players.some((p) => p.id === m.pid)) return;
   const msLeft = room.deadline ? Math.max(0, room.deadline - Date.now()) : 0;
-  const msg = { t: "state", round: room.round, state: sanitized(room.state, m.pid), msLeft };
+  const paused = room.pausedLeft != null || !!room.state.dare;
+  const msg = { t: "state", round: room.round, state: sanitized(room.state, m.pid), msLeft, paused };
   for (const ws of m.conns) sendTo(ws, msg);
 }
 function broadcastState(room) {
@@ -240,6 +241,11 @@ function deal(room) {
   if (seats.length < 2 || room.status === "playing") return;
   clearTimers(room);
   room.ruleInPlay = room.rule;
+  // new seating every round
+  for (let i = seats.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(i + 1);
+    [seats[i], seats[j]] = [seats[j], seats[i]];
+  }
   room.state = E.He({
     players: seats.map((m) => ({ id: m.pid, name: m.name })),
     rules: R.applyRule(room.rules, room.rule),
@@ -249,6 +255,7 @@ function deal(room) {
   room.status = "playing";
   room.evSeen = room.state.events.length;
   room.held = false;
+  room.pausedLeft = null;
   room.round++;
   room.turnStart = Date.now();
   armTurnTimer(room);
@@ -290,7 +297,12 @@ function afterChange(room, before, actor, type) {
     return;
   }
   const now = currentPid(room);
-  if (now !== before || (type === "play" && now === actor)) (room.turnStart = Date.now()), (room.held = false);
+  if (now !== before || (type === "play" && now === actor) || type === "dareVerdict") {
+    room.turnStart = Date.now();
+    room.held = false;
+    room.pausedLeft = null;
+    clearTimeout(room.pauseCap);
+  }
   // give everyone a moment to take in a swap or shuffle before play moves on
   const recent = s.events.slice(room.evSeen || 0);
   room.evSeen = s.events.length;
@@ -304,8 +316,10 @@ function afterChange(room, before, actor, type) {
 function clearTimers(room) {
   clearTimeout(room.botTimer);
   clearTimeout(room.turnTimer);
+  clearTimeout(room.pauseCap);
   room.botTimer = room.turnTimer = null;
   room.deadline = 0;
+  room.pausedLeft = null;
 }
 
 function turnLimit(room) {
@@ -321,10 +335,36 @@ function armTurnTimer(room) {
   room.turnTimer = null;
   room.deadline = 0;
   if (room.status !== "playing") return;
+  // a dare waiting for its verdict: no turn clock; the dare giver decides (or it counts as done if they vanish)
+  const d = room.state.dare;
+  if (d) {
+    const by = room.members.get(d.by);
+    const wait = !by || by.left || by.conns.size === 0 ? 8000 : by.bot ? 2500 : 180000;
+    room.turnTimer = setTimeout(() => {
+      if (room.status === "playing" && room.state.dare) apply(room, d.by, { type: "dareVerdict", done: true });
+    }, wait);
+    return;
+  }
+  // the player is choosing a Blank Wild: their clock is paused (unless they've dropped out)
+  if (room.pausedLeft != null) {
+    const cur = room.members.get(currentPid(room));
+    if (cur && !cur.left && cur.conns.size > 0) return;
+    room.pausedLeft = null;
+  }
   const lim = turnLimit(room);
   if (!lim) return;
   room.deadline = room.turnStart + lim;
   room.turnTimer = setTimeout(() => expireTurn(room), Math.max(50, room.deadline - Date.now()));
+}
+
+function resumeClock(room) {
+  clearTimeout(room.pauseCap);
+  if (room.pausedLeft == null) return;
+  const lim = turnLimit(room);
+  room.turnStart = Date.now() + room.pausedLeft - lim;
+  room.pausedLeft = null;
+  armTurnTimer(room);
+  if (room.status === "playing") broadcastState(room);
 }
 
 function expireTurn(room) {
@@ -375,6 +415,7 @@ function scheduleBots(room, extra = 0) {
 
 function botTick(room) {
   if (room.status !== "playing") return;
+  if (room.state.dare && !room.members.get(room.state.dare.by)?.bot) return;
   const ids = room.state.players.map((p) => p.id).filter((id) => room.members.get(id)?.bot);
   for (let i = ids.length - 1; i > 0; i--) {
     const j = crypto.randomInt(i + 1);
@@ -395,8 +436,8 @@ function botTick(room) {
 }
 
 /* ---------------- Messages ---------------- */
-const ACTION_FIELDS = ["type", "cardId", "color", "swapWith", "extraCardIds", "uno", "targetId", "blank"];
-const GAME_ACTIONS = new Set(["play", "draw", "pass", "callLastCard", "catch", "challenge"]);
+const ACTION_FIELDS = ["type", "cardId", "color", "swapWith", "extraCardIds", "uno", "targetId", "blank", "done"];
+const GAME_ACTIONS = new Set(["play", "draw", "pass", "callLastCard", "catch", "challenge", "dareVerdict"]);
 
 function handle(ws, msg) {
   if (!msg || typeof msg !== "object") return;
@@ -437,6 +478,7 @@ function handle(ws, msg) {
       const a = {};
       for (const k of ACTION_FIELDS) if (msg.a[k] !== undefined) a[k] = msg.a[k];
       if (a.extraCardIds && !Array.isArray(a.extraCardIds)) delete a.extraCardIds;
+      if ("done" in a) a.done = !!a.done;
       if (a.blank) {
         const b = a.blank;
         a.blank = typeof b === "object" && b ? { target: String(b.target || ""), effect: String(b.effect || ""), dare: String(b.dare || "").slice(0, 60) } : undefined;
@@ -449,12 +491,15 @@ function handle(ws, msg) {
       return;
     }
     case "hold": {
-      // a player picking a Blank Wild's target or typing a dare gets 30 more seconds, once per turn
-      if (room.status !== "playing" || currentPid(room) !== m.pid || room.held || !room.timer) return;
-      room.held = true;
-      room.turnStart += 30000;
-      armTurnTimer(room);
-      return sendState(room, m);
+      // the clock pauses while a player makes their Blank Wild choices (for up to 3 minutes)
+      if (room.status !== "playing" || currentPid(room) !== m.pid || !room.timer) return;
+      if (msg.on !== false && room.pausedLeft == null) {
+        room.pausedLeft = Math.max(3000, (room.deadline || Date.now() + room.timer * 1000) - Date.now());
+        clearTimeout(room.pauseCap);
+        room.pauseCap = setTimeout(() => resumeClock(room), 180000);
+        armTurnTimer(room);
+      } else if (msg.on === false) resumeClock(room);
+      return broadcastState(room);
     }
     case "vote":
       if (room.status === "playing" || !room.rule) return;
