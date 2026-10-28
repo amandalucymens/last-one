@@ -1937,10 +1937,11 @@ body {
   }
   function je(e, n, t) {
     let a = e.players.findIndex((i) => i.id === n);
-    if (a < 0 || a !== e.turn || !e.rules.stacking || e.drawnCardId) return [];
+    if (a < 0 || a !== e.turn || e.drawnCardId) return [];
     let r = e.players[a].hand,
       l = r.find((i) => i.id === t);
     if (!l || $(l)) return [];
+    if (!e.rules.stacking && !(e.rules.doubleReverse && l.value === "reverse")) return [];
     let o = r.filter((i) => i.id !== t && !$(i) && i.value === l.value);
     return [l, ...o].some((i) => V(e, n, i)) ? o.map((i) => i.id) : [];
   }
@@ -1995,7 +1996,7 @@ body {
       d = t.extraCardIds ?? [],
       f = [];
     if (d.length > 0) {
-      if (!e.rules.stacking)
+      if (!e.rules.stacking && !(e.rules.doubleReverse && s.value === "reverse"))
         return "Stacking is off";
       if (c) return "You can only jump in with one card";
       if (e.drawnCardId)
@@ -2092,6 +2093,11 @@ body {
         for (let h = 0; h < I; h++)
           ((e.direction = e.direction === 1 ? -1 : 1),
             e.events.push({ kind: "reverse", direction: e.direction }));
+        if (I >= 2 && e.rules.doubleReverse && !o.out) {
+          e.turn = n;
+          e.events.push({ kind: "doubleReverse", playerId: o.id, count: I });
+          break;
+        }
         e.turn = Ee === 2 && !o.out ? n : C(e, n, 1);
         break;
       case "draw2":
@@ -2745,6 +2751,7 @@ body {
       drawUntilPlayable: !1,
       challengeWild4: !1,
       noPowerFinish: !1,
+      doubleReverse: !0,
       handSize: 7,
     },
     F = 30,
@@ -2862,6 +2869,7 @@ body {
           ${X("drawUntilPlayable", "Draw until you can play", "No match? Keep drawing until you get a card that fits.")}
           ${X("challengeWild4", "+4 challenge", "A +4 is only fair when you have nothing in the color in play. The next player can call a bluff: guilty takes the cards, wrong guess takes 2 extra.")}
           ${X("noPowerFinish", "No finishing on a power card", "Your last card must be a number. You can't go out on a skip, reverse, +2 or wild.")}
+          ${X("doubleReverse", "Double reverse", "Put two reverses down together and you play again.")}
         </fieldset>
         <button class="btn btn-primary solo-only" type="submit" id="start">Deal cards</button>
       </div>
@@ -2889,6 +2897,7 @@ body {
           drawUntilPlayable: r("drawUntilPlayable"),
           challengeWild4: r("challengeWild4"),
           noPowerFinish: r("noPowerFinish"),
+          doubleReverse: r("doubleReverse"),
           handSize: l("hand") || 7,
           sevenZero: !1,
         }),
@@ -4183,6 +4192,7 @@ body {
       ev.kind === "swap" && (ev.playerId === p || ev.targetId === p ? bigNotice("swap", ev) : Se(`${A(ev.playerId)} swapped hands with ${A(ev.targetId)}`));
       ev.kind === "win" && u.phase === "playing" && outNotice(ev);
       ev.kind === "lose" && recordSolo();
+      ev.kind === "doubleReverse" && Se(ev.playerId === p ? "Double reverse! Play again" : `Double reverse! ${A(ev.playerId)} goes again`);
     }
   }
   // swaps and shuffles get a clear, unmissable moment and a short pause before play goes on
@@ -4590,6 +4600,7 @@ body {
       drawUntilPlayable: r("drawUntilPlayable"),
       challengeWild4: r("challengeWild4"),
       noPowerFinish: r("noPowerFinish"),
+      doubleReverse: r("doubleReverse"),
       handSize: l("hand") || 7,
       sevenZero: !1,
     };
@@ -5171,6 +5182,7 @@ body {
     ["drawUntilPlayable", "Draw until you can play"],
     ["challengeWild4", "+4 challenge"],
     ["noPowerFinish", "No finishing on a power card"],
+    ["doubleReverse", "Double reverse"],
   ];
   function houseRules(room, host) {
     let r = room.rules,

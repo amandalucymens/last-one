@@ -143,10 +143,11 @@
   }
   function je(e, n, t) {
     let a = e.players.findIndex((i) => i.id === n);
-    if (a < 0 || a !== e.turn || !e.rules.stacking || e.drawnCardId) return [];
+    if (a < 0 || a !== e.turn || e.drawnCardId) return [];
     let r = e.players[a].hand,
       l = r.find((i) => i.id === t);
     if (!l || $(l)) return [];
+    if (!e.rules.stacking && !(e.rules.doubleReverse && l.value === "reverse")) return [];
     let o = r.filter((i) => i.id !== t && !$(i) && i.value === l.value);
     return [l, ...o].some((i) => V(e, n, i)) ? o.map((i) => i.id) : [];
   }
@@ -201,7 +202,7 @@
       d = t.extraCardIds ?? [],
       f = [];
     if (d.length > 0) {
-      if (!e.rules.stacking)
+      if (!e.rules.stacking && !(e.rules.doubleReverse && s.value === "reverse"))
         return "Stacking is off";
       if (c) return "You can only jump in with one card";
       if (e.drawnCardId)
@@ -298,6 +299,11 @@
         for (let h = 0; h < I; h++)
           ((e.direction = e.direction === 1 ? -1 : 1),
             e.events.push({ kind: "reverse", direction: e.direction }));
+        if (I >= 2 && e.rules.doubleReverse && !o.out) {
+          e.turn = n;
+          e.events.push({ kind: "doubleReverse", playerId: o.id, count: I });
+          break;
+        }
         e.turn = Ee === 2 && !o.out ? n : C(e, n, 1);
         break;
       case "draw2":

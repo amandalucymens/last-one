@@ -37,7 +37,7 @@ const LOBBY_DROP_MS = 20000; // a disconnected player leaves the lobby after thi
 const HOST_HANDOVER_MS = 12000;
 const ROOM_IDLE_MS = 30 * 60 * 1000;
 const ID_RE = /^[a-z0-9]{6,16}$/;
-const DEFAULT_RULES = { stacking: true, jumpIn: true, drawUntilPlayable: false, challengeWild4: false, noPowerFinish: false, handSize: 7, sevenZero: false };
+const DEFAULT_RULES = { stacking: true, jumpIn: true, drawUntilPlayable: false, challengeWild4: false, noPowerFinish: false, doubleReverse: true, handSize: 7, sevenZero: false };
 
 // a YouTube or YouTube Music playlist/video link -> what the players' embedded player needs
 function parseYT(raw) {
@@ -175,6 +175,7 @@ function cleanSettings(s) {
       drawUntilPlayable: !!r.drawUntilPlayable,
       challengeWild4: !!r.challengeWild4,
       noPowerFinish: !!r.noPowerFinish,
+      doubleReverse: r.doubleReverse === undefined ? true : !!r.doubleReverse,
       handSize: [5, 7, 10].includes(Number(r.handSize)) ? Number(r.handSize) : 7,
       sevenZero: false,
     },
