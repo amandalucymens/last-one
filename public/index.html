@@ -1684,7 +1684,7 @@ body {
 .lb-reset { padding: 2px 8px; font-size: 12px; }
 .lb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .lb-list li { display: grid; grid-template-columns: 18px 30px minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 10px; background: var(--panel-2); font-size: 14px; }
-.lb-list li.me { box-shadow: inset 0 0 0 1px var(--yellow); }
+.lb-list li.lb-me { box-shadow: inset 0 0 0 1px var(--yellow); }
 .lb-list li:first-child .lb-rank { color: var(--yellow); }
 .lb-rank { font-weight: 800; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
 .lb-list .avatar { width: 30px; height: 30px; border-radius: 50%; overflow: hidden; display: block; }
@@ -4259,7 +4259,7 @@ body {
         ${rows
           .slice(0, 8)
           .map(
-            (r, i) => `<li class="${r.me ? "me" : ""}">
+            (r, i) => `<li class="${r.me ? "lb-me" : ""}">
               <span class="lb-rank">${i + 1}</span>
               <span class="avatar" aria-hidden="true">${U(r.icon)}</span>
               <span class="lb-name">${esc(r.me ? (MODE === "solo" ? "You" : `${r.name} (you)`) : r.name)}</span>
