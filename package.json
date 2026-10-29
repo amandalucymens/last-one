@@ -1,7 +1,7 @@
 {
-  "name": "last-one",
+  "name": "uno-fficial",
   "version": "1.0.0",
-  "description": "Last One: a color-matching card game with shareable game links and voice chat.",
+  "description": "Uno-fficial: a colour-matching card game with shareable game links and voice chat.",
   "main": "server.js",
   "private": true,
   "scripts": {

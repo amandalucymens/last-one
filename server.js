@@ -1,6 +1,6 @@
 "use strict";
 /*
- * Last One game server.
+ * Uno-fficial game server.
  * - Serves the single-page game (public/index.html) at "/" and at every game link "/g/<id>".
  * - Runs each game on the server: the browser only sends moves, so hands stay hidden and
  *   nobody's tab has to stay open. Computer players and turn timers run here too.
@@ -726,4 +726,4 @@ setInterval(() => {
   }
 }, 30000);
 
-server.listen(PORT, () => console.log(`Last One is running on http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`Uno-fficial is running on http://localhost:${PORT}`));

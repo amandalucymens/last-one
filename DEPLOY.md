@@ -14,12 +14,12 @@ Notes for running and hosting the game. For what the game is, see README.md.
 
 ## Put it online (free, no coding)
 
-1. **Put the code on GitHub.** Sign in at github.com, click **New repository**, name it `last-one`, and create it. On the empty repository page, click **uploading an existing file**, then drag in everything from this folder: `public`, `engine.js`, `rules.js`, `server.js`, `package.json`, `package-lock.json`, `render.yaml`, `README.md`. Click **Commit changes**.
-2. **Create the website on Render.** Go to render.com and sign up with your GitHub account. Click **New +**, then **Web Service**, and pick your `last-one` repository. Use these settings:
+1. **Put the code on GitHub.** Sign in at github.com, click **New repository**, name it `uno-fficial`, and create it. On the empty repository page, click **uploading an existing file**, then drag in everything from this folder: `public`, `engine.js`, `rules.js`, `server.js`, `package.json`, `package-lock.json`, `render.yaml`, `README.md`. Click **Commit changes**.
+2. **Create the website on Render.** Go to render.com and sign up with your GitHub account. Click **New +**, then **Web Service**, and pick your `uno-fficial` repository. Use these settings:
    - Build command: `npm install`
    - Start command: `npm start`
    - Instance type: **Free**
-3. Click **Create Web Service** and wait 2-3 minutes. Render gives you an address like `https://last-one-abcd.onrender.com`.
+3. Click **Create Web Service** and wait 2-3 minutes. Render gives you an address like `https://uno-fficial-abcd.onrender.com`.
 4. **Play.** Open that address, choose **Play with friends**, type your name and tap **Create a game link**. Copy the link and send it to your friends.
 
 When you change the code later, upload the changed files to GitHub again and Render redeploys automatically.
