@@ -53,8 +53,8 @@
         (e.push({ id: `${t}-${r}-a`, color: n, value: r }),
           e.push({ id: `${t}-${r}-b`, color: n, value: r }));
     }
-    // wilds: 4 Wild, 6 Wild +4 (the usual 4 plus 2), and no more than 2 of each extra: 2 Wild +10, 1 Shuffle Hands, 2 Swap Hands, 2 Blank Wild (117 cards)
-    for (let [v, k] of [["wild", 4], ["wild4", 6], ["wild10", 2], ["wildShuffle", 1], ["wildSwap", 2], ["wildBlank", 2]])
+    // wilds: 4 Wild, 6 Wild +4 (the usual 4 plus 2), 1 Wild +10, 1 Shuffle Hands, 1 Swap Hands, 2 Blank Wild (115 cards)
+    for (let [v, k] of [["wild", 4], ["wild4", 6], ["wild10", 1], ["wildShuffle", 1], ["wildSwap", 1], ["wildBlank", 2]])
       for (let n = 0; n < k; n++) e.push({ id: `w-${v}-${n}`, color: null, value: v });
     return e;
   }
@@ -109,7 +109,7 @@
       }));
     for (let c = 0; c < n.handSize; c++) for (let d of l) d.hand.push(a.pop());
     // nobody starts with more than their share of penalty cards
-    let capP = Math.max(1, Math.ceil(l.reduce((x, d) => x + d.hand.filter(isPower).length, 0) / t));
+    let capP = Math.max(1, Math.min(2, Math.ceil(l.reduce((x, d) => x + d.hand.filter(isPower).length, 0) / t)));
     for (let d of l)
       for (let k = d.hand.filter(isPower).length; k > capP; k--) {
         let bi = d.hand.findIndex(isPower),
@@ -328,9 +328,11 @@
           e.turn = n;
           break;
         }
-        for (let h = 1; h <= I; h++)
+        // skips never land on the player who played them: skip everyone else at most, then it's your turn again
+        let sk = Math.min(I, Ee - 1);
+        for (let h = 1; h <= sk; h++)
           e.events.push({ kind: "skip", playerId: e.players[C(e, n, h)].id });
-        e.turn = C(e, n, I + 1);
+        e.turn = sk >= Ee - 1 ? n : C(e, n, sk + 1);
         break;
       }
       case "reverse":
@@ -458,7 +460,7 @@
     e.dare = null;
     let ti = e.players.findIndex((x) => x.id === d.target);
     e.events.push({ kind: "dareResult", playerId: d.by, targetId: d.target, done: !!act.done });
-    ti >= 0 && !act.done && !e.players[ti].out && Y(e, ti, 4, !0);
+    ti >= 0 && !act.done && !e.players[ti].out && Y(e, ti, 10, !0);
     return null;
   }
   function applyBlank(e, n, b) {

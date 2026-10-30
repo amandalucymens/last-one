@@ -1819,6 +1819,64 @@ body {
 .card .dots i:nth-child(4) { background: var(--blue); }
 .card .wild-ring { position: absolute; width: 74%; aspect-ratio: 1; border-radius: 50%; background: conic-gradient(var(--red) 0 25%, var(--yellow) 0 50%, var(--green) 0 75%, var(--blue) 0); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - calc(var(--cw) * .06)), #000 calc(100% - calc(var(--cw) * .06) + 1px)); mask: radial-gradient(farthest-side, transparent calc(100% - calc(var(--cw) * .06)), #000 calc(100% - calc(var(--cw) * .06) + 1px)); }
 .card.special .glyph svg.ic-swap, .card.special .glyph svg.ic-shuffle { width: calc(var(--cw) * .56); height: calc(var(--cw) * .56); filter: none; }
+
+/* ---- music player tucked into a corner ---- */
+#music-dock[data-corner] { left: auto; right: auto; top: auto; bottom: auto; transform: none; }
+#music-dock[data-corner="tl"] { top: calc(58px + env(safe-area-inset-top, 0px)); left: max(8px, env(safe-area-inset-left, 0px)); }
+#music-dock[data-corner="tr"] { top: calc(58px + env(safe-area-inset-top, 0px)); right: max(8px, env(safe-area-inset-right, 0px)); }
+#music-dock[data-corner="bl"] { bottom: max(8px, env(safe-area-inset-bottom, 0px)); left: max(8px, env(safe-area-inset-left, 0px)); }
+#music-dock[data-corner="br"] { bottom: max(8px, env(safe-area-inset-bottom, 0px)); right: max(8px, env(safe-area-inset-right, 0px)); }
+#music-dock.dragging { right: auto; bottom: auto; }
+#music-dock.folded .dock-pill { padding: 8px 12px; font-size: 12px; opacity: .92; }
+
+/* ---- no table: the cards sit on the room, inside a moving kente ribbon, with the U pressed into the floor ---- */
+#app.playing .felt { background: none; box-shadow: none; overflow: visible; }
+#app.playing .felt::before { display: none; }
+#app.playing .felt::after {
+  content: ""; position: absolute; inset: -26% -8%; z-index: 0; pointer-events: none;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='none' stroke-linecap='round'><g transform='translate(0 -1.2)' stroke='rgba(0,0,0,.34)'><ellipse cx='50' cy='50' rx='30' ry='42' transform='rotate(28 50 50)' stroke-width='5'/><path d='M38 28v26a12 12 0 0 0 24 0V28' stroke-width='11'/></g><g transform='translate(0 1.2)' stroke='rgba(255,255,255,.07)'><ellipse cx='50' cy='50' rx='30' ry='42' transform='rotate(28 50 50)' stroke-width='5'/><path d='M38 28v26a12 12 0 0 0 24 0V28' stroke-width='11'/></g><g stroke='rgba(0,0,0,.18)'><ellipse cx='50' cy='50' rx='30' ry='42' transform='rotate(28 50 50)' stroke-width='5'/><path d='M38 28v26a12 12 0 0 0 24 0V28' stroke-width='11'/></g></g></svg>") center / contain no-repeat;
+}
+#app.playing .felt > * { position: relative; z-index: 1; }
+#app.playing .felt .color-now { background: rgba(0, 0, 0, .34); }
+/* the ribbon: a dark edge with yellow, green and red stripes that march round in the direction of play */
+.track ellipse.rail-base { stroke: #0a2a20; stroke-width: 8; stroke-dasharray: none; animation: none; opacity: .35; }
+.track ellipse.k { stroke-width: 4; stroke-dasharray: 10 20; stroke-linecap: butt; opacity: .45; }
+.track ellipse.k1 { stroke: var(--yellow); animation: rib1 4s linear infinite; }
+.track ellipse.k2 { stroke: var(--green); animation: rib2 4s linear infinite; }
+.track ellipse.k3 { stroke: var(--red); animation: rib3 4s linear infinite; }
+.track.ccw ellipse.k { animation-direction: reverse; }
+@keyframes rib1 { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -60; } }
+@keyframes rib2 { from { stroke-dashoffset: -10; } to { stroke-dashoffset: -70; } }
+@keyframes rib3 { from { stroke-dashoffset: -20; } to { stroke-dashoffset: -80; } }
+@media (prefers-reduced-motion: reduce) { .track ellipse.k { animation: none; } }
+
+/* ---- matte room: the woven pattern and gradient, softened, with a fine grain over it ---- */
+body {
+  background:
+    var(--kente-band) top left / 72px 6px repeat-x,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .24 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .008) 0 2px, transparent 2px 10px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, .045) 0 2px, transparent 2px 10px),
+    radial-gradient(80% 60% at 50% 40%, #11503e, var(--room) 70%, var(--room-deep));
+  background-attachment: fixed;
+}
+/* the playing area glows a little lighter, like a lamp over the middle of the table */
+#app.playing .ring::before {
+  content: ""; position: absolute; inset: 6% 4%; z-index: 0; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(40, 150, 110, .30), rgba(30, 120, 90, .14) 55%, transparent 100%);
+}
+
+/* ---- players sit on top of the ribbon: solid, no see-through when it isn't their turn ---- */
+.ring .seat { z-index: 3; }
+.ring .seat:not(.turn) { opacity: 1; filter: saturate(.35) brightness(.62); }
+.ring .seat.turn, .ring .seat.speaking { filter: none; }
+.ring .seat .avatar { background: #0c3b2e; border-radius: 50%; box-shadow: 0 0 0 4px #0c3b2e; }
+.ring .seat:not(.seat-me) .seat-name, .ring .seat:not(.seat-me) .seat-count { background: #0c3b2e; padding: 0 8px; border-radius: 999px; box-shadow: 0 0 0 2px #0c3b2e; }
+.ring .seat .seat-count { margin-top: 2px; }
+.ring .seat.seat-me .seat-count { background: #0c3b2e; padding: 0 8px; border-radius: 999px; box-shadow: 0 0 0 2px #0c3b2e; }
+
+/* whose turn: their name lights up yellow */
+.ring .seat.turn:not(.seat-me) .seat-name { background: var(--yellow); color: var(--ink-dark); box-shadow: 0 0 0 2px var(--yellow); }
 </style>
 
 <main id="app"></main>
@@ -1880,8 +1938,8 @@ body {
         (e.push({ id: `${t}-${r}-a`, color: n, value: r }),
           e.push({ id: `${t}-${r}-b`, color: n, value: r }));
     }
-    // wilds: 4 Wild, 6 Wild +4 (the usual 4 plus 2), and no more than 2 of each extra: 2 Wild +10, 1 Shuffle Hands, 2 Swap Hands, 2 Blank Wild (117 cards)
-    for (let [v, k] of [["wild", 4], ["wild4", 6], ["wild10", 2], ["wildShuffle", 1], ["wildSwap", 2], ["wildBlank", 2]])
+    // wilds: 4 Wild, 6 Wild +4 (the usual 4 plus 2), 1 Wild +10, 1 Shuffle Hands, 1 Swap Hands, 2 Blank Wild (115 cards)
+    for (let [v, k] of [["wild", 4], ["wild4", 6], ["wild10", 1], ["wildShuffle", 1], ["wildSwap", 1], ["wildBlank", 2]])
       for (let n = 0; n < k; n++) e.push({ id: `w-${v}-${n}`, color: null, value: v });
     return e;
   }
@@ -1936,7 +1994,7 @@ body {
       }));
     for (let c = 0; c < n.handSize; c++) for (let d of l) d.hand.push(a.pop());
     // nobody starts with more than their share of penalty cards
-    let capP = Math.max(1, Math.ceil(l.reduce((x, d) => x + d.hand.filter(isPower).length, 0) / t));
+    let capP = Math.max(1, Math.min(2, Math.ceil(l.reduce((x, d) => x + d.hand.filter(isPower).length, 0) / t)));
     for (let d of l)
       for (let k = d.hand.filter(isPower).length; k > capP; k--) {
         let bi = d.hand.findIndex(isPower),
@@ -2155,9 +2213,11 @@ body {
           e.turn = n;
           break;
         }
-        for (let h = 1; h <= I; h++)
+        // skips never land on the player who played them: skip everyone else at most, then it's your turn again
+        let sk = Math.min(I, Ee - 1);
+        for (let h = 1; h <= sk; h++)
           e.events.push({ kind: "skip", playerId: e.players[C(e, n, h)].id });
-        e.turn = C(e, n, I + 1);
+        e.turn = sk >= Ee - 1 ? n : C(e, n, sk + 1);
         break;
       }
       case "reverse":
@@ -2285,7 +2345,7 @@ body {
     e.dare = null;
     let ti = e.players.findIndex((x) => x.id === d.target);
     e.events.push({ kind: "dareResult", playerId: d.by, targetId: d.target, done: !!act.done });
-    ti >= 0 && !act.done && !e.players[ti].out && Y(e, ti, 4, !0);
+    ti >= 0 && !act.done && !e.players[ti].out && Y(e, ti, 10, !0);
     return null;
   }
   function applyBlank(e, n, b) {
@@ -3180,7 +3240,7 @@ body {
             <input id="dare-text" maxlength="60" placeholder="Or write your own" aria-label="Your dare" autocomplete="off" autocapitalize="sentences" enterkeyhint="send" value="${esc(TG.dareText || "")}">
             <button class="btn btn-primary" type="submit">Send dare</button>
           </div>
-          <p class="rules-note dare-note">Your timer is paused. You'll judge the dare after: if they don't do it, they draw 4.</p>
+          <p class="rules-note dare-note">Your timer is paused. You'll judge the dare after: if they don't do it, they draw 10.</p>
         </form>
         <button class="btn btn-quiet" id="target-back" type="button">Pick someone else</button>
       </div>
@@ -3494,7 +3554,10 @@ body {
 
     <section class="ring ${e.phase === "playing" ? "" : "over"}" aria-label="Table" style="--n:${e.players.length}">
       <svg class="track ${e.direction === 1 ? "cw" : "ccw"}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <ellipse cx="50" cy="50" rx="${Z().rx}" ry="${Z().ry}" />
+        <ellipse class="rail-base" cx="50" cy="50" rx="${Z().rx}" ry="${Z().ry}" />
+        <ellipse class="k k1" cx="50" cy="50" rx="${Z().rx}" ry="${Z().ry}" />
+        <ellipse class="k k2" cx="50" cy="50" rx="${Z().rx}" ry="${Z().ry}" />
+        <ellipse class="k k3" cx="50" cy="50" rx="${Z().rx}" ry="${Z().ry}" />
       </svg>
       <div class="felt">
         ${zn}
@@ -3909,7 +3972,7 @@ body {
         <p class="dare-quote"><span class="avatar" aria-hidden="true">${U(Q[d.target])}</span><span>${esc(d.text)}</span></p>
         <div class="pair">
           <button class="btn btn-primary" id="dare-done" type="button">Yes, they did it</button>
-          <button class="btn btn-take" id="dare-fail" type="button">No: they draw 4</button>
+          <button class="btn btn-take" id="dare-fail" type="button">No: they draw 10</button>
         </div>
         <p class="rules-note">The game waits for you, so take your time.</p>
       </div>
@@ -4333,7 +4396,7 @@ body {
       ev.kind === "swap" && (ev.playerId === p || ev.targetId === p ? bigNotice("swap", ev) : Se(`${A(ev.playerId)} swapped hands with ${A(ev.targetId)}`));
       ev.kind === "win" && u.phase === "playing" && outNotice(ev);
       ev.kind === "lose" && recordSolo();
-      ev.kind === "dareResult" && Se(ev.done ? `${ev.targetId === p ? "You" : A(ev.targetId)} did the dare` : `${ev.targetId === p ? "You" : A(ev.targetId)} skipped the dare: +4`);
+      ev.kind === "dareResult" && Se(ev.done ? `${ev.targetId === p ? "You" : A(ev.targetId)} did the dare` : `${ev.targetId === p ? "You" : A(ev.targetId)} skipped the dare: +10`);
       ev.kind === "doubleReverse" && Se(ev.playerId === p ? "Double reverse! Play again" : `Double reverse! ${A(ev.playerId)} goes again`);
     }
   }
@@ -4810,7 +4873,9 @@ body {
     })(),
     YT_READY = null,
     YTP = null, // {player, key, ready}
-    DOCK_OPEN = !0,
+    PHONE = matchMedia("(max-width: 700px)").matches,
+    // on a phone the player starts folded into a small music button; tap it to open the player in its corner
+    DOCK_OPEN = !PHONE,
     CLOCK_SKEW = 0,
     NOTE_ON =
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17.5V6.2l10-2.2v11.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.6" cy="17.6" r="2.6" fill="currentColor"/><circle cx="16.6" cy="15.4" r="2.6" fill="currentColor"/></svg>',
@@ -4877,7 +4942,7 @@ body {
       dock = document.createElement("div");
       dock.id = "music-dock";
       dock.className = "music-dock";
-      dock.innerHTML = `<div class="dock-player"><div id="yt-player"></div></div><div class="dock-ctl"></div><button class="dock-pill" type="button" hidden>${NOTE_ON}<span>Play music</span></button>`;
+      dock.innerHTML = `<div class="dock-player"><div id="yt-player"></div></div><div class="dock-ctl"></div><button class="dock-pill" type="button" hidden aria-label="Show the music player">${NOTE_ON}<span>Music</span></button>`;
       document.body.appendChild(dock);
       dock.querySelector(".dock-pill").addEventListener("click", () => ((DOCK_OPEN = !0), unlockAudio(), musicUpdate()));
       dragDock(dock);
@@ -4893,7 +4958,11 @@ body {
     dock.classList.toggle("in-game", !!u);
     dock.hidden = !1;
   }
-  // the bar can be dragged out of the way; its spot is remembered on this device
+  // the player lives in a corner of the screen. Drag it and it snaps to the nearest corner; the corner is remembered on this device
+  function setCorner(dock, c) {
+    dock.style.left = dock.style.top = dock.style.right = dock.style.bottom = dock.style.transform = "";
+    dock.dataset.corner = c;
+  }
   function placeDock(dock, x, y) {
     let w = dock.offsetWidth || 200,
       h = dock.offsetHeight || 226,
@@ -4906,8 +4975,8 @@ body {
     return [nx, ny];
   }
   function dragDock(dock) {
-    let saved = (store("lo-dock") || "").split(",").map(Number);
-    saved.length === 2 && saved.every(isFinite) && requestAnimationFrame(() => placeDock(dock, saved[0], saved[1]));
+    let saved = store("lo-dock-corner");
+    setCorner(dock, /^(tl|tr|bl|br)$/.test(saved || "") ? saved : PHONE ? "tr" : "br");
     let grip = dock.querySelector(".dock-ctl");
     grip.addEventListener("pointerdown", (ev) => {
       if (ev.target.closest("button")) return;
@@ -4923,12 +4992,15 @@ body {
           dock.classList.remove("dragging");
           grip.removeEventListener("pointermove", move);
           grip.removeEventListener("pointerup", up);
-          store("lo-dock", last.join(","));
+          let cx = last[0] + dock.offsetWidth / 2,
+            cy = last[1] + dock.offsetHeight / 2,
+            c = (cy < innerHeight / 2 ? "t" : "b") + (cx < innerWidth / 2 ? "l" : "r");
+          setCorner(dock, c);
+          store("lo-dock-corner", c);
         };
       grip.addEventListener("pointermove", move);
       grip.addEventListener("pointerup", up);
     });
-    addEventListener("resize", () => dock.style.left && placeDock(dock, parseFloat(dock.style.left), parseFloat(dock.style.top)));
   }
   function elapsed(m) {
     return m.playing ? Math.max(0, (Date.now() + CLOCK_SKEW - m.startedAt) / 1000) : m.pausedPos || 0;
